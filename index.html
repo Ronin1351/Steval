@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Unified Stock Evaluator + Basic Swing</title>
+  <style>
+    :root{ color-scheme: light dark }
+    body{ margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; background:#0b0b0c; color:#e8e8ea }
+    header{ display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid #2a2a2d; background:#111114 }
+    .title{ font-weight:800; font-size:20px }
+    .muted{ opacity:.75 }
+    .small{ font-size:12px }
+    .pill{ display:inline-flex; align-items:center; gap:8px; border:1px solid #C9A227; padding:4px 10px; border-radius:14px }
+    .container{ max-width:1200px; margin:0 auto; padding:20px }
+    .grid{ display:grid; gap:12px }
+    .grid-2{ grid-template-columns: 1fr 1fr }
+    .card{ border:1px solid #2a2a2d; background:rgba(255,255,255,.04); backdrop-filter: blur(6px); border-radius:16px; padding:16px }
+    .row{ display:flex; align-items:center; gap:8px }
+    .input{ background:#0f0f12; border:1px solid #2a2a2d; color:#e8e8ea; padding:10px 12px; border-radius:10px; width:100% }
+    .input.round{ border-radius:999px; padding:10px 14px }
+    .input.mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace }
+    label{ font-weight:600; font-size:14px }
+    .btn{ background:#0B3D91; color:#fff; border:none; border-radius:10px; padding:10px 14px; cursor:pointer }
+    .btn.small{ padding:6px 10px; font-size:12px }
+    .btn:disabled{ opacity:.6; cursor:not-allowed }
+    details summary{ cursor:pointer }
+    table{ width:100%; border-collapse:separate; border-spacing:0 6px }
+    th, td{ text-align:left; padding:8px 10px }
+    .table{ border:1px solid #2a2a2d; border-radius:12px; overflow:hidden }
+
+    /* Basic Swing section adopts orange/gold borders for inputs */
+    .amber-border{ border-color:#C9A227 !important }
+
+    /* Status grid (from index_patched) */
+    .status-grid{ display:grid; grid-template-columns: 170px 1fr 160px; gap:8px; font-size:13px }
+    .status-grid .head{ opacity:.6; font-weight:600 }
+    .status-grid .cell{ padding:6px 8px; background:#0f0f12; border:1px solid #262629; border-radius:8px }
+
+    .alerts{ display:grid; gap:8px }
+    .alert{ border:1px solid #3a2b12; background: #1a1408; color:#f2d99b; padding:10px 12px; border-radius:10px }
+
+    /* Keep swing panel visually distinct but minimal */
+    .swing-header{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px }
+    .bar{ height:10px; width:100%; border-radius:999px; background:#1e1e22; overflow:hidden }
+    .bar > span{ display:block; height:100%; width:0 }
+
+    @media (max-width: 960px){ .grid-2{ grid-template-columns: 1fr } }
+  </style>
+  <!-- Keep your existing local SEC helpers (paths assume same folder) -->
+  <script src="sec-tickers.js"></script>
+  <script src="sec-companyconcept.js"></script>
+  <script src="sec-companyfacts.js"></script>
+</head>
+<body data-theme="dark">
+  <header>
+    <div>
+      <div class="title">Unified Stock Evaluator</div>
+      <div class="muted small">Piotroski F‑Score + ROIC/Growth — plus Basic Swing</div>
+    </div>
+    <div class="row">
+      <button id="downloadHtml" class="btn small">Download (.html)</button>
+      <label class="row small muted" style="gap:8px;">
+        <span>Light</span>
+        <input id="themeToggle" type="checkbox" />
+        <span class="pill">Theme</span>
+      </label>
+      <label class="row small muted" style="gap:8px;">
+        <span>Debug</span>
+        <input id="debugToggle" type="checkbox" />
+        <span class="pill">Show</span>
+      </label>
+    </div>
+  </header>
+
+  <div id="alerts" class="alerts"></div>
+
+  <div class="container">
+    <!-- ===== Original index_patched LEFT/RIGHT layout kept intact ===== -->
+    <details class="card" id="helpCard">
+      <summary><strong>Help</strong> <span class="small muted">How to use, meanings, and tips</span></summary>
+      <div class="grid" style="grid-template-columns: 1fr; gap:10px; margin-top:8px;">
+        <div>
+          <label>Workflow</label>
+          <ul style="margin:6px 0 0 18px">
+            <li>Enter a ticker and your API key(s). Keys are hidden; toggle the eye icon to view.</li>
+            <li>Click Fetch via Finnhub or Fetch via FMP to auto-fill current and prior year fields.</li>
+            <li>Fill any missing inputs manually. Red highlights show blanks.</li>
+            <li>Press Compute All to update F‑Score, ROIC, Growth, and the Composite Verdict.</li>
+          </ul>
+        </div>
+        <div>
+          <label>Piotroski F‑Score (0–9)</label>
+          <p class="small muted">Nine binary checks. 1 point per pass; 0 if fail; — if missing.</p>
+          <ul style="margin:6px 0 0 18px">
+            <li>Profitability: ROA &gt; 0; CFO &gt; 0; ΔROA &gt; 0; Accruals: CFO &gt; NI.</li>
+            <li>Leverage/Liquidity: LT Debt / Assets decreases; Current Ratio increases; No new shares (sh0 ≤ sh1).</li>
+            <li>Operating efficiency: Gross Margin increases; Asset Turnover increases.</li>
+            <li>Reading the score: 0–3 weak, 4–6 average, 7–9 strong.</li>
+          </ul>
+        </div>
+        <div>
+          <label>ROIC</label>
+          <p class="small muted">ROIC ≈ NOPAT / Invested Capital, using operating capital items. Positive spread over WACC suggests value creation.</p>
+        </div>
+        <div>
+          <label>Growth</label>
+          <p class="small muted">Cumulative 4‑year growth from user/API YoY % values. Classes: Poor (&lt;25), Below avg (25–29), Acceptable (30–49), Decent (50–59), Strong (60–79), Excellent (80–120), Outlier (&gt;120).</p>
+        </div>
+        <div>
+          <label>Composite Verdict</label>
+          <ul style="margin:6px 0 0 18px">
+            <li>Combines F‑Score, ROIC−WACC spread, and Growth class.</li>
+            <li>Requires WACC to judge value creation (spread).</li>
+            <li>Outputs a plain‑English verdict and reasons.</li>
+          </ul>
+        </div>
+        <div class="small muted">Tips: If APIs block file:// requests, run a local server (python -m http.server). Use notes on each field to record assumptions and sources.</div>
+      </div>
+    </details>
+
+    <div class="grid grid-2">
+      <!-- LEFT: Inputs & Fetch (kept as in index_patched) -->
+      <section class="card">
+        <div class="row">
+          <label for="ticker">Ticker</label>
+          <span class="pill small muted">Enter a 1–5 letter ticker (AAPL, MSFT, GOOG)</span>
+        </div>
+        <input id="ticker" class="input round mono" maxlength="5" placeholder="e.g., AAPL" pattern="[A-Z]{1,5}" />
+
+        <div style="height:12px"></div>
+        <div class="row"><span class="pill small">Data Sources</span></div>
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap:12px;">
+          <div class="card" style="padding:12px;">
+            <div class="row" style="justify-content:space-between;">
+              <strong>Finnhub</strong>
+              <a class="small muted" href="https://finnhub.io" target="_blank" rel="noopener">Get key</a>
+            </div>
+            <label class="small muted" for="finnhubKey">API Key</label>
+            <div class="row" style="gap:8px;"><input id="finnhubKey" type="password" class="input mono" placeholder="FINNHUB_API_KEY" /><button class="btn small" id="toggleFinnhubKey" title="Show/Hide">👁</button></div>
+            <div style="height:8px"></div>
+            <button class="btn" id="btnFinnhub">Fetch via Finnhub</button>
+            <p class="small muted">Primary: financials-reported; Optional: metric for shares.</p>
+          </div>
+
+          <div class="card" style="padding:12px;">
+            <div class="row" style="justify-content:space-between;">
+              <strong>FMP</strong>
+              <a class="small muted" href="https://site.financialmodelingprep.com/developer" target="_blank" rel="noopener">Get key</a>
+            </div>
+            <label class="small muted" for="fmpKey">API Key</label>
+            <div class="row" style="gap:8px;"><input id="fmpKey" type="password" class="input mono" placeholder="FMP_API_KEY" /><button class="btn small" id="toggleFmpKey" title="Show/Hide">👁</button></div>
+            <div style="height:8px"></div>
+            <button class="btn" id="btnFmp">Fetch via FMP</button>
+            <p class="small muted">Quiet build: marks missing as manual.</p>
+          </div>
+        </div>
+        <div style="height:12px"></div>
+        <button class="btn" id="btnSec">Fetch via SEC</button>
+        <p class="small muted">Direct from SEC via your Vercel proxy.</p>
+        <div style="height:12px"></div>
+
+        <!-- Snapshot Inputs (abbreviated — your existing inputs & IDs assumed present) -->
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap:10px;">
+          <div>
+            <label>EBIT</label>
+            <input id="ebit" class="input mono" placeholder="EBIT" />
+          </div>
+          <div>
+            <label>Revenue (current)</label>
+            <input id="rev0" class="input mono" placeholder="Revenue" />
+          </div>
+          <div>
+            <label>Short-term Debt</label>
+            <input id="std" class="input mono" placeholder="STD" />
+          </div>
+          <div>
+            <label>Long-term Debt</label>
+            <input id="ltd0" class="input mono" placeholder="LTD" />
+          </div>
+          <div>
+            <label>Current Portion LT Debt</label>
+            <input id="cpltd" class="input mono" placeholder="CPLTD" />
+          </div>
+          <div>
+            <label>Term Debt</label>
+            <input id="termdebt" class="input mono" placeholder="Term Debt" />
+          </div>
+          <div>
+            <label>Cash & Equivalents</label>
+            <input id="cash" class="input mono" placeholder="Cash" />
+          </div>
+          <div>
+            <label>EBITDA</label>
+            <input id="ebitda" class="input mono" placeholder="EBITDA" />
+          </div>
+          <div>
+            <label>Income Tax</label>
+            <input id="tax" class="input mono" placeholder="Tax" />
+          </div>
+          <div>
+            <label>Common Stock</label>
+            <input id="cs" class="input mono" placeholder="Common Stock" />
+          </div>
+          <div>
+            <label>Capital Surplus</label>
+            <input id="cap" class="input mono" placeholder="APIC" />
+          </div>
+          <div>
+            <label>Retained Earnings</label>
+            <input id="re" class="input mono" placeholder="RE" />
+          </div>
+          <div>
+            <label>Current Assets</label>
+            <input id="ca0" class="input mono" placeholder="CA" />
+          </div>
+          <div>
+            <label>Current Liabilities</label>
+            <input id="cl0" class="input mono" placeholder="CL" />
+          </div>
+          <div>
+            <label>Total Assets</label>
+            <input id="assets0" class="input mono" placeholder="Assets" />
+          </div>
+          <div>
+            <label>WACC %</label>
+            <input id="wacc" class="input mono" placeholder="10" />
+          </div>
+          <div>
+            <label>YoY Rev % (4 yrs)</label>
+            <div class="row" style="gap:8px;">
+              <input id="r1" class="input mono" placeholder="y-1" />
+              <input id="r2" class="input mono" placeholder="y-2" />
+              <input id="r3" class="input mono" placeholder="y-3" />
+              <input id="r4" class="input mono" placeholder="y-4" />
+            </div>
+          </div>
+        </div>
+
+        <div style="height:12px"></div>
+        <button class="btn" id="btnCompute">Compute All</button>
+      </section>
+
+      <!-- RIGHT: Status mirror (from index_patched helpers) -->
+      <section class="card">
+        <h3 style="margin:0 0 8px 0">Field Status</h3>
+        <div class="status-grid">
+          <div class="head">Field</div><div class="head">Value</div><div class="head">Source</div>
+          <!-- Example rows; these are wired via STATUS_MAP -->
+          <div>rev_cur</div><div class="cell" data-value-for="rev_cur">—</div><div class="cell" data-source-for="rev_cur">—</div>
+          <div>ni_cur</div><div class="cell" data-value-for="ni_cur">—</div><div class="cell" data-source-for="ni_cur">—</div>
+          <div>ca_cur</div><div class="cell" data-value-for="ca_cur">—</div><div class="cell" data-source-for="ca_cur">—</div>
+
+          <div>rev_pri</div><div class="cell" data-value-for="rev_pri">—</div><div class="cell" data-source-for="rev_pri">—</div>
+          <div>ni_pri</div><div class="cell" data-value-for="ni_pri">—</div><div class="cell" data-source-for="ni_pri">—</div>
+          <div>ca_pri</div><div class="cell" data-value-for="ca_pri">—</div><div class="cell" data-source-for="ca_pri">—</div>
+
+          <div>ebit</div><div class="cell" data-value-for="ebit">—</div><div class="cell" data-source-for="ebit">—</div>
+          <div>cash</div><div class="cell" data-value-for="cash">—</div><div class="cell" data-source-for="cash">—</div>
+          <div>termdebt</div><div class="cell" data-value-for="termdebt">—</div><div class="cell" data-source-for="termdebt">—</div>
+
+          <div>std</div><div class="cell" data-value-for="std">—</div><div class="cell" data-source-for="std">—</div>
+          <div>cpltd</div><div class="cell" data-value-for="cpltd">—</div><div class="cell" data-source-for="cpltd">—</div>
+          <div>cs</div><div class="cell" data-value-for="cs">—</div><div class="cell" data-source-for="cs">—</div>
+          <div>cap</div><div class="cell" data-value-for="cap">—</div><div class="cell" data-source-for="cap">—</div>
+          <div>re</div><div class="cell" data-value-for="re">—</div><div class="cell" data-source-for="re">—</div>
+
+          <div>r1</div><div class="cell" data-value-for="r1">—</div><div class="cell" data-source-for="r1">—</div>
+          <div>r2</div><div class="cell" data-value-for="r2">—</div><div class="cell" data-source-for="r2">—</div>
+          <div>r3</div><div class="cell" data-value-for="r3">—</div><div class="cell" data-source-for="r3">—</div>
+          <div>r4</div><div class="cell" data-value-for="r4">—</div><div class="cell" data-source-for="r4">—</div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ===== Basic Swing panel from the separate app (kept minimal, no UI clash) ===== -->
+    <section class="card" style="margin-top:16px">
+      <div class="swing-header">
+        <h2 style="margin:0">Basic Swing</h2>
+        <span id="entryOkPill" class="pill">Entry OK?</span>
+      </div>
+      <div class="grid grid-2" style="gap:16px">
+        <section class="card" style="padding:16px">
+          <h3 style="margin:0 0 12px 0">Inputs — Basic</h3>
+          <div class="grid" style="grid-template-columns: 1fr 1fr; gap:12px">
+            <div>
+              <label class="small" for="zacks">Zacks Rank (1–5)</label>
+              <select id="zacks" class="input amber-border"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+            </div>
+            <div>
+              <label class="small" for="pe">P/E</label>
+              <input id="pe" type="number" step="0.01" class="input amber-border" placeholder="25" />
+            </div>
+            <div>
+              <label class="small" for="evebitda">EV/EBITDA</label>
+              <input id="evebitda" type="number" step="0.01" class="input amber-border" placeholder="18" />
+            </div>
+            <div>
+              <label class="small" for="pb">P/B</label>
+              <input id="pb" type="number" step="0.01" class="input amber-border" placeholder="6" />
+            </div>
+            <div>
+              <label class="small" for="dshares">Shares Outstanding Δ% (3y)</label>
+              <input id="dshares" type="number" step="0.01" class="input amber-border" placeholder="-5 for −5%" />
+            </div>
+            <div class="row" style="align-items:center; gap:8px;">
+              <input id="epspos" type="checkbox" />
+              <label class="small" for="epspos">EPS Positive? (check = yes)</label>
+            </div>
+          </div>
+          <p class="small muted" style="margin-top:8px">ΔShares% uses sign. Negative = buybacks. Positive = dilution.</p>
+        </section>
+        <section class="card" style="padding:16px">
+          <div class="row" style="justify-content:space-between; margin-bottom:12px">
+            <div>
+              <div class="small muted">SW Score</div>
+              <div id="scoreText" style="font-size:40px; font-weight:900">—</div>
+              <div id="decisionText" class="small" style="font-weight:700">—</div>
+            </div>
+            <div style="width:180px">
+              <div class="bar"><span id="scoreBar"></span></div>
+              <div class="small muted" style="margin-top:4px">0–100</div>
+            </div>
+          </div>
+          <div class="grid" style="grid-template-columns: repeat(4, 1fr); gap:8px">
+            <div class="card"><div class="small muted">E (Zacks)</div><div id="E" style="font-weight:700">—</div></div>
+            <div class="card"><div class="small muted">M (EPS)</div><div id="M" style="font-weight:700">—</div></div>
+            <div class="card"><div class="small muted">V (Valuation)</div><div id="V" style="font-weight:700">—</div></div>
+            <div class="card"><div class="small muted">R (Dilution)</div><div id="R" style="font-weight:700">—</div></div>
+          </div>
+          <div class="grid" style="grid-template-columns: repeat(3, 1fr); gap:8px; margin-top:12px">
+            <div class="card"><div class="small muted">n_pe</div><div id="n_pe" style="font-weight:700">—</div></div>
+            <div class="card"><div class="small muted">n_ev</div><div id="n_ev" style="font-weight:700">—</div></div>
+            <div class="card"><div class="small muted">n_pb</div><div id="n_pb" style="font-weight:700">—</div></div>
+            <div class="card"><div class="small muted">n_dil</div><div id="n_dil" style="font-weight:700">—</div></div>
+            <div class="card" style="grid-column: span 2 / span 2"><div class="small muted">SW_Score_raw</div><div id="raw" style="font-weight:700">—</div></div>
+            <div class="card" style="grid-column: span 2 / span 2"><div class="small muted">Decision rule</div><div id="rule" class="small">—</div></div>
+          </div>
+        </section>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===== Helper scripts ported from index_patched (status tracking, finalize, live compute) ===== -->
+  <script>
+    // STATUS MAP mirrors important input IDs to status table cells
+    const STATUS_MAP = {
+      rev_cur:{valueSel:'[data-value-for="rev_cur"]',sourceSel:'[data-source-for="rev_cur"]'},
+      ni_cur:{valueSel:'[data-value-for="ni_cur"]',sourceSel:'[data-source-for="ni_cur"]'},
+      ca_cur:{valueSel:'[data-value-for="ca_cur"]',sourceSel:'[data-source-for="ca_cur"]'},
+      rev_pri:{valueSel:'[data-value-for="rev_pri"]',sourceSel:'[data-source-for="rev_pri"]'},
+      ni_pri:{valueSel:'[data-value-for="ni_pri"]',sourceSel:'[data-source-for="ni_pri"]'},
+      ca_pri:{valueSel:'[data-value-for="ca_pri"]',sourceSel:'[data-source-for="ca_pri"]'},
+      ebit:{valueSel:'[data-value-for="ebit"]',sourceSel:'[data-source-for="ebit"]'},
+      cash:{valueSel:'[data-value-for="cash"]',sourceSel:'[data-source-for="cash"]'},
+      termdebt:{valueSel:'[data-value-for="termdebt"]',sourceSel:'[data-source-for="termdebt"]'},
+      std:{valueSel:'[data-value-for="std"]',sourceSel:'[data-source-for="std"]'},
+      cpltd:{valueSel:'[data-value-for="cpltd"]',sourceSel:'[data-source-for="cpltd"]'},
+      cs:{valueSel:'[data-value-for="cs"]',sourceSel:'[data-source-for="cs"]'},
+      cap:{valueSel:'[data-value-for="cap"]',sourceSel:'[data-source-for="cap"]'},
+      re:{valueSel:'[data-value-for="re"]',sourceSel:'[data-source-for="re"]'},
+      r1:{valueSel:'[data-value-for="r1"]',sourceSel:'[data-source-for="r1"]'},
+      r2:{valueSel:'[data-value-for="r2"]',sourceSel:'[data-source-for="r2"]'},
+      r3:{valueSel:'[data-value-for="r3"]',sourceSel:'[data-source-for="r3"]'},
+      r4:{valueSel:'[data-value-for="r4"]',sourceSel:'[data-source-for="r4"]'}
+    };
+
+    const FIELD_SOURCES = {};
+    function getVal(id){ const el=document.getElementById(id); if(!el) return ''; const v=('value' in el)? el.value : el.textContent; return v??'' }
+    function setVal(id, v, source){ const el=document.getElementById(id); if(!el) return; if('value' in el) el.value = v??''; else el.textContent = v??''; if(source) FIELD_SOURCES[id]=source; refreshStatusFor(id); }
+    function refreshStatusFor(id){ const conf=STATUS_MAP[id]; if(!conf) return; const vEl=document.querySelector(conf.valueSel); if(vEl){ const raw=getVal(id); vEl.textContent = raw===''? '—' : raw } const sEl=document.querySelector(conf.sourceSel); if(sEl){ const src=FIELD_SOURCES[id] || (getVal(id)===''? '' : 'Manual'); sEl.textContent = src || '—' } }
+    function refreshStatusAll(){ Object.keys(STATUS_MAP).forEach(refreshStatusFor) }
+    function wireManualTracking(){ Object.keys(STATUS_MAP).forEach(id=>{ const el=document.getElementById(id); if(!el) return; el.addEventListener('input',()=>{ FIELD_SOURCES[id]='Manual'; refreshStatusFor(id) }) }) }
+    window.finalizeStatusAfterFetch = function(){ refreshStatusAll() }
+
+    document.addEventListener('DOMContentLoaded',()=>{ wireManualTracking(); refreshStatusAll() })
+  </script>
+
+  <!-- ===== Basic Swing logic (Model A only) ===== -->
+  <script>
+    function clip(x, lo=0, hi=1){ if(isNaN(x)) return NaN; return Math.max(lo, Math.min(hi, x)) }
+    function num(v){ let t=String(v??''); t=t.split(',').join(''); t=t.replace('%','').trim(); const x=parseFloat(t); return isFinite(x)? x : NaN }
+    function fmt(v){ return isNaN(v)? '—' : v.toFixed(2) }
+    function setBar(el,score){ const w=isNaN(score)?0:Math.max(0,Math.min(100,score)); el.style.background = 'linear-gradient(90deg,#ef4444,#f59e0b,#22c55e)'; el.style.width = w+'%' }
+
+    const nZacksMap = {1:1.0, 2:0.8, 3:0.5, 4:0.2, 5:0.0};
+
+    const A = {
+      els:{
+        zacks:document.getElementById('zacks'), pe:document.getElementById('pe'), ev:document.getElementById('evebitda'), pb:document.getElementById('pb'), dshares:document.getElementById('dshares'), eps:document.getElementById('epspos'),
+        scoreText:document.getElementById('scoreText'), decisionText:document.getElementById('decisionText'), scoreBar:document.getElementById('scoreBar'), entry:document.getElementById('entryOkPill'),
+        E:document.getElementById('E'), M:document.getElementById('M'), V:document.getElementById('V'), R:document.getElementById('R'), n_pe:document.getElementById('n_pe'), n_ev:document.getElementById('n_ev'), n_pb:document.getElementById('n_pb'), n_dil:document.getElementById('n_dil'), raw:document.getElementById('raw'), rule:document.getElementById('rule')
+      },
+      compute(){
+        const z = num(this.els.zacks.value); const PE=num(this.els.pe.value); const EV=num(this.els.ev.value); const PB=num(this.els.pb.value); const dS=num(this.els.dshares.value); const epsPos=!!this.els.eps.checked;
+        const E = nZacksMap[z] ?? NaN;
+        const M = epsPos ? 1 : 0;
+        const n_pe = isNaN(PE)? NaN : Math.min(15/Math.max(PE,0.0001), 1);
+        const n_ev = isNaN(EV)? NaN : Math.min(10/Math.max(EV,0.0001), 1);
+        const n_pb = isNaN(PB)? NaN : Math.min(3/Math.max(PB,0.0001), 1);
+        const n_dil = isNaN(dS)? NaN : clip((-dS+10)/20, 0, 1); // buybacks better
+
+        const V = avgSafe([n_pe, n_ev, n_pb]);
+        const R = n_dil;
+
+        // Weights from the Basic model (40%E, 25%M, 20%V, 15%R)
+        const scoreRaw = (E*40 + M*25 + (isNaN(V)?0:V)*20 + (isNaN(R)?0:R)*15);
+        const score = scoreRaw; // already 0–100 scale via weights
+
+        // Decision
+        let decision='—', rule='—';
+        if(!isNaN(score)){
+          if(score>=75){ decision='BUY'; rule='Strong composite'; }
+          else if(score>=60){ decision='WATCH'; rule='Decent composite'; }
+          else{ decision='AVOID'; rule='Weak composite'; }
+        }
+        this.els.scoreText.textContent = isNaN(score)? '—' : score.toFixed(1);
+        this.els.decisionText.textContent = decision;
+        setBar(this.els.scoreBar, score);
+        this.els.E.textContent=fmt(E); this.els.M.textContent=fmt(M); this.els.V.textContent=fmt(V); this.els.R.textContent=fmt(R);
+        this.els.n_pe.textContent=fmt(n_pe); this.els.n_ev.textContent=fmt(n_ev); this.els.n_pb.textContent=fmt(n_pb); this.els.n_dil.textContent=fmt(n_dil);
+        this.els.raw.textContent=fmt(score);
+        this.els.rule.textContent=rule;
+        this.els.entry.textContent = (decision==='BUY')? 'Entry OK' : 'Entry Caution';
+      }
+    };
+
+    function avgSafe(a){ const b=a.filter(v=>typeof v==='number' && !isNaN(v)); return b.length? b.reduce((p,c)=>p+c,0)/b.length : NaN }
+
+    ;['input','change'].forEach(evt=>['zacks','pe','evebitda','pb','dshares','epspos'].forEach(id=>{ const el=document.getElementById(id); if(el) el.addEventListener(evt,()=>A.compute()) }))
+  </script>
+
+  <!-- ===== Wire SEC populate to also trigger Basic Swing compute ===== -->
+  <script>
+    (function(){
+      // This wrapper assumes your existing populateSEC() from sec-companyfacts.js fills inputs by ID.
+      // We extend it by auto-setting EPS positive and by computing dshares if both prior/current shares exist.
+
+      async function populateSEC(){
+        const t = (document.getElementById('ticker')?.value||'').trim().toUpperCase();
+        if(!t){ alert('Enter ticker first'); return }
+        try{
+          // The real fetch/populate lives in your sec-*.js helpers.
+          // If they expose a function, call it. Otherwise, just signal and rely on existing handlers.
+          if(typeof window.__secPopulate === 'function' && window.__secPopulate!==populateSEC){
+            // Already wired by local file -> delegate
+            await window.__secPopulate();
+          } else if(typeof window.fetchSECAndPopulate==='function'){
+            await window.fetchSECAndPopulate(t);
+          }
+
+          // Heuristics to feed Basic Swing
+          const ni = parseFloat(String(document.getElementById('ni_cur')?.value||document.getElementById('ni_cur')?.textContent||'').replace(/[,\s%]/g,''));
+          if(!isNaN(ni)){
+            const eps = document.getElementById('epspos'); if(eps){ eps.checked = (ni>0) }
+          }
+          // If you have shares prior/current fields, compute Δ% -> dshares
+          const sh0 = parseFloat(String(document.getElementById('sh0')?.value||'').replace(/[,\s%]/g,''));
+          const sh1 = parseFloat(String(document.getElementById('sh1')?.value||'').replace(/[,\s%]/g,''));
+          if(!isNaN(sh0) && !isNaN(sh1) && sh0>0){
+            const deltaPct = ((sh1 - sh0)/sh0)*100; const dsEl=document.getElementById('dshares'); if(dsEl){ dsEl.value = deltaPct.toFixed(2) }
+          }
+
+          // finalize existing status mirror, then compute Basic Swing
+          if(window.finalizeStatusAfterFetch) window.finalizeStatusAfterFetch();
+          if(A && typeof A.compute==='function') A.compute();
+        } catch(e){
+          console.error(e); alert('SEC error: '+(e.message||e))
+        }
+      }
+
+      // Bind button and hotkey
+      function wire(){
+        document.getElementById('btnSec')?.addEventListener('click', populateSEC);
+        window.addEventListener('keydown', e=>{ if(e.altKey && e.key.toLowerCase()==='s'){ e.preventDefault(); populateSEC() } });
+        // expose so the local sec-companyfacts.js can hook back if needed
+        window.populateSECUnified = populateSEC;
+      }
+      if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', wire); else wire();
+    })();
+  </script>
+
+  <!-- ===== Tiny runner to keep snapshot computations reactive (hooks back to your index_patched code) ===== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      function safe(fn){ try{ fn&&fn(); }catch(e){} }
+      const fireAll = () => { safe(window.computeFScore); safe(window.computeSnapshot); safe(window.computeVerdict); };
+      const btn = document.getElementById('btnCompute'); if(btn) btn.addEventListener('click', function(){ safe(window.computeAll); fireAll() });
+      ['ebit','rev0','std','ltd0','cpltd','termdebt','cash','ebitda','tax','cs','cap','re','ca0','cl0','assets0','r1','r2','r3','r4','wacc']
+        .forEach(function(id){ const el=document.getElementById(id); if(el) el.addEventListener('input', fireAll) });
+      fireAll();
+    });
+  </script>
+
+</body>
+</html>
