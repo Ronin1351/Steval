@@ -350,49 +350,269 @@
 
     <!-- Stock Evaluation Tab -->
     <div id="stock-evaluation" class="tab-content active">
-      <details class="card" id="helpCard">
-        <summary><strong>Help</strong> <span class="small muted">How to use, meanings, and tips</span></summary>
-        <div class="grid" style="grid-template-columns: 1fr; gap:10px; margin-top:8px;">
-          <div>
-            <label>Workflow</label>
-            <ul style="margin:6px 0 0 18px">
-              <li>Enter a ticker and your API key(s). Keys are hidden; toggle the eye icon to view.</li>
-              <li>Click Fetch via Finnhub or Fetch via FMP to auto-fill current and prior year fields.</li>
-              <li>Fill any missing inputs manually. Red highlights show blanks.</li>
-              <li>Press Compute All to update F-Score, ROIC, Growth, and the Composite Verdict.</li>
-            </ul>
-          </div>
-          <div>
-            <label>Piotroski F-Score (0—9)</label>
-            <p class="small muted">Nine binary checks. 1 point per pass; 0 if fail; — if missing.</p>
-            <ul style="margin:6px 0 0 18px">
-              <li>Profitability: ROA > 0; CFO > 0; ΔROA > 0; Accruals: CFO > NI.</li>
-              <li>Leverage/Liquidity: LT Debt / Assets decreases; Current Ratio increases; No new shares (sh0 ≤ sh1).</li>
-              <li>Operating efficiency: Gross Margin increases; Asset Turnover increases.</li>
-              <li>Reading the score: 0—3 weak, 4—6 average, 7—9 strong.</li>
-            </ul>
-          </div>
-          <div>
-            <label>ROIC</label>
-            <p class="small muted">ROIC ≈ NOPAT / Invested Capital, using operating capital items. Positive spread over WACC suggests value creation.</p>
-          </div>
-          <div>
-            <label>Growth</label>
-            <p class="small muted">Cumulative 4-year growth from user/API YoY % values. Classes: Poor (<25), Below avg (25—29), Acceptable (30—49), Decent (50—59), Strong (60—79), Excellent (80—120), Outlier (>120).</p>
-          </div>
-          <div>
-            <label>Composite Verdict</label>
-            <ul style="margin:6px 0 0 18px">
-              <li>Combines F-Score, ROIC−WACC spread, and Growth class.</li>
-              <li>Requires WACC to judge value creation (spread).</li>
-              <li>Outputs a plain-English verdict and reasons.</li>
-            </ul>
-          </div>
-          <div class="small muted">
-            Tips: If APIs block file:// requests, run a local server (python -m http.server). Use notes on each field to record assumptions and sources.
-          </div>
-        </div>
-      </details>
+     <details class="card" id="helpCard" open>
+  <summary><strong>Help</strong> <span class="small muted">How to use, meanings, and where to find each input</span></summary>
+
+  <div class="grid" style="grid-template-columns: 1fr; gap:14px; margin-top:10px;">
+
+    <!-- 1) Quick Start -->
+    <section>
+      <label>Quick start</label>
+      <ul style="margin:6px 0 0 18px">
+        <li>Type a ticker (e.g., AAPL). Enter API keys if you plan to auto-fetch.</li>
+        <li>Click one source at a time:
+          <ul style="margin:6px 0 0 18px">
+            <li>Fetch via Finnhub → tries “financials-reported”.</li>
+            <li>Fetch via FMP → fills most basics, marks gaps as manual.</li>
+            <li>Fetch via SEC → pulls from your SEC proxy.</li>
+          </ul>
+        </li>
+        <li>Fill any remaining blanks. Red borders mean “still needed.”</li>
+        <li>Press <b>Compute All</b>. Review F-Score, ROIC, Growth, Spread, and Verdict.</li>
+        <li>Switch to <b>Swing Trade Quality</b> to score setups. Pick <b>Basic</b> or <b>Analyst + Technical</b>.</li>
+        <li>Use <b>Risk Management</b> to size the trade and define exits.</li>
+      </ul>
+    </section>
+
+    <!-- 2) Core Concepts -->
+    <section>
+      <label>Concepts and meanings</label>
+      <ul style="margin:6px 0 0 18px">
+        <li><b>Piotroski F-Score (0–9)</b>
+          <ul style="margin:6px 0 0 18px" class="small muted">
+            <li>Profitability: ROA &gt; 0; CFO &gt; 0; ΔROA &gt; 0; Accruals test (CFO &gt; NI).</li>
+            <li>Leverage/Liquidity: LT Debt/Assets ↓; Current Ratio ↑; No new shares (current ≤ prior).</li>
+            <li>Efficiency: Gross Margin ↑; Asset Turnover ↑.</li>
+            <li>Read: 0–3 weak, 4–6 average, 7–9 strong.</li>
+          </ul>
+        </li>
+        <li><b>ROIC</b> ≈ NOPAT / Invested Capital. Measures core return on operating capital.</li>
+        <li><b>WACC</b> = blended required return for debt + equity.</li>
+        <li><b>Spread</b> = ROIC − WACC. Positive → creating value. Negative → destroying value.</li>
+        <li><b>Cumulative Growth (4y)</b> from your YoY revenue growth inputs. Class labels show strength.</li>
+        <li><b>EBIT Margin</b> = EBIT / Revenue. Operating profitability.</li>
+        <li><b>Net-Debt / EBITDA</b> gauges leverage vs cash earnings. Lower is safer.</li>
+        <li><b>Composite Verdict</b> blends F-Score, Spread, and Growth class into a plain-English call.</li>
+        <li><b>Swing Score (Basic)</b> = E/M/V/R buckets:
+          <ul style="margin:6px 0 0 18px" class="small muted">
+            <li>E: Zacks Rank (1 best, 5 worst).</li>
+            <li>M: EPS positive? Basic momentum proxy.</li>
+            <li>V: Valuation (P/E, EV/EBITDA, P/B) normalized.</li>
+            <li>R: Dilution (3-yr Δ Shares Outstanding).</li>
+          </ul>
+        </li>
+        <li><b>Swing Score (Analyst + Technical)</b> adds:
+          <ul style="margin:6px 0 0 18px" class="small muted">
+            <li>EPS/Revenue surprise (2 quarters), 30-day EPS revisions, relative strength vs SPY (6w).</li>
+            <li>Trend guards (price above 20/50/200 DMA), breakout %, liquidity, beta, short interest.</li>
+            <li>Forward valuation (Fwd P/E, PEG), EV/EBITDA vs industry “k_EV”.</li>
+          </ul>
+        </li>
+        <li><b>Risk Management</b>
+          <ul style="margin:6px 0 0 18px" class="small muted">
+            <li><b>Fixed Target</b>: entry, stop %, target % → position size, R:R, rules.</li>
+            <li><b>Trailing Stop</b>: entry, trail % → dynamic exit; target optional.</li>
+            <li><b>Time Exit</b>: days-based exit guard you set up front.</li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 3) Where to find each input (Zacks first) -->
+    <section>
+      <label>Where to find each value</label>
+      <div class="small muted" style="margin:6px 0 8px">Start on Zacks. If not available there, use the alternatives listed.</div>
+
+      <ul style="margin:6px 0 0 18px">
+        <li><b>Zacks Rank</b>
+          <ul class="small muted" style="margin-left:18px">
+            <li>Zacks → Quote Overview → “Zacks Rank”.</li>
+            <li>Alt: Zacks “Rank” page for the ticker; Yahoo Finance “Analysis” (approximate via EPS revisions); brokerage terminal.</li>
+          </ul>
+        </li>
+
+        <li><b>P/E, P/B, PEG, Fwd P/E, EV/EBITDA</b>
+          <ul class="small muted" style="margin-left:18px">
+            <li>Zacks → Valuation tab (P/E, P/B, PEG, Forward P/E, EV/EBITDA).</li>
+            <li>Alt: TIKR, Finbox, GuruFocus, Seeking Alpha “Valuation”.</li>
+          </ul>
+        </li>
+
+        <li><b>Industry EV/EBITDA (k_EV)</b>
+          <ul class="small muted" style="margin-left:18px">
+            <li>Zacks → Industry Comparison / Valuation → “EV/EBITDA (Industry Avg)”.</li>
+            <li>Alt: Finbox industry benchmarks, GuruFocus industry pages.</li>
+          </ul>
+        </li>
+
+        <li><b>EPS Positive?</b> (checkbox)
+          <ul class="small muted" style="margin-left:18px">
+            <li>Zacks → Quote Overview → “EPS (TTM)” or Income Statement (EPS basic/diluted).</li>
+            <li>Alt: Yahoo Finance → “Financials” → Income Statement; company 10-K/10-Q.</li>
+          </ul>
+        </li>
+
+        <li><b>EPS Surprise %, Revenue Surprise % (2q)</b>
+          <ul class="small muted" style="margin-left:18px">
+            <li>Zacks → Earnings → “Earnings Surprise” and “Earnings ESP”.</li>
+            <li>Alt: Seeking Alpha “Earnings”; Nasdaq.com “Earnings”; company press releases.</li>
+          </ul>
+        </li>
+
+        <li><b>Δ EPS Consensus (30d)</b>
+          <ul class="small muted" style="margin-left:18px">
+            <li>Zacks → Earnings → “Earnings Estimates” → revision trends.</li>
+            <li>Alt: Yahoo Finance “Analysis” → EPS Trend/Revision; Seeking Alpha “Revisions”.</li>
+          </ul>
+        </li>
+
+        <li><b>Rel Strength vs SPY (6w)</b>
+          <ul class="small muted" style="margin-left:18px">
+            <li>Zacks does not show a 6-week SPY ratio directly.</li>
+            <li>Alt: TradingView → compare ticker to SPY → Range = 1–1.5 months → read % outperformance.</li>
+          </ul>
+        </li>
+
+        <li><b>Price &gt; 20/50/200 DMA</b>
+          <ul class="small muted" style="margin-left:18px">
+            <li>Zacks → Technicals (some tickers). If missing, use charting.</li>
+            <li>Alt: TradingView/Yahoo Finance → add SMA(20/50/200) and check if price is above each.</li>
+          </ul>
+        </li>
+
+        <li><b>Breakout % above swing high</b>
+          <ul class="small muted" style="margin-left:18px">
+            <li>From your chart: identify last swing-high, compute (Price − SwingHigh)/SwingHigh × 100.</li>
+            <li>Alt: Any charting tool that shows recent highs.</li>
+          </ul>
+        </li>
+
+        <li><b>Avg Daily Volume (millions), Beta</b>
+          <ul class="small muted" style="margin-left:18px">
+            <li>Zacks → Quote Overview → “Price and Volume” (Avg Volume), “Beta”.</li>
+            <li>Alt: Yahoo Finance “Statistics”; TradingView “Fundamentals”.</li>
+          </ul>
+        </li>
+
+        <li><b>Short Interest % of Float</b>
+          <ul class="small muted" style="margin-left:18px">
+            <li>Zacks → “Short Interest” page for the ticker.</li>
+            <li>Alt: Nasdaq.com → Short Interest; MarketWatch; exchange short-interest reports.</li>
+          </ul>
+        </li>
+
+        <li><b>Revenue, Gross Profit, Total Assets, Net Income, CFO</b>
+          <ul class="small muted" style="margin-left:18px">
+            <li>Zacks → “Financials” → Income Statement / Balance Sheet / Cash Flow.</li>
+            <li>Alt: SEC 10-K/10-Q (Income Statement, Balance Sheet, Cash Flow); FMP/Finnhub API.</li>
+          </ul>
+        </li>
+
+        <li><b>Long-term Debt, Current Assets, Current Liabilities</b>
+          <ul class="small muted" style="margin-left:18px">
+            <li>Zacks → “Financials” → Balance Sheet.</li>
+            <li>Alt: SEC 10-K/10-Q; FMP/Finnhub.</li>
+          </ul>
+        </li>
+
+        <li><b>Shares Outstanding (weighted avg)</b>
+          <ul class="small muted" style="margin-left:18px">
+            <li>Zacks → “Financials” → Income Statement (weighted avg shares).</li>
+            <li>Alt: 10-K/10-Q footnotes; FMP/Finnhub endpoints for share counts.</li>
+          </ul>
+        </li>
+
+        <li><b>EBIT, EBITDA, Income Tax</b>
+          <ul class="small muted" style="margin-left:18px">
+            <li>Zacks → “Financials” → Income Statement (Operating Income ~ EBIT), Cash Flow for EBITDA if provided.</li>
+            <li>Alt: SEC filings (Operating income, depreciation+amortization, tax expense); APIs.</li>
+          </ul>
+        </li>
+
+        <li><b>Cash & Equivalents, Short-term Debt, CPLTD, Term Debt</b>
+          <ul class="small muted" style="margin-left:18px">
+            <li>Zacks → “Financials” → Balance Sheet.</li>
+            <li>Alt: SEC filings; APIs.</li>
+          </ul>
+        </li>
+
+        <li><b>Common Stock, Capital Surplus, Retained Earnings</b>
+          <ul class="small muted" style="margin-left:18px">
+            <li>Zacks → “Financials” → Balance Sheet (Equity section).</li>
+            <li>Alt: SEC filings; APIs.</li>
+          </ul>
+        </li>
+
+        <li><b>Revenue Growth % (Y1–Y4)</b>
+          <ul class="small muted" style="margin-left:18px">
+            <li>Zacks → “Financials” → Income Statement → compute YoY % from revenue history.</li>
+            <li>Alt: FMP/Finnhub “income statement” history; company investor presentations.</li>
+          </ul>
+        </li>
+
+        <li><b>WACC</b>
+          <ul class="small muted" style="margin-left:18px">
+            <li>Not typically on Zacks.</li>
+            <li>Use: Finbox (WACC), TIKR, GuruFocus, AlphaSpread, or estimate from CAPM + debt costs.</li>
+            <li>As a quick proxy, use industry WACC (Damodaran tables) if company-specific is unavailable.</li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 4) Data entry rules -->
+    <section>
+      <label>Data entry rules</label>
+      <ul style="margin:6px 0 0 18px">
+        <li>Use <b>the same currency and scale</b> across fields. Avoid mixing “in millions” with raw numbers.</li>
+        <li>Prefer <b>TTM or full-year</b> consistently for NI, CFO, EBIT, etc. Do not mix quarterly with annual.</li>
+        <li><b>Weighted-average shares</b> for F-Score dilution test (not end-of-period shares).</li>
+        <li>If a field is missing, add a <b>note</b> (click “note”). Record your source and assumptions.</li>
+        <li>Enter <b>percentages as numbers</b> (e.g., type 10 for 10%).</li>
+      </ul>
+    </section>
+
+    <!-- 5) Swing inputs checklist -->
+    <section>
+      <label>Swing inputs checklist</label>
+      <ul style="margin:6px 0 0 18px">
+        <li>Basic: Zacks Rank, EPS Positive, P/E, EV/EBITDA, P/B, 3-yr Δ Shares%.</li>
+        <li>Analyst + Technical: add EPS/Revenue surprises, EPS revisions 30d, RS vs SPY (6w), MAs, breakout %, volume, beta, short interest, Fwd P/E, PEG, EV/EBITDA vs industry.</li>
+        <li>Ask yourself: Is price above key MAs? Is liquidity sufficient? Are revisions trending up?</li>
+      </ul>
+    </section>
+
+    <!-- 6) Risk management how-to -->
+    <section>
+      <label>Risk management — how to use</label>
+      <ul style="margin:6px 0 0 18px">
+        <li>Enter <b>Account Size</b> and <b>Risk %</b>. That sets your max dollar loss per trade.</li>
+        <li>Provide <b>Entry</b> and either:
+          <ul style="margin:6px 0 0 18px" class="small muted">
+            <li><b>Stop %</b> or <b>Stop Price</b>, plus optional <b>Target %/Price</b> for fixed-target mode.</li>
+            <li><b>Trailing %</b> for trailing-stop mode.</li>
+            <li><b>Time Exit (days)</b> for time-based guardrails.</li>
+          </ul>
+        </li>
+        <li>Review <b>Position Size</b>, <b>Risk $ / Reward $</b>, <b>R:R</b>, and the generated <b>rules</b>.</li>
+      </ul>
+    </section>
+
+    <!-- 7) Troubleshooting -->
+    <section>
+      <label>Troubleshooting</label>
+      <ul style="margin:6px 0 0 18px">
+        <li>Blanks highlighted in red → still required. Fill or add a note.</li>
+        <li>APIs blocked when opening the file directly? Run a local server:
+          <span class="mono">python -m http.server</span> and open <span class="mono">http://localhost:8000</span>.</li>
+        <li>SEC fetch slow or partial? Try again or fill key fields manually from filings/Zacks.</li>
+        <li>Numbers look off? Check units (thousands vs millions), TTM vs annual, and currency.</li>
+      </ul>
+    </section>
+
+  </div>
+</details>
+
 
       <div class="grid grid-cols-2">
       <!-- LEFT: Inputs & Fetch -->
