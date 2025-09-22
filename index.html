@@ -566,4 +566,1782 @@
               <label>Income Tax</label>
               <input id="tax" class="input mono" placeholder="e.g., 152" />
               <span class="note-toggle" data-for="note_tax">note</span>
-              <div class="note-box" id="note_tax_box"><div
+              <div class="note-box" id="note_tax_box"><div class="note-head">Income Tax note</div><textarea id="note_tax"></textarea></div>
+            </div>
+            <div class="note-wrap">
+              <label>Cash & Equivalents</label>
+              <input id="cash" class="input mono" placeholder="e.g., 471" />
+              <span class="note-toggle" data-for="note_cash">note</span>
+              <div class="note-box" id="note_cash_box"><div class="note-head">Cash & Equivalents note</div><textarea id="note_cash"></textarea></div>
+            </div>
+            <div class="note-wrap">
+              <label>Short-term Debt</label>
+              <input id="std" class="input mono" placeholder="e.g., 0" />
+              <span class="note-toggle" data-for="note_std">note</span>
+              <div class="note-box" id="note_std_box"><div class="note-head">Short-term Debt note</div><textarea id="note_std"></textarea></div>
+            </div>
+            <div class="note-wrap">
+              <label>Current Portion of LT Debt</label>
+              <input id="cpltd" class="input mono" placeholder="e.g., 307" />
+              <span class="note-toggle" data-for="note_cpltd">note</span>
+              <div class="note-box" id="note_cpltd_box"><div class="note-head">CPLTD note</div><textarea id="note_cpltd"></textarea></div>
+            </div>
+            <div class="note-wrap">
+              <label>Term Debt</label>
+              <input id="termdebt" class="input mono" placeholder="e.g., 0" />
+              <span class="note-toggle" data-for="note_termdebt">note</span>
+              <div class="note-box" id="note_termdebt_box"><div class="note-head">Term Debt note</div><textarea id="note_termdebt"></textarea></div>
+            </div>
+            <div class="note-wrap">
+              <label>Common Stock</label>
+              <input id="cs" class="input mono" placeholder="e.g., 181" />
+              <span class="note-toggle" data-for="note_cs">note</span>
+              <div class="note-box" id="note_cs_box"><div class="note-head">Common Stock note</div><textarea id="note_cs"></textarea></div>
+            </div>
+            <div class="note-wrap">
+              <label>Capital Surplus</label>
+              <input id="cap" class="input mono" placeholder="e.g., 2189" />
+              <span class="note-toggle" data-for="note_cap">note</span>
+              <div class="note-box" id="note_cap_box"><div class="note-head">Capital Surplus note</div><textarea id="note_cap"></textarea></div>
+            </div>
+            <div class="note-wrap">
+              <label>Retained Earnings</label>
+              <input id="re" class="input mono" placeholder="e.g., 9635" />
+              <span class="note-toggle" data-for="note_re">note</span>
+              <div class="note-box" id="note_re_box"><div class="note-head">Retained Earnings note</div><textarea id="note_re"></textarea></div>
+            </div>
+
+            <div class="note-wrap">
+              <label>Revenue Growth % (Y1)</label>
+              <input id="r1" class="input mono" placeholder="e.g., 10" />
+              <span class="note-toggle" data-for="note_r1">note</span>
+              <div class="note-box" id="note_r1_box"><div class="note-head">Growth Y1 note</div><textarea id="note_r1"></textarea></div>
+            </div>
+            <div class="note-wrap">
+              <label>Revenue Growth % (Y2)</label>
+              <input id="r2" class="input mono" placeholder="e.g., 12" />
+              <span class="note-toggle" data-for="note_r2">note</span>
+              <div class="note-box" id="note_r2_box"><div class="note-head">Growth Y2 note</div><textarea id="note_r2"></textarea></div>
+            </div>
+            <div class="note-wrap">
+              <label>Revenue Growth % (Y3)</label>
+              <input id="r3" class="input mono" placeholder="e.g., 8" />
+              <span class="note-toggle" data-for="note_r3">note</span>
+              <div class="note-box" id="note_r3_box"><div class="note-head">Growth Y3 note</div><textarea id="note_r3"></textarea></div>
+            </div>
+            <div class="note-wrap">
+              <label>Revenue Growth % (Y4)</label>
+              <input id="r4" class="input mono" placeholder="e.g., 6" />
+              <span class="note-toggle" data-for="note_r4">note</span>
+              <div class="note-box" id="note_r4_box"><div class="note-head">Growth Y4 note</div><textarea id="note_r4"></textarea></div>
+            </div>
+          </div>
+        </details>
+
+        <div class="row" style="margin-top:12px; justify-content:space-between;">
+          <button class="btn" id="btnCompute">Compute All</button>
+          <span class="small muted">Blank fields are highlighted. Add notes via the "note" toggles.</span>
+        </div>
+      </section>
+
+      <!-- RIGHT: Results -->
+      <section class="card">
+        <div class="row" style="justify-content:space-between;">
+          <strong>F-Score</strong>
+          <div class="small muted">9 criteria</div>
+        </div>
+        <div id="scoreBlock" class="kpi" style="margin-top:8px;">
+          <div>Total F-Score</div>
+          <div class="score right" id="totalScore">— / 9</div>
+        </div>
+        <div style="height:8px"></div>
+        <div id="criteriaList" class="grid"></div>
+
+        <div style="height:16px"></div>
+        <div class="row" style="justify-content:space-between;">
+          <strong>Data Fill Status</strong>
+          <span class="small muted">Which API or method filled each field</span>
+        </div>
+        <div class="status-grid small muted" style="margin-top:6px; font-weight:600;">
+          <div>Field</div><div>Source</div><div>Value</div>
+        </div>
+        <div id="statusList" class="status-grid small" style="margin-top:2px;"></div>
+
+        <div class="footer small">ROIC uses operating capital only. Cash reused from Net-Debt section if ROIC cash blank. © 2025 Kevin Shokrollahi ALL RIGHT RESERVED</div>
+      </section>
+
+      <section class="card">
+        <div class="row" style="justify-content:space-between;">
+          <strong>ROIC / Debt / Margins / Growth</strong>
+          <div class="small muted">Snapshot</div>
+        </div>
+
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap:12px; margin-top:8px;">
+          <div class="kpi"><div>EBIT Margin</div><div class="right" id="ebitMarginOut">—</div></div>
+          <div class="kpi"><div>Net-Debt / EBITDA</div><div class="right" id="ndebtOut">—</div></div>
+          <div class="kpi"><div>ROIC</div><div class="right" id="roicOut">—</div></div>
+          <div class="kpi"><div>Cumulative Growth (4y)</div><div class="right" id="cumOut">—</div></div>
+        </div>
+
+        <div class="row" style="margin-top:10px; gap:8px;">
+          <span class="chip">Growth Class: <span id="growthClass">—</span></span>
+          <span class="chip" id="valueFlag">—</span>
+          <span class="chip">Spread (ROIC − WACC): <span id="spread">—</span></span>
+        </div>
+
+        <div class="row" style="margin-top:10px;">
+          <label for="wacc">WACC (%)</label>
+          <input id="wacc" class="input mono" style="max-width:200px" placeholder="e.g., 10" />
+        </div>
+
+        <div style="margin-top:14px" class="kpi na">
+          <div>Notes</div>
+          <div class="right" id="notes">Enter a WACC to see value creation or destruction.</div>
+        </div>
+      </section>
+
+      <section class="card" id="verdictCard">
+        <div class="row" style="justify-content:space-between;">
+          <strong>Composite Verdict</strong>
+          <div class="small muted">F-Score + ROIC vs WACC + Growth</div>
+        </div>
+        <div class="kpi" id="verdictBadge" style="margin-top:8px;">
+          <div id="verdictLabel">—</div>
+          <div class="right" id="verdictEmoji">—</div>
+        </div>
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap:10px; margin-top:8px;">
+          <div class="kpi"><div>F-Score</div><div class="right" id="vFscore">—</div></div>
+          <div class="kpi"><div>ROIC − WACC</div><div class="right" id="vSpread">—</div></div>
+          <div class="kpi"><div>Growth Class</div><div class="right" id="vGrowthClass">—</div></div>
+          <div class="kpi"><div>Cumulative Growth (4y)</div><div class="right" id="vGrowthNum">—</div></div>
+        </div>
+        <div class="kpi na" style="margin-top:8px;">
+          <div>Reasoning</div>
+          <div class="right small" id="verdictReason">Provide WACC and compute to see the verdict.</div>
+        </div>
+      </section>
+      </div>
+    </div>
+
+    <!-- Swing Trading Tab -->
+    <div id="swing-trading" class="tab-content">
+      <!-- Model Switch -->
+      <div class="row" style="margin-bottom:20px;">
+        <div class="risk-switch" id="modelSwitch">
+          <div class="risk-switch-indicator" id="modelIndicator"></div>
+          <button class="risk-switch-btn active" data-model="basic">Basic Swing</button>
+          <button class="risk-switch-btn" data-model="analyst">Analyst + Technical</button>
+        </div>
+        <div class="row" style="margin-left: auto; gap: 8px;">
+          <button id="demoA" class="btn small">Fill Demo A</button>
+          <button id="demoB" class="btn small">Fill Demo B</button>
+          <button id="resetBtn" class="btn small">Reset</button>
+        </div>
+      </div>
+
+      <!-- Basic Model Panel -->
+      <div id="basic-panel" class="grid grid-cols-2">
+        <!-- Basic Inputs -->
+        <section class="card">
+          <h2 class="row" style="justify-content:space-between; margin-bottom:16px;">
+            <strong>Inputs — Basic</strong>
+            <span id="entryOkPill" class="swing-pill">Entry OK?</span>
+          </h2>
+          <div class="fieldset">
+            <div>
+              <label for="swing_ticker">Ticker</label>
+              <input id="swing_ticker" class="input mono" placeholder="PLTR" />
+            </div>
+            <div>
+              <label for="zacks">Zacks Rank (1—5)</label>
+              <select id="zacks" class="input">
+                <option value="">—</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </div>
+            <div>
+              <label for="pe">P/E</label>
+              <input id="pe" type="number" step="0.01" min="0" class="input" placeholder="25" />
+            </div>
+            <div>
+              <label for="evebitda">EV/EBITDA</label>
+              <input id="evebitda" type="number" step="0.01" class="input" placeholder="18" />
+            </div>
+            <div>
+              <label for="pb">P/B</label>
+              <input id="pb" type="number" step="0.01" min="0" class="input" placeholder="6" />
+            </div>
+            <div>
+              <label for="dshares">Shares Outstanding Δ% (3y)</label>
+              <input id="dshares" type="number" step="0.01" class="input" placeholder="-5 for −5%" />
+            </div>
+            <div class="full row" style="gap:8px; margin-top:8px;">
+              <input id="epspos" type="checkbox" />
+              <label for="epspos">EPS Positive? (check = yes)</label>
+            </div>
+          </div>
+          <p class="small muted" style="margin-top:12px;">ΔShares% uses sign. Negative = buybacks. Positive = dilution.</p>
+        </section>
+
+        <!-- Basic Results -->
+        <section class="card">
+          <h2 style="margin-bottom:16px;"><strong>Result — Basic</strong></h2>
+          <div class="row" style="gap:16px; margin-bottom:20px;">
+            <div style="flex:1;">
+              <div class="small muted">SW Score</div>
+              <div id="scoreText" class="score-display">—</div>
+              <div id="decisionText" style="font-weight:600; margin-top:4px;">—</div>
+            </div>
+            <div style="width:120px;">
+              <div class="score-bar">
+                <div id="scoreBar" class="score-fill" style="width:0%"></div>
+              </div>
+              <div class="small muted" style="margin-top:4px;">0—100</div>
+            </div>
+          </div>
+
+          <div class="grid" style="grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:16px;">
+            <div class="metric-card">
+              <div class="metric-label">E (Zacks)</div>
+              <div id="E" class="metric-value">—</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">M (EPS)</div>
+              <div id="M" class="metric-value">—</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">V (Valuation)</div>
+              <div id="V" class="metric-value">—</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">R (Dilution)</div>
+              <div id="R" class="metric-value">—</div>
+            </div>
+          </div>
+
+          <details>
+            <summary class="small muted" style="cursor:pointer;">Detailed Breakdown</summary>
+            <div class="grid" style="grid-template-columns: 1fr 1fr 1fr; gap:8px; margin-top:8px;">
+              <div class="metric-card">
+                <div class="metric-label">n_pe</div>
+                <div id="n_pe" style="font-size:14px; font-weight:600;">—</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">n_ev</div>
+                <div id="n_ev" style="font-size:14px; font-weight:600;">—</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">n_pb</div>
+                <div id="n_pb" style="font-size:14px; font-weight:600;">—</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">n_dil</div>
+                <div id="n_dil" style="font-size:14px; font-weight:600;">—</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">Raw Score</div>
+                <div id="raw" style="font-size:14px; font-weight:600;">—</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">Rule</div>
+                <div id="rule" style="font-size:10px;">—</div>
+              </div>
+            </div>
+          </details>
+        </section>
+      </div>
+
+      <!-- Analyst Model Panel -->
+      <div id="analyst-panel" class="grid" style="display:none;">
+        <!-- Analyst Inputs -->
+        <section class="card" style="grid-column: 1 / -1;">
+          <h2 class="row" style="justify-content:space-between; margin-bottom:16px;">
+            <strong>Inputs — Analyst + Technical</strong>
+            <span id="entry2" class="swing-pill">Entry OK?</span>
+          </h2>
+          <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:12px;">
+            <div>
+              <label for="swing_ticker2">Ticker</label>
+              <input id="swing_ticker2" class="input mono" placeholder="PLTR"/>
+            </div>
+            <div>
+              <label for="epsSurp">Avg EPS Surprise % (2q)</label>
+              <input id="epsSurp" type="number" step="0.01" class="input" placeholder="5"/>
+            </div>
+            <div>
+              <label for="revSurp">Avg Revenue Surprise % (2q)</label>
+              <input id="revSurp" type="number" step="0.01" class="input" placeholder="2.5"/>
+            </div>
+            <div>
+              <label for="epsRevise">Δ EPS Consensus (30d) %</label>
+              <input id="epsRevise" type="number" step="0.01" class="input" placeholder="1.2"/>
+            </div>
+            <div>
+              <label for="zacks2">Zacks Rank (1—5)</label>
+              <select id="zacks2" class="input">
+                <option value="">—</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+            </div>
+            <div>
+              <label for="rel6w">Rel Strength vs SPY (6w) %</label>
+              <input id="rel6w" type="number" step="0.01" class="input" placeholder="6"/>
+            </div>
+            <div>
+              <label for="brk">Breakout % above swing high</label>
+              <input id="brk" type="number" step="0.01" class="input" placeholder="3"/>
+            </div>
+            <div>
+              <label for="avgVol">Avg Daily Volume (millions)</label>
+              <input id="avgVol" type="number" step="0.01" class="input" placeholder="1.2"/>
+            </div>
+            <div>
+              <label for="beta">Beta (20—90d)</label>
+              <input id="beta" type="number" step="0.01" class="input" placeholder="1.3"/>
+            </div>
+            <div>
+              <label for="si">Short Interest % of float</label>
+              <input id="si" type="number" step="0.01" class="input" placeholder="4"/>
+            </div>
+            <div>
+              <label for="fpe">Forward P/E</label>
+              <input id="fpe" type="number" step="0.01" class="input" placeholder="30"/>
+            </div>
+            <div>
+              <label for="pe5">P/E 5yr Avg</label>
+              <input id="pe5" type="number" step="0.01" class="input" placeholder="35"/>
+            </div>
+            <div>
+              <label for="peg">PEG (1y fwd)</label>
+              <input id="peg" type="number" step="0.01" class="input" placeholder="1.8"/>
+            </div>
+            <div>
+              <label for="ev2">EV/EBITDA</label>
+              <input id="ev2" type="number" step="0.01" class="input" placeholder="22"/>
+            </div>
+            <div>
+              <label for="kev">Industry EV/EBITDA (k_EV)</label>
+              <input id="kev" type="number" step="0.01" class="input" placeholder="18"/>
+            </div>
+          </div>
+          
+          <div class="row" style="gap:16px; margin-top:16px; flex-wrap:wrap;">
+            <label class="row" style="gap:8px;">
+              <input id="dma20" type="checkbox" />
+              <span>Price > 20DMA</span>
+            </label>
+            <label class="row" style="gap:8px;">
+              <input id="dma50" type="checkbox" />
+              <span>Price > 50DMA</span>
+            </label>
+            <label class="row" style="gap:8px;">
+              <input id="dma200" type="checkbox" />
+              <span>Price > 200DMA</span>
+            </label>
+            <label class="row" style="gap:8px;">
+              <input id="earn5" type="checkbox" />
+              <span>Earnings in next 5 trading days?</span>
+            </label>
+          </div>
+        </section>
+
+        <!-- Analyst Results -->
+        <section class="card" style="grid-column: 1 / -1;">
+          <div class="grid grid-cols-2">
+            <!-- Main Results -->
+            <div>
+              <h3 style="margin-bottom:16px;"><strong>Result — Analyst + Technical</strong></h3>
+              <div class="row" style="gap:16px; margin-bottom:20px;">
+                <div style="flex:1;">
+                  <div class="small muted">SW Score (Model B)</div>
+                  <div id="score2" class="score-display">—</div>
+                  <div id="decision2" style="font-weight:600; margin-top:4px;">—</div>
+                </div>
+                <div style="width:120px;">
+                  <div class="score-bar">
+                    <div id="bar2" class="score-fill" style="width:0%"></div>
+                  </div>
+                  <div class="small muted" style="margin-top:4px;">0—100</div>
+                </div>
+              </div>
+
+              <div class="grid" style="grid-template-columns: 1fr 1fr; gap:12px;">
+                <div class="metric-card">
+                  <div class="metric-label">E</div>
+                  <div id="E2" class="metric-value">—</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-label">M</div>
+                  <div id="M2" class="metric-value">—</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-label">V</div>
+                  <div id="V2" class="metric-value">—</div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-label">R</div>
+                  <div id="R2" class="metric-value">—</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- No-Analyst Variant -->
+            <div>
+              <h3 style="margin-bottom:16px;"><strong>Swing No-Analyst</strong> <span class="small muted">(price + liquidity only)</span></h3>
+              <div class="row" style="gap:16px; margin-bottom:20px;">
+                <div style="flex:1;">
+                  <div class="small muted">SW Score (No-Analyst)</div>
+                  <div id="scoreNA" style="font-size:36px; font-weight:800;">—</div>
+                  <div id="decisionNA" style="font-weight:600; margin-top:4px;">—</div>
+                </div>
+                <div style="width:120px;">
+                  <div class="score-bar">
+                    <div id="barNA" class="score-fill" style="width:0%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Detailed Breakdown -->
+          <details style="margin-top:20px;">
+            <summary class="small muted" style="cursor:pointer;">Detailed Breakdown</summary>
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap:8px; margin-top:12px;">
+              <div class="metric-card">
+                <div class="metric-label">n_eps_surp</div>
+                <div id="n_eps_surp" style="font-size:14px; font-weight:600;">—</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">n_rev_surp</div>
+                <div id="n_rev_surp" style="font-size:14px; font-weight:600;">—</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">n_revise</div>
+                <div id="n_revise" style="font-size:14px; font-weight:600;">—</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">n_zacks</div>
+                <div id="n_zacks2" style="font-size:14px; font-weight:600;">—</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">n_rel</div>
+                <div id="n_rel" style="font-size:14px; font-weight:600;">—</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">n_ma</div>
+                <div id="n_ma" style="font-size:14px; font-weight:600;">—</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">n_brk</div>
+                <div id="n_brk" style="font-size:14px; font-weight:600;">—</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">n_vol</div>
+                <div id="n_vol" style="font-size:14px; font-weight:600;">—</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">n_beta</div>
+                <div id="n_beta" style="font-size:14px; font-weight:600;">—</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">n_si</div>
+                <div id="n_si" style="font-size:14px; font-weight:600;">—</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">n_fpe</div>
+                <div id="n_fpe" style="font-size:14px; font-weight:600;">—</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">n_peg</div>
+                <div id="n_peg" style="font-size:14px; font-weight:600;">—</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">n_ev</div>
+                <div id="n_ev2" style="font-size:14px; font-weight:600;">—</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">Raw Score</div>
+                <div id="raw2" style="font-size:14px; font-weight:600;">—</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">Guards</div>
+                <div id="guards2" style="font-size:10px; font-weight:600;">—</div>
+              </div>
+            </div>
+          </details>
+        </section>
+      </div>
+
+      <!-- Risk Management (Shared) -->
+      <section class="card" style="margin-top:20px;">
+        <div class="row" style="justify-content:space-between; margin-bottom:16px;">
+          <h2><strong>Risk Management</strong></h2>
+          <div class="risk-switch" id="riskSwitch">
+            <div class="risk-switch-indicator" id="riskIndicator"></div>
+            <button class="risk-switch-btn active" data-risk="fixed">Fixed Target</button>
+            <button class="risk-switch-btn" data-risk="trail">Trailing Stop</button>
+            <button class="risk-switch-btn" data-risk="time">Time Exit</button>
+          </div>
+        </div>
+
+        <div class="grid" style="grid-template-columns: 1fr 2fr; gap:20px;">
+          <!-- Risk Inputs -->
+          <div>
+            <div class="fieldset">
+              <div>
+                <label>Account Size ($)</label>
+                <input id="acct" type="number" class="input" placeholder="25000" />
+              </div>
+              <div>
+                <label>Risk per Trade (%)</label>
+                <input id="riskpct" type="number" step="0.01" class="input" placeholder="1" />
+              </div>
+              <div>
+                <label>Entry Price</label>
+                <input id="entryPx" type="number" step="0.01" class="input" placeholder="20.00" />
+              </div>
+              <div>
+                <label>Stop-Loss % (or leave blank)</label>
+                <input id="stopPct" type="number" step="0.01" class="input" placeholder="5" />
+              </div>
+              <div>
+                <label>Stop-Loss Price (optional)</label>
+                <input id="stopPx" type="number" step="0.01" class="input" placeholder="19.00" />
+              </div>
+              <div>
+                <label>Target % (Fixed Target)</label>
+                <input id="targetPct" type="number" step="0.01" class="input" placeholder="10" />
+              </div>
+              <div>
+                <label>Target Price (optional)</label>
+                <input id="targetPx" type="number" step="0.01" class="input" placeholder="22.00" />
+              </div>
+              <div>
+                <label>Trailing Stop %</label>
+                <input id="trailPct" type="number" step="0.01" class="input" placeholder="7" />
+              </div>
+              <div>
+                <label>Time Exit (days)</label>
+                <input id="timeDays" type="number" step="1" class="input" placeholder="15" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Risk Visual & Metrics -->
+          <div>
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:16px;">
+              <div class="metric-card">
+                <div class="metric-label">Position Size (shares)</div>
+                <div id="posShares" class="metric-value">—</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">Risk $ / Reward $</div>
+                <div id="riskReward" class="metric-value">—</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">R:R</div>
+                <div id="rratio" class="metric-value">—</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">Stops & Exits</div>
+                <div id="rulesOut" style="font-size:12px; font-weight:600;">—</div>
+              </div>
+            </div>
+            <div class="card" style="padding:16px; background:rgba(148,163,184,.05);">
+              <svg id="rrChart" viewBox="0 0 800 90" style="width:100%; height:80px;"></svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="small muted" style="margin-top:20px; text-align:center;">
+        Model A: 40%E, 25%M, 20%V, 15%R. Model B: 35%E, 35%M, 20%V, 10%R. No-Analyst: 60%M, 40%R.
+      </div>
+    </div>
+  </div>
+
+<script>
+  // Theme
+  const toggle = document.getElementById('themeToggle');
+  const body = document.body;
+  const applyTheme = (light) => { if (light) body.classList.add('light'); else body.classList.remove('light'); };
+  toggle.addEventListener('change', (e) => applyTheme(e.target.checked));
+
+  // Alerts (quiet)
+  const alertsEl = document.getElementById('alerts');
+  function showAlert(msg) {
+    const div = document.createElement('div');
+    div.className = 'alert warn';
+    div.textContent = msg;
+    alertsEl.appendChild(div);
+  }
+  if (location.protocol === 'file:') {
+    showAlert('APIs may block file:// requests. Serve over http(s) (e.g., python -m http.server).');
+  }
+
+  // Download current HTML
+  document.getElementById('downloadHtml').addEventListener('click', () => {
+    const blob = new Blob([document.documentElement.outerHTML], {type:'text/html'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'unified_financial_analyzer.html';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+  });
+
+  // Tab System
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.getAttribute('data-tab');
+      
+      // Update nav
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      // Update content
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      document.getElementById(tab).classList.add('active');
+    });
+  });
+
+  // Helpers
+  const g = (id) => document.getElementById(id);
+  const parseNum = (v) => {
+    if (v === null || v === undefined) return NaN;
+    if (typeof v === 'number') return v;
+    const s = (v+'').replace(/,/g,'').trim();
+    const n = parseFloat(s);
+    return Number.isFinite(n) ? n : NaN;
+  };
+  const num = (id) => parseNum(g(id).value);
+  const setVal = (id, v) => { g(id).value = (v ?? '') + ''; };
+  const isEmpty = (id) => (g(id).value ?? '').toString().trim() === '';
+
+  // Notes toggling + autosave
+  const NOTE_FIELDS = ['rev0','gp0','assets0','ni0','cfo0','ltd0','ca0','cl0','sh0','ebit','ebitda','tax','cash','std','cpltd','termdebt','cs','cap','re','r1','r2','r3','r4'];
+  function wireNotes(){
+    document.querySelectorAll('.note-toggle').forEach(el=>{
+      const target = el.getAttribute('data-for');
+      const box = document.getElementById(target + '_box');
+      el.addEventListener('click', ()=>{
+        box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+      });
+    });
+    // Auto-save
+    [...NOTE_FIELDS].forEach(id=>{
+      const ta = document.getElementById('note_' + id);
+      if(!ta) return;
+      const key = 'unified_note_' + id;
+      const saved = localStorage.getItem(key);
+      if(saved !== null) ta.value = saved;
+      ta.addEventListener('input', ()=> localStorage.setItem(key, ta.value));
+    });
+  }
+  wireNotes();
+
+  // Status rows
+  const FIELDS = [
+    ['rev0','Revenue (Current)'],['gp0','Gross Profit (Current)'],['assets0','Total Assets (Current)'],
+    ['ni0','Net Income (Current)'],['cfo0','CFO (Current)'],['ltd0','LT Debt (Current)'],
+    ['ca0','Current Assets (Current)'],['cl0','Current Liabilities (Current)'],['sh0','Shares (Current)'],
+    ['rev1','Revenue (Prior)'],['gp1','Gross Profit (Prior)'],['assets1','Total Assets (Prior)'],
+    ['ni1','Net Income (Prior)'],['cfo1','CFO (Prior)'],['ltd1','LT Debt (Prior)'],
+    ['ca1','Current Assets (Prior)'],['cl1','Current Liabilities (Prior)'],['sh1','Shares (Prior)'],
+    ['ebit','EBIT'],['ebitda','EBITDA'],['tax','Income Tax'],['cash','Cash & Equivalents'],
+    ['std','Short-term Debt'],['cpltd','Current Portion of LT Debt'],['termdebt','Term Debt'],
+    ['cs','Common Stock'],['cap','Capital Surplus'],['re','Retained Earnings'],
+    ['r1','Revenue Growth % (Y1)'],['r2','Revenue Growth % (Y2)'],['r3','Revenue Growth % (Y3)'],['r4','Revenue Growth % (Y4)']
+  ];
+  const status = Object.fromEntries(FIELDS.map(([id]) => [id, {source: '', value: NaN}]));
+
+  // Aux for computed fallbacks
+  const AUX = { cor0: NaN, cor1: NaN, tdebt0: NaN, tdebt1: NaN };
+  let lastAttempt = '';
+
+  function mark(id, source, value, opts={}) {
+    if (!isEmpty(id) && !opts.force) return;
+    const n = parseNum(value);
+    if (!Number.isNaN(n)) { setVal(id, n); status[id] = {source, value:n}; }
+  }
+  function ensureComputedFallbacks() {
+    // GP = Revenue - COR if needed
+    const tryGP = (gpId, revId, cor) => {
+      const gp = num(gpId), rev = num(revId);
+      if (!Number.isFinite(gp) && Number.isFinite(rev) && Number.isFinite(cor)) {
+        const val = rev - cor;
+        setVal(gpId, val);
+        status[gpId] = {source:'Computed', value: val};
+      }
+    };
+    tryGP('gp0','rev0',AUX.cor0);
+    tryGP('gp1','rev1',AUX.cor1);
+
+    // LT Debt from total debt if needed
+    const tryLTD = (ltdId, tdebt) => {
+      const ltd = num(ltdId);
+      if (!Number.isFinite(ltd) && Number.isFinite(tdebt)) {
+        setVal(ltdId, tdebt);
+        status[ltdId] = {source:'Computed (from totalDebt)', value:tdebt};
+      }
+    };
+    tryLTD('ltd0',AUX.tdebt0);
+    tryLTD('ltd1',AUX.tdebt1);
+  }
+  function finalizeStatusAfterFetch() {
+    if (!lastAttempt) return;
+    for (const [id] of FIELDS) {
+      const v = g(id).value;
+      const has = v !== '' && Number.isFinite(parseNum(v));
+      if (!has) { status[id] = {source:'manual input required', value: '—'}; }
+    }
+    renderStatus();
+  }
+  function renderStatus() {
+    const el = g('statusList');
+    el.innerHTML = '';
+    for (const [id, label] of FIELDS) {
+      const st = status[id];
+      const val = Number.isFinite(parseNum(st.value)) ? st.value : '—';
+      let pillClass = 'pill warn';
+      if (st.source === 'FMP' || st.source?.startsWith('Finnhub') || st.source === 'Computed' || st.source?.startsWith('Computed')) pillClass = 'pill ok';
+      if (st.source === 'manual input required' || st.source === 'manual input') pillClass = 'pill bad';
+      const row = document.createElement('div');
+      row.className = 'status-grid';
+      row.innerHTML = `
+        <div>${label}</div>
+        <div><span class="${pillClass}">${st.source || '—'}</span></div>
+        <div class="mono">${Number.isFinite(parseNum(val)) ? new Intl.NumberFormat('en-US', {maximumFractionDigits:2}).format(val) : '—'}</div>
+      `;
+      el.appendChild(row);
+    }
+  }
+
+  // F-Score compute
+  function fmt(x) {
+    if (x === undefined || x === null || isNaN(x)) return '—';
+    if (Math.abs(x) >= 1000) return new Intl.NumberFormat('en-US', {maximumFractionDigits:2}).format(x);
+    return (Math.abs(x) >= 1 ? x.toFixed(2) : x.toExponential(2));
+  }
+  function computeFScore(){
+    const rev0 = num('rev0'), rev1 = num('rev1');
+    const gp0 = num('gp0'), gp1 = num('gp1');
+    const assets0 = num('assets0'), assets1 = num('assets1');
+    const ni0 = num('ni0'), ni1 = num('ni1');
+    const cfo0 = num('cfo0'), cfo1 = num('cfo1');
+    const ltd0 = num('ltd0'), ltd1 = num('ltd1');
+    const ca0 = num('ca0'), ca1 = num('ca1');
+    const cl0 = num('cl0'), cl1 = num('cl1');
+    const sh0 = num('sh0'), sh1 = num('sh1');
+    const have = (x) => Number.isFinite(x);
+
+    const roa = have(assets0) ? ni0 / assets0 : NaN;
+    const roa1 = have(assets1) ? ni1 / assets1 : NaN;
+    const gm0 = have(rev0) && have(gp0) ? gp0 / rev0 : NaN;
+    const gm1 = have(rev1) && have(gp1) ? gp1 / rev1 : NaN;
+    const at0 = have(assets0) && have(rev0) ? rev0 / assets0 : NaN;
+    const at1 = have(assets1) && have(rev1) ? rev1 / assets1 : NaN;
+    const lvr0 = have(assets0) ? (have(ltd0) ? ltd0 : 0) / assets0 : NaN;
+    const lvr1 = have(assets1) ? (have(ltd1) ? ltd1 : 0) / assets1 : NaN;
+    const cr0 = have(cl0) && have(ca0) ? ca0 / cl0 : NaN;
+    const cr1 = have(cl1) && have(ca1) ? ca1 / cl1 : NaN;
+
+    const results = {
+      roa, roa1, gm0, gm1, at0, at1, lvr0, lvr1, cr0, cr1,
+      cfo0, ni0, sh0, sh1,
+      roaPos: have(roa) ? roa > 0 : null,
+      cfoPos: have(cfo0) ? cfo0 > 0 : null,
+      deltaRoa: (have(roa) && have(roa1)) ? (roa - roa1) > 0 : null,
+      accruals: (have(cfo0) && have(ni0)) ? cfo0 > ni0 : null,
+      leverageDown: (have(lvr0) && have(lvr1)) ? (lvr0 - lvr1) < 0 : null,
+      crUp: (have(cr0) && have(cr1)) ? (cr0 - cr1) > 0 : null,
+      noNewShares: (have(sh0) && have(sh1)) ? (sh0 <= sh1) : null,
+      gmUp: (have(gm0) && have(gm1)) ? (gm0 - gm1) > 0 : null,
+      atUp: (have(at0) && have(at1)) ? (at0 - at1) > 0 : null,
+    };
+    renderCriteria(results);
+  }
+  function renderCriteria(results) {
+    const list = g('criteriaList');
+    list.innerHTML = '';
+    let score = 0;
+    const rows = [
+      ['ROA > 0', results.roaPos, `ROA ${fmt(results.roa)} (NI/Assets)`],
+      ['CFO > 0', results.cfoPos, `CFO ${fmt(results.cfo0)}`],
+      ['ΔROA > 0', results.deltaRoa, `ΔROA ${fmt(results.roa - results.roa1)}`],
+      ['Accruals (CFO > NI)', results.accruals, `CFO ${fmt(results.cfo0)} vs NI ${fmt(results.ni0)}`],
+      ['Leverage down', results.leverageDown, `LT Debt/Assets ${fmt(results.lvr1)} → ${fmt(results.lvr0)} (prior → current)`],
+      ['Current ratio up', results.crUp, `CR ${fmt(results.cr1)} → ${fmt(results.cr0)} (prior → current)`],
+      ['No new shares', results.noNewShares, `Shares ${fmt(results.sh1)} → ${fmt(results.sh0)} (prior → current)`],
+      ['Gross margin up', results.gmUp, `GM ${fmt(results.gm1)} → ${fmt(results.gm0)} (prior → current)`],
+      ['Asset turnover up', results.atUp, `AT ${fmt(results.at1)} → ${fmt(results.at0)} (prior → current)`],
+    ];
+    for (const [name, ok, note] of rows) {
+      let klass = 'kpi bad';
+      let point = '0';
+      if (ok === true) { klass = 'kpi good'; point = '1'; score += 1; }
+      if (ok === null) { klass = 'kpi na'; point = '—'; }
+      const div = document.createElement('div');
+      div.className = klass;
+      div.innerHTML = `<div>${name}</div><div class="right">${point}</div><div class="small muted" style="grid-column:1 / -1">${note}</div>`;
+      list.appendChild(div);
+    }
+    document.getElementById('totalScore').textContent = score + ' / 9';
+  }
+
+  // ROIC / Debt / Margins / Growth compute
+  function pct(n){ return (isFinite(n) ? n : 0).toFixed(2) + '%'; }
+  function fix(n, d=2){ return (isFinite(n) ? n : 0).toFixed(d); }
+  function classifyGrowth(p){
+    if (p < 25) return 'Poor';
+    if (p >= 25 && p < 30) return 'Below average';
+    if (p >= 30 && p < 50) return 'Acceptable';
+    if (p >= 50 && p < 60) return 'Decent';
+    if (p >= 60 && p < 80) return 'Strong';
+    if (p >= 80 && p <= 120) return 'Excellent';
+    return (p > 120) ? 'Outlier' : '—';
+  }
+  function computeSnapshot(){
+  // EBIT Margin
+  const EBIT  = parseNum(g('ebit').value);
+  const Sales = parseNum(g('rev0').value);
+  const ebitMargin = Sales !== 0 ? (EBIT / Sales) * 100 : 0;
+  g('ebitMarginOut').textContent = pct(ebitMargin);
+
+  // Net-debt / EBITDA (unchanged)
+  const std   = parseNum(g('std').value);
+  const ltd   = parseNum(g('ltd0').value);
+  const cpltd = parseNum(g('cpltd').value);
+  const termd = parseNum(g('termdebt').value);
+  const cash  = parseNum(g('cash').value);
+  const ebitda = parseNum(g('ebitda').value);
+  const netDebt = (std||0) + (ltd||0) + (cpltd||0) + (termd||0) - (cash||0);
+  const ndRatio = ebitda !== 0 ? netDebt / ebitda : 0;
+  g('ndebtOut').textContent = fix(ndRatio, 2);
+
+  // ROIC — NOPAT with tax rate; operating invested capital
+  const taxExp = parseNum(g('tax').value);
+  // infer tax rate; clamp 0—45%
+  let taxRate = 0.21;
+  if (Number.isFinite(taxExp) && Number.isFinite(EBIT) && EBIT > 0 && taxExp >= 0) {
+    taxRate = Math.max(0, Math.min(0.45, taxExp / EBIT));
+  } else if (Number.isFinite(EBIT) && EBIT <= 0) {
+    taxRate = 0;
+  }
+  const NOPAT = (EBIT || 0) * (1 - taxRate);
+
+  
+  // Operating Invested Capital (software/asset-light friendly)
+  // Use: Invested = Total Assets − Cash − Non-interest-bearing Current Liabilities
+  // where NIBCL = Current Liabilities − Short-term Debt − CPLTD.
+  const ca = parseNum(g('ca0').value);
+  const cl = parseNum(g('cl0').value);
+  const assets = parseNum(g('assets0').value);
+
+  const operCL = Math.max(0, (cl||0) - (std||0) - (cpltd||0));
+  let invested = Math.max(0, (assets||0) - (cash||0) - operCL);
+
+  // Fallback if inputs are incomplete: equity + interest-bearing debt − cash
+  if (!Number.isFinite(invested) || invested <= 0){
+    const cs = parseNum(g('cs').value);
+    const cap = parseNum(g('cap').value);
+    const re  = parseNum(g('re').value);
+    invested = ((ltd||0) + (cpltd||0) + (termd||0) + (std||0))
+             + ((cs||0) + (cap||0) + (re||0))
+             - (cash||0);
+  }
+const roic = (Number.isFinite(invested) && Math.abs(invested) > 1e-9)
+    ? (NOPAT / invested) * 100
+    : 0;
+  g('roicOut').textContent = pct(roic);
+
+  // Growth (unchanged)
+  const r1 = parseNum(g('r1').value)/100;
+  const r2 = parseNum(g('r2').value)/100;
+  const r3 = parseNum(g('r3').value)/100;
+  const r4 = parseNum(g('r4').value)/100;
+  const cg = ((1+(r1||0))*(1+(r2||0))*(1+(r3||0))*(1+(r4||0)) - 1) * 100;
+  g('cumOut').textContent = pct(cg);
+  g('growthClass').textContent = classifyGrowth(cg);
+
+  // WACC comparison
+  const wacc = parseNum(g('wacc').value);
+  if ((g('wacc').value||'').trim().length){
+    const spread = roic - (wacc||0);
+    g('spread').textContent = spread.toFixed(2) + '%';
+    if (spread > 0.5){
+      g('valueFlag').textContent = 'Value creating';
+      g('valueFlag').className = 'chip ok';
+      g('notes').textContent = 'ROIC exceeds WACC. Positive spread.';
+    } else if (spread >= -0.5 && spread <= 0.5){
+      g('valueFlag').textContent = 'About break-even';
+      g('valueFlag').className = 'chip warn';
+      g('notes').textContent = 'ROIC roughly equals WACC.';
+    } else {
+      g('valueFlag').textContent = 'Value destroying';
+      g('valueFlag').className = 'chip bad';
+      g('notes').textContent = 'ROIC below WACC. Negative spread.';
+    }
+  } else {
+    g('spread').textContent = '—';
+    g('valueFlag').textContent = '—';
+    g('valueFlag').className = 'chip';
+    g('notes').textContent = 'Enter a WACC to see value creation or destruction.';
+  }
+}
+
+function computeVerdict(){
+  try{
+    const V = (window.V = window.V || {});
+
+    // Read current panel values
+    const scoreText = (document.getElementById('totalScore')?.textContent||'').split('/')[0].trim();
+    const spreadTxt = (document.getElementById('spread')?.textContent||'').replace('%','').trim();
+    const roicTxt   = (document.getElementById('roicOut')?.textContent||'').replace('%','').trim();
+    const cgTxt     = (document.getElementById('cumOut')?.textContent||'').replace('%','').trim();
+    const gClassTxt = (document.getElementById('growthClass')?.textContent||'—').trim();
+    const waccTxt   = (document.getElementById('wacc')?.value||'').replace('%','').trim();
+
+    const fParsed = parseFloat(scoreText);
+    const sParsed = parseFloat(spreadTxt);
+    const rParsed = parseFloat(roicTxt);
+    const gParsed = parseFloat(cgTxt);
+    const wParsed = parseFloat(waccTxt);
+
+    // Compute spread if missing or stale
+    let spreadVal = Number.isFinite(sParsed) ? sParsed : null;
+    if ((spreadVal==null || isNaN(spreadVal)) && Number.isFinite(rParsed) && Number.isFinite(wParsed)){
+      spreadVal = rParsed - wParsed;
+      const spreadEl = document.getElementById('spread');
+      if (spreadEl) spreadEl.textContent = spreadVal.toFixed(2) + '%';
+    }
+
+    // Determine growth class if blank
+    let growthClass = (gClassTxt && gClassTxt !== '—') ? gClassTxt : null;
+    if (!growthClass && Number.isFinite(gParsed)){
+      growthClass = (gParsed < 25) ? 'Poor'
+                   : (gParsed < 30) ? 'Below average'
+                   : (gParsed < 50) ? 'Acceptable'
+                   : (gParsed < 80) ? 'Strong'
+                   : (gParsed <=120) ? 'Excellent'
+                   : 'Outlier';
+      const gEl = document.getElementById('growthClass');
+      if (gEl) gEl.textContent = growthClass;
+    }
+
+    V.fscore = Number.isFinite(fParsed) ? fParsed : null;
+    V.roic   = Number.isFinite(rParsed) ? rParsed : null;
+    V.spread = Number.isFinite(spreadVal) ? spreadVal : null;
+    V.growthPct  = Number.isFinite(gParsed) ? gParsed : null;
+    V.growthClass= growthClass || '—';
+
+    // Verdict panel fields
+    const vLabel = document.getElementById('verdictLabel');
+    const vBadge = document.getElementById('verdictBadge');
+    const vEmoji = document.getElementById('verdictEmoji');
+    const vReason= document.getElementById('verdictReason');
+    const vFs = document.getElementById('vFscore');
+    const vSp = document.getElementById('vSpread');
+    const vGc = document.getElementById('vGrowthClass');
+    const vGn = document.getElementById('vGrowthNum');
+    if (vFs) vFs.textContent = (V.fscore!=null) ? (V.fscore + ' / 9') : '—';
+    if (vSp) vSp.textContent = (V.spread!=null) ? (V.spread.toFixed(2) + '%') : '—';
+    if (vGc) vGc.textContent = V.growthClass || '—';
+    if (vGn) vGn.textContent = (V.growthPct!=null) ? (V.growthPct.toFixed(2) + '%') : '—';
+
+    // If we lack core inputs, set to Hold to avoid "Avoid" wording
+    if (V.fscore==null || V.spread==null){
+      if (vLabel) vLabel.textContent = 'Hold';
+      if (vEmoji) vEmoji.textContent = '◐';
+      if (vBadge) vBadge.className = 'kpi';
+      if (vReason){
+        const miss = [
+          V.fscore==null ? 'F-Score' : null,
+          V.spread==null ? 'ROIC & WACC (to compute spread)' : null
+        ].filter(Boolean).join(', ');
+        vReason.textContent = miss ? ('Missing: ' + miss + '.') : '';
+      }
+      return;
+    }
+
+    // Normalize inputs into a composite
+    const fScoreNorm = Math.max(0, Math.min(1, (V.fscore ?? 0) / 9));
+    const spreadScore =
+      (V.spread <= -5) ? 0 :
+      (V.spread <  -.5)? 0.15 :
+      (V.spread <= .5)? 0.35 :
+      (V.spread <= 5) ? 0.60 :
+      (V.spread <=15) ? 0.80 : 1.00;
+
+    const growthScore =
+      (V.growthPct==null) ? 0.5 :
+      (V.growthPct < 25) ? 0.00 :
+      (V.growthPct < 30) ? 0.35 :
+      (V.growthPct < 50) ? 0.55 :
+      (V.growthPct < 80) ? 0.75 :
+      (V.growthPct <=120)? 0.90 : 1.00;
+
+    const composite = 0.45*spreadScore + 0.35*fScoreNorm + 0.20*growthScore;
+
+    // Map to 5 fixed labels only
+    let verdict = 'Hold';
+    let badge   = 'kpi';
+    if (composite >= 0.80){ verdict = 'Strong Buy'; badge = 'kpi good'; }
+    else if (composite >= 0.65){ verdict = 'Buy'; badge = 'kpi good'; }
+    else if (composite >= 0.45){ verdict = 'Hold'; badge = 'kpi'; }
+    else if (composite >= 0.30){ verdict = 'Sell'; badge = 'kpi bad'; }
+    else { verdict = 'Strong Sell'; badge = 'kpi bad'; }
+
+    if (vLabel) vLabel.textContent = verdict;
+    if (vBadge) vBadge.className = badge;
+    if (vEmoji) vEmoji.textContent = verdict in {'Strong Buy':1,'Buy':1} ? '✓' : (verdict in {'Hold':1} ? '◐' : '×');
+
+    // Reason line
+    const reasons = [];
+    reasons.push(`F-Score ${V.fscore}/9`);
+    reasons.push(`Spread ${V.spread.toFixed(2)}%`);
+    reasons.push(`Growth ${V.growthPct!=null ? V.growthPct.toFixed(2)+'%' : '—'}`);
+    reasons.push(`Composite ${(composite*100).toFixed(0)}/100`);
+    if (vReason) vReason.textContent = reasons.join(' • ');
+  }catch(e){
+    // fail safe
+    const vLabel = document.getElementById('verdictLabel');
+    const vBadge = document.getElementById('verdictBadge');
+    if (vLabel) vLabel.textContent = 'Hold';
+    if (vBadge) vBadge.className = 'kpi';
+  }
+}
+
+  // Compute all function
+  function computeAll() {
+    computeFScore();
+    computeSnapshot();
+    computeVerdict();
+  }
+
+  // SEC Integration
+  const SEC_BASE = `${location.origin}/api`;
+
+  const byId = (id) => document.getElementById(id);
+  function show(msg){ const box=document.getElementById('alerts'); if(box){ const d=document.createElement('div'); d.className='alert warn'; d.textContent=msg; box.appendChild(d);} else { console.log('[SEC]', msg); } }
+  
+  const TAGS = {
+    rev: ['RevenueFromContractWithCustomerExcludingAssessedTax','SalesRevenueNet','Revenues'],
+    gp:  ['GrossProfit'],
+    assets: ['Assets'],
+    ni: ['NetIncomeLoss'],
+    cfo: ['NetCashProvidedByUsedInOperatingActivities'],
+    ltd: ['LongTermDebtNoncurrent','LongTermDebtAndCapitalLeaseObligations','LongTermDebt'],
+    ca:  ['AssetsCurrent'],
+    cl:  ['LiabilitiesCurrent'],
+    sh:  ['WeightedAverageNumberOfDilutedSharesOutstanding','WeightedAverageNumberOfSharesOutstandingBasic','WeightedAverageNumberOfSharesOutstandingBasicAndDiluted','CommonStockSharesOutstanding']
+  };
+
+  // Extra tags for the "Additional" section
+  const EXTRA = {
+    ebit:   ['EarningsBeforeInterestAndTaxes','OperatingIncomeLoss'],
+    ebitda: ['EarningsBeforeInterestAndTaxesDepreciationAndAmortization','EarningsBeforeInterestDepreciationAndAmortization'],
+    tax:    ['IncomeTaxExpenseBenefit'],
+    da:     ['DepreciationAndAmortization','DepreciationDepletionAndAmortization'],
+    cash:   ['CashAndCashEquivalentsAtCarryingValue','CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents'],
+    std:    ['ShortTermBorrowings','ShortTermDebt','DebtCurrent','OtherShortTermBorrowingsCurrent','CommercialPaper','NotesPayableCurrent'],
+    cpltd:  ['LongTermDebtCurrent','LongTermDebtAndFinanceLeaseObligationsCurrent'],
+    termdebt: ['LongTermDebtNoncurrent','LongTermDebt'],
+    commonstock: ['CommonStockValue','CommonStockNoParValue','CommonStockParValue'],
+    apic:        ['AdditionalPaidInCapital','AdditionalPaidInCapitalCommonStock','PaidInCapital'],
+    retained:    ['RetainedEarningsAccumulatedDeficit','RetainedEarnings','AccumulatedDeficit']
+  };
+
+  // return latest FY value for any of the tags (prefers USD/shares/pure)
+  function latestAnnual(facts, tagList){
+    const root = facts?.facts?.['us-gaap'] || facts?.facts?.['US-GAAP'];
+    if (!root) return null;
+    const prefer = ['USD','shares','pure'];
+    for (const tag of tagList){
+      const obj = root[tag]; if (!obj?.units) continue;
+      for (const u of prefer.concat(Object.keys(obj.units))){
+        const arr = obj.units[u]; if (!Array.isArray(arr)) continue;
+        const annual = arr.filter(x => x.fp==='FY' || /10-K|20-F|40-F/i.test(x.form))
+                          .sort((a,b)=> (b.fy||0)-(a.fy||0) || new Date(b.end)-new Date(a.end));
+        if (annual.length) return annual[0].val ?? null;
+      }
+    }
+    return null;
+  }
+
+  // return up to N most recent FY revenue values (descending: latest first)
+  function revenueSeries(facts, n=5){
+    const root = facts?.facts?.['us-gaap'] || facts?.facts?.['US-GAAP'];
+    if (!root) return [];
+    const tags = ['RevenueFromContractWithCustomerExcludingAssessedTax','SalesRevenueNet','Revenues'];
+    for (const tag of tags){
+      const obj = root[tag]; if (!obj?.units?.USD) continue;
+      const annual = obj.units.USD
+        .filter(x => x.fp==='FY' || /10-K|20-F|40-F/i.test(x.form))
+        .sort((a,b)=> (b.fy||0)-(a.fy||0) || new Date(b.end)-new Date(a.end));
+      const out = [];
+      const seen = new Set();
+      for (const x of annual){
+        const key = x.fy || x.end;
+        if (!seen.has(key)) { out.push(x.val ?? null); seen.add(key); }
+        if (out.length === n) break;
+      }
+      if (out.length) return out; // latest → older
+    }
+    return [];
+  }
+
+  function pctChange(a,b){ if (b === 0 || b == null || a == null) return null; return (a/b - 1) * 100; }
+  function set(id, v){ const el = document.getElementById(id); if (el) el.value = (v ?? ''); }
+
+  function getTicker(){
+    const t = document.querySelector('#ticker, input[name*=ticker i], input[placeholder*=ticker i]');
+    return (t?.value || '').trim().toUpperCase();
+  }
+  function padCIK(n){ n=String(n||'').replace(/\D/g,''); return n.padStart(10,'0'); }
+
+  async function tickerToCIK(symbol){
+    const r = await fetch(`${SEC_BASE}/sec-tickers`);
+    if (!r.ok) return null;
+    const data = await r.json();
+    const hit = Object.values(data).find(x => (x.ticker||'').toUpperCase() === symbol.toUpperCase());
+    return hit ? padCIK(hit.cik_str) : null;
+  }
+
+  function pickTwoAnnual(series){
+    if (!Array.isArray(series)) return null;
+    const annual = series.filter(x => x.fp==='FY' || /10-K|20-F|40-F/i.test(x.form))
+                         .sort((a,b)=> (b.fy||0)-(a.fy||0) || new Date(b.end)-new Date(a.end));
+    const out=[], seen=new Set();
+    for (const x of annual){
+      const key = x.fy || x.end;
+      if (!seen.has(key)) { out.push(x); seen.add(key); }
+      if (out.length===2) break;
+    }
+    return out.length ? [out[0].val ?? null, (out[1]?.val) ?? null] : null;
+  }
+
+  function findPair(facts, tagList){
+    const root = facts?.facts?.['us-gaap'] || facts?.facts?.['US-GAAP'];
+    if (!root) return null;
+
+    for (const tag of tagList){
+      const obj = root[tag];
+      if (!obj || !obj.units) continue;
+
+      // Preferred units first
+      const pref = ['USD','shares','pure'];
+      for (const want of pref){
+        if (obj.units[want]) {
+          const p = pickTwoAnnual(obj.units[want]);
+          if (p) { return {pair:p, tag, unit:want}; }
+        }
+      }
+      // Any unit that yields annuals
+      for (const [unit, arr] of Object.entries(obj.units)){
+        const p = pickTwoAnnual(arr);
+        if (p) { return {pair:p, tag, unit}; }
+      }
+    }
+    return null;
+  }
+
+  function setVal2(id, v){ 
+    const el = byId(id); 
+    if(el) el.value = v ?? ''; 
+    status[id] = {source: 'SEC', value: v};
+    try{ 
+      if (typeof computeSnapshot==='function') computeSnapshot(); 
+      if (typeof computeVerdict==='function') computeVerdict(); 
+    }catch(e){} 
+  }
+  
+  function writePair(label, meta, ids){
+    if (!meta || !meta.pair){ return; }
+    const [aId,bId]=ids; const [a,b]=meta.pair; 
+    setVal2(aId,a); setVal2(bId,b);
+  }
+
+  async function populateSEC(){
+    const t = getTicker();
+    if (!t){ show('Enter a ticker.'); return; }
+
+    try{
+      let cik = await tickerToCIK(t);
+      
+      // Fallback for common tickers that might not be found
+      if (!cik) {
+        const knownCIKs = {
+          'PLTR': '0001321655',
+          'AAPL': '0000320193',
+          'MSFT': '0000789019',
+          'GOOG': '0001652044',
+          'GOOGL': '0001652044',
+          'TSLA': '0001318605',
+          'AMZN': '0001018724',
+          'META': '0001326801',
+          'NVDA': '0001045810'
+        };
+        
+        cik = knownCIKs[t.toUpperCase()];
+        if (cik) {
+          console.log(`Using fallback CIK for ${t}: ${cik}`);
+        }
+      }
+      
+      if (!cik){ 
+        show(`CIK not found for ${t}. Try: AAPL, MSFT, GOOG, TSLA, AMZN, META, NVDA, PLTR`); 
+        return; 
+      }
+
+      console.log(`Fetching SEC data for ${t} with CIK: ${cik}`);
+      const rf = await fetch(`${SEC_BASE}/sec-companyfacts?cik=${cik}`);
+      if (!rf.ok){ 
+        show(`SEC companyfacts ${rf.status} for CIK ${cik}`); 
+        console.error('SEC companyfacts error:', rf.status, rf.statusText);
+        return; 
+      }
+      const facts = await rf.json();
+      console.log('SEC facts received:', facts);
+
+      const rev = findPair(facts, TAGS.rev);
+      const gp  = findPair(facts, TAGS.gp);
+      const cogs= findPair(facts, ['CostOfGoodsAndServicesSold','CostOfRevenue']);
+      const assets=findPair(facts, TAGS.assets);
+      const ni   =findPair(facts, TAGS.ni);
+      const cfo  =findPair(facts, TAGS.cfo);
+      const ltd  =findPair(facts, TAGS.ltd);
+      const ca   =findPair(facts, TAGS.ca);
+      const cl   =findPair(facts, TAGS.cl);
+      const sh   =findPair(facts, TAGS.sh);
+
+      writePair('Revenue', rev, ['rev0','rev1']);
+      if (gp){ writePair('Gross Profit', gp, ['gp0','gp1']); }
+      else if (rev && cogs){ 
+        const pair=[(rev.pair[0]??0)-(cogs.pair[0]??0),(rev.pair[1]??0)-(cogs.pair[1]??0)]; 
+        setVal2('gp0',pair[0]); setVal2('gp1',pair[1]); 
+      }
+      writePair('Assets', assets, ['assets0','assets1']);
+      writePair('Net Income', ni, ['ni0','ni1']);
+      writePair('CFO', cfo, ['cfo0','cfo1']);
+      writePair('LT Debt', ltd, ['ltd0','ltd1']);
+      writePair('Current Assets', ca, ['ca0','ca1']);
+      writePair('Current Liabilities', cl, ['cl0','cl1']);
+      writePair('Shares', sh, ['sh0','sh1']);
+
+      // Additional section population
+      let EBIT = latestAnnual(facts, EXTRA.ebit);
+      if (EBIT == null) {
+        const NI  = latestAnnual(facts, ['NetIncomeLoss']);
+        const INT = latestAnnual(facts, ['InterestExpense','InterestExpenseDebt']);
+        const TAX = latestAnnual(facts, EXTRA.tax);
+        if (NI != null && (INT != null || TAX != null)) EBIT = (NI ?? 0) + (INT ?? 0) + (TAX ?? 0);
+      }
+
+      let EBITDA = latestAnnual(facts, EXTRA.ebitda);
+      if (EBITDA == null) {
+        const DA = latestAnnual(facts, EXTRA.da);
+        if (EBIT != null && DA != null) EBITDA = EBIT + DA;
+      }
+
+      const TAX = latestAnnual(facts, EXTRA.tax);
+      const CASH = latestAnnual(facts, EXTRA.cash);
+      const STD   = latestAnnual(facts, EXTRA.std);
+      const CPLTD = latestAnnual(facts, EXTRA.cpltd);
+      const TERM  = latestAnnual(facts, EXTRA.termdebt);
+      const CSTK = latestAnnual(facts, EXTRA.commonstock);
+      const APIC = latestAnnual(facts, EXTRA.apic);
+      const RETE = latestAnnual(facts, EXTRA.retained);
+
+      // Revenue growth % (last four YoY)
+      const revs = revenueSeries(facts, 5); // [Y0,Y-1,Y-2,Y-3,Y-4]
+      const g1 = revs.length>=2 ? pctChange(revs[0], revs[1]) : null;
+      const g2 = revs.length>=3 ? pctChange(revs[1], revs[2]) : null;
+      const g3 = revs.length>=4 ? pctChange(revs[2], revs[3]) : null;
+      const g4 = revs.length>=5 ? pctChange(revs[3], revs[4]) : null;
+
+      set('ebit', EBIT);
+      set('ebitda', EBITDA);
+      set('tax', TAX);
+      set('cash', CASH);
+      set('std', STD);
+      set('cpltd', CPLTD);
+      set('termdebt', TERM);
+      set('cs',  CSTK);
+      set('cap', APIC);
+      set('re',  RETE);
+      set('r1', g1?.toFixed(2));
+      set('r2', g2?.toFixed(2));
+      set('r3', g3?.toFixed(2));
+      set('r4', g4?.toFixed(2));
+
+      if (typeof ensureComputedFallbacks === 'function') ensureComputedFallbacks();
+      if (typeof finalizeStatusAfterFetch === 'function') finalizeStatusAfterFetch();
+      if (typeof computeAll === 'function') computeAll();
+      
+      show(`SEC data loaded successfully for ${t}`);
+    } catch(e){
+      show(`SEC error: ${e.message || e}`);
+      console.error('SEC populate error:', e);
+    }
+  }
+
+  // Wire SEC button
+  document.getElementById('btnSec')?.addEventListener('click', populateSEC);
+
+  // Compute button
+  document.getElementById('btnCompute')?.addEventListener('click', computeAll);
+
+  // Swing Trading Models
+  function clip(x, lo=0, hi=1){ if (isNaN(x)) return NaN; return Math.max(lo, Math.min(hi, x)); }
+  function avg(arr){ const a=arr.filter(v=>typeof v==='number'&&!isNaN(v)); return a.length? a.reduce((p,c)=>p+c,0)/a.length : NaN }
+  function snum(v){ let t=String(v??''); t=t.split(',').join(''); t=t.replace('%',''); t=t.trim(); const x=parseFloat(t); return isFinite(x)? x : NaN }
+  function sfmt(v){ return isNaN(v)? '—' : v.toFixed(2) }
+  function setBar(el, score){ const w = isNaN(score)?0:Math.max(0,Math.min(100,score)); el.style.width = `${w}%` }
+
+  const nZacksMap = {1:1.0, 2:0.8, 3:0.5, 4:0.2, 5:0.0}
+
+  // Model Switch
+  const modelSwitch = document.getElementById('modelSwitch');
+  const modelIndicator = document.getElementById('modelIndicator');
+  let currentModel = 'basic';
+
+  function setModel(model) {
+    currentModel = model;
+    document.getElementById('basic-panel').style.display = model === 'basic' ? 'grid' : 'none';
+    document.getElementById('analyst-panel').style.display = model === 'analyst' ? 'grid' : 'none';
+    
+    // Update indicator position
+    const btns = modelSwitch.querySelectorAll('button');
+    const activeBtn = modelSwitch.querySelector(`[data-model="${model}"]`);
+    const index = Array.from(btns).indexOf(activeBtn);
+    modelIndicator.style.width = `${100/btns.length}%`;
+    modelIndicator.style.transform = `translateX(${index * 100}%)`;
+    
+    // Update button states
+    btns.forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-model') === model);
+    });
+  }
+
+  modelSwitch?.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-model]');
+    if (btn) setModel(btn.getAttribute('data-model'));
+  });
+
+  // Basic Swing Model
+  const BasicSwing = {
+    compute() {
+      const z = snum(g('zacks').value);
+      const PE = snum(g('pe').value);
+      const EV = snum(g('evebitda').value);
+      const PB = snum(g('pb').value);
+      const dS = snum(g('dshares').value);
+      const epsPos = !!g('epspos').checked;
+
+      const E = nZacksMap[z] ?? NaN;
+      const M = epsPos ? 0.7 : 0.3;
+      const n_dil = clip(-(dS/100)/0.10,0,1);
+      const R = n_dil;
+      const n_pe = (epsPos && PE>0)? Math.min(15/PE,1) : (epsPos?0:NaN);
+      const n_ev = (EV>0)? Math.min(10/EV,1) : 1;
+      const n_pb = (PB>0)? Math.min(1.5/PB,1) : 1;
+      const V = epsPos ? avg([n_pe,n_ev,n_pb]) : avg([n_ev,n_pb]);
+      const raw = 100*(0.40*E + 0.25*M + 0.20*V + 0.15*R);
+      const score = raw;
+      const entryOk = (epsPos===true) && (z && z<=3);
+      
+      let decision='Pass'; 
+      if(score>=75) decision='Setup-A'; 
+      else if(score>=60) decision='Watch'; 
+      else if(score>=45) decision='Speculative';
+
+      g('scoreText').textContent = isNaN(score)? '—' : score.toFixed(1);
+      g('decisionText').textContent = decision;
+      setBar(g('scoreBar'), score);
+      
+      const entryPill = g('entryOkPill');
+      entryPill.textContent = entryOk? 'Entry OK' : 'Entry Not OK';
+      entryPill.className = 'swing-pill ' + (entryOk? 'entry-ok' : 'entry-not-ok');
+      
+      g('E').textContent = sfmt(E);
+      g('M').textContent = sfmt(M);
+      g('V').textContent = sfmt(V);
+      g('R').textContent = sfmt(R);
+      g('n_pe').textContent = sfmt(n_pe);
+      g('n_ev').textContent = sfmt(n_ev);
+      g('n_pb').textContent = sfmt(n_pb);
+      g('n_dil').textContent = sfmt(n_dil);
+      g('raw').textContent = sfmt(raw);
+      g('rule').textContent = '>=75 Setup-A, >=60 Watch, >=45 Speculative, else Pass';
+    }
+  };
+
+  // Analyst + Technical Model
+  const AnalystSwing = {
+    compute() {
+      const eps_s = snum(g('epsSurp').value);
+      const rev_s = snum(g('revSurp').value);
+      const d30 = snum(g('epsRevise').value);
+      const z2 = snum(g('zacks2').value);
+      const n_eps_surp = clip((eps_s + 2)/10,0,1);
+      const n_rev_surp = clip((rev_s + 1)/6,0,1);
+      const n_revise = clip((d30 + 2)/8,0,1);
+      const n_zacks = nZacksMap[z2] ?? NaN;
+      const E = 0.35*n_eps_surp + 0.20*n_rev_surp + 0.25*n_revise + 0.20*n_zacks;
+      
+      const rel = snum(g('rel6w').value);
+      const n_rel = clip((rel + 5)/15,0,1);
+      const maFlags = [g('dma20').checked?1:0, g('dma50').checked?1:0, g('dma200').checked?1:0];
+      const n_ma = avg(maFlags);
+      const brk = snum(g('brk').value);
+      const n_brk = clip(brk/8,0,1);
+      const M = 0.5*n_rel + 0.3*n_ma + 0.2*n_brk;
+      
+      const vol = snum(g('avgVol').value);
+      const beta = snum(g('beta').value);
+      const si = snum(g('si').value);
+      const n_vol = clip((vol - 0.8)/1.2,0,1);
+      const n_beta = 1 - clip(Math.abs((beta??NaN) - 1.4)/0.8,0,1);
+      const n_si = clip(si/20,0,1);
+      const R = 0.5*n_vol + 0.3*n_beta + 0.2*n_si;
+      
+      const fpe = snum(g('fpe').value);
+      const pe5 = snum(g('pe5').value);
+      const peg = snum(g('peg').value);
+      const ev = snum(g('ev2').value);
+      const kev = snum(g('kev').value);
+      const n_fpe = (fpe>0 && pe5>0)? Math.min(pe5/fpe,1) : NaN;
+      const n_peg = (peg>0)? Math.min(1/peg,1) : NaN;
+      const n_ev = (ev>0 && kev>0)? Math.min(kev/ev,1) : NaN;
+      const V = 0.4*n_fpe + 0.4*n_peg + 0.2*n_ev;
+      
+      let raw = 100*(0.35*E + 0.35*M + 0.20*V + 0.10*R);
+      let guards = [];
+      if (g('earn5').checked){ raw *= 0.8; guards.push('×0.8 earnings<5d'); }
+      if (!isNaN(vol) && vol < 0.5){ raw *= 0.7; guards.push('×0.7 vol<0.5m'); }
+      const score = raw;
+      const entryOk = (n_ma>=0.67) && (n_rel>=0.5);
+      
+      let decision='Pass'; 
+      if(score>=75) decision='Setup-A'; 
+      else if(score>=60) decision='Watch'; 
+      else if(score>=45) decision='Speculative';
+
+      const scoreNA = 100*(0.6*M + 0.4*R);
+      let decisionNA='Pass'; 
+      if(scoreNA>=75) decisionNA='Setup-A'; 
+      else if(scoreNA>=60) decisionNA='Watch'; 
+      else if(scoreNA>=45) decisionNA='Speculative';
+
+      g('score2').textContent = isNaN(score)? '—' : score.toFixed(1);
+      g('decision2').textContent = decision;
+      setBar(g('bar2'), score);
+      
+      const entryPill2 = g('entry2');
+      entryPill2.textContent = entryOk? 'Entry OK' : 'Entry Not OK';
+      entryPill2.className = 'swing-pill ' + (entryOk? 'entry-ok' : 'entry-not-ok');
+      
+      g('E2').textContent = sfmt(E);
+      g('M2').textContent = sfmt(M);
+      g('V2').textContent = sfmt(V);
+      g('R2').textContent = sfmt(R);
+      
+      g('n_eps_surp').textContent = sfmt(n_eps_surp);
+      g('n_rev_surp').textContent = sfmt(n_rev_surp);
+      g('n_revise').textContent = sfmt(n_revise);
+      g('n_zacks2').textContent = sfmt(n_zacks);
+      g('n_rel').textContent = sfmt(n_rel);
+      g('n_ma').textContent = sfmt(n_ma);
+      g('n_brk').textContent = sfmt(n_brk);
+      g('n_vol').textContent = sfmt(n_vol);
+      g('n_beta').textContent = sfmt(n_beta);
+      g('n_si').textContent = sfmt(n_si);
+      g('n_fpe').textContent = sfmt(n_fpe);
+      g('n_peg').textContent = sfmt(n_peg);
+      g('n_ev2').textContent = sfmt(n_ev);
+      g('raw2').textContent = sfmt(score);
+      g('guards2').textContent = guards.length? guards.join(' · ') : '—';
+      
+      g('scoreNA').textContent = isNaN(scoreNA)? '—' : scoreNA.toFixed(1);
+      g('decisionNA').textContent = decisionNA;
+      setBar(g('barNA'), scoreNA);
+    }
+  };
+
+  // Risk Management
+  const riskState = { mode:'fixed' };
+  const riskSwitch = document.getElementById('riskSwitch');
+  const riskIndicator = document.getElementById('riskIndicator');
+
+  function setRiskMode(mode) {
+    riskState.mode = mode;
+    const btns = riskSwitch.querySelectorAll('button');
+    const activeBtn = riskSwitch.querySelector(`[data-risk="${mode}"]`);
+    const index = Array.from(btns).indexOf(activeBtn);
+    riskIndicator.style.width = `${100/btns.length}%`;
+    riskIndicator.style.transform = `translateX(${index * 100}%)`;
+    
+    btns.forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-risk') === mode);
+    });
+    computeRisk();
+  }
+
+  riskSwitch?.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-risk]');
+    if (btn) setRiskMode(btn.getAttribute('data-risk'));
+  });
+
+  function computeRisk(){
+    const acct=snum(g('acct').value), rPct=snum(g('riskpct').value), entry=snum(g('entryPx').value);
+    let stopP=snum(g('stopPx').value), stopPc=snum(g('stopPct').value);
+    let tgtP=snum(g('targetPx').value), tgtPc=snum(g('targetPct').value); 
+    const trail=snum(g('trailPct').value); const tDays=snum(g('timeDays').value);
+    
+    if(!isNaN(stopPc) && isNaN(stopP) && !isNaN(entry)) stopP=entry*(1 - stopPc/100);
+    if(!isNaN(tgtPc) && isNaN(tgtP) && !isNaN(entry)) tgtP=entry*(1 + tgtPc/100);
+    
+    const rps = (!isNaN(entry) && !isNaN(stopP)) ? (entry - stopP) : NaN;
+    const risk$ = (!isNaN(acct) && !isNaN(rPct)) ? acct*(rPct/100) : NaN;
+    const shares = (!isNaN(risk$) && rps>0) ? Math.floor(risk$/rps) : NaN;
+    const rwdps = (!isNaN(tgtP) && !isNaN(entry)) ? (tgtP - entry) : NaN;
+    const rwd$ = (!isNaN(shares) && !isNaN(rwdps)) ? shares*rwdps : NaN;
+    const rr = (!isNaN(rps) && rps>0 && !isNaN(rwdps)) ? (rwdps/rps) : NaN;
+    
+    g('posShares').textContent = isNaN(shares)? '—' : shares.toLocaleString();
+    g('riskReward').textContent = (!isNaN(risk$)||!isNaN(rwd$)) ? `${isNaN(risk$)?'—':risk$.toFixed(2)} / ${isNaN(rwd$)?'—':rwd$.toFixed(2)}` : '—';
+    g('rratio').textContent = isNaN(rr)? '—' : rr.toFixed(2)+'R';
+
+    const rules = [];
+    if(riskState.mode==='fixed') rules.push(`Target ${isNaN(tgtP)?'—':tgtP.toFixed(2)}, Stop ${isNaN(stopP)?'—':stopP.toFixed(2)}`);
+    if(riskState.mode==='trail') rules.push(`Trailing stop ${isNaN(trail)?'—':trail+'%'} from peak`);
+    if(riskState.mode==='time') rules.push(`Exit after ${isNaN(tDays)?'—':tDays} days or at 1R`);
+    g('rulesOut').textContent = rules.join(' · ');
+
+    drawRR(entry, stopP, tgtP);
+  }
+
+  function drawRR(entry, stopP, tgtP){
+    const svg = g('rrChart'); 
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+    if(isNaN(entry) || isNaN(stopP)){ return; }
+    
+    const margin=40, W=800, H=90; 
+    const min = Math.min(stopP, entry, (isNaN(tgtP)? entry : tgtP)); 
+    const max = Math.max(stopP, entry, (isNaN(tgtP)? entry*1.02 : tgtP));
+    const pad = (max-min)*0.08 || 1; 
+    const lo=min-pad, hi=max+pad; 
+    const scale = p=> margin + ( (p-lo)/(hi-lo) )*(W-2*margin);
+    
+    // axis
+    const axis=document.createElementNS('http://www.w3.org/2000/svg','line'); 
+    axis.setAttribute('x1',scale(lo)); axis.setAttribute('x2',scale(hi)); 
+    axis.setAttribute('y1',45); axis.setAttribute('y2',45); 
+    axis.setAttribute('stroke','#9ca3af'); axis.setAttribute('stroke-width','2'); 
+    svg.appendChild(axis);
+    
+    // zones
+    const stopX=scale(stopP), entryX=scale(entry), tgtX=isNaN(tgtP)? null : scale(tgtP);
+    const rectR=document.createElementNS('http://www.w3.org/2000/svg','rect'); 
+    rectR.setAttribute('x',Math.min(stopX,entryX)); rectR.setAttribute('y',30); 
+    rectR.setAttribute('width',Math.abs(entryX-stopX)); rectR.setAttribute('height',30); 
+    rectR.setAttribute('fill','#fecaca'); svg.appendChild(rectR);
+    
+    if(tgtX){ 
+      const rectG=document.createElementNS('http://www.w3.org/2000/svg','rect'); 
+      rectG.setAttribute('x',Math.min(entryX,tgtX)); rectG.setAttribute('y',30); 
+      rectG.setAttribute('width',Math.abs(tgtX-entryX)); rectG.setAttribute('height',30); 
+      rectG.setAttribute('fill','#bbf7d0'); svg.appendChild(rectG); 
+    }
+    
+    // markers
+    function vline(x, color, label){
+      const l=document.createElementNS('http://www.w3.org/2000/svg','line'); 
+      l.setAttribute('x1',x); l.setAttribute('x2',x); l.setAttribute('y1',20); l.setAttribute('y2',70); 
+      l.setAttribute('stroke',color); l.setAttribute('stroke-width','2'); svg.appendChild(l);
+      const t=document.createElementNS('http://www.w3.org/2000/svg','text'); 
+      t.setAttribute('x',x); t.setAttribute('y',15); t.setAttribute('text-anchor','middle'); 
+      t.setAttribute('font-size','10'); t.textContent=label; svg.appendChild(t);
+    }
+    vline(stopX,'#ef4444',`Stop ${stopP.toFixed(2)}`); 
+    vline(entryX,'#6b7280',`Entry ${entry.toFixed(2)}`); 
+    if(tgtX){ vline(tgtX,'#16a34a',`Target ${tgtP.toFixed(2)}`); }
+  }
+
+  // Event Listeners for Swing Trading
+  const basicInputs = ['swing_ticker','zacks','pe','evebitda','pb','dshares','epspos'];
+  const analystInputs = ['swing_ticker2','epsSurp','revSurp','epsRevise','zacks2','rel6w','dma20','dma50','dma200','brk','avgVol','beta','si','fpe','pe5','peg','ev2','kev','earn5'];
+  const riskInputs = ['acct','riskpct','entryPx','stopPct','stopPx','targetPct','targetPx','trailPct','timeDays'];
+
+  function wireSwingEvents() {
+    basicInputs.forEach(id => {
+      const el = g(id);
+      if (el) {
+        ['input','change'].forEach(evt => 
+          el.addEventListener(evt, () => BasicSwing.compute())
+        );
+      }
+    });
+
+    analystInputs.forEach(id => {
+      const el = g(id);
+      if (el) {
+        ['input','change'].forEach(evt => 
+          el.addEventListener(evt, () => AnalystSwing.compute())
+        );
+      }
+    });
+
+    riskInputs.forEach(id => {
+      const el = g(id);
+      if (el) {
+        ['input','change'].forEach(evt => 
+          el.addEventListener(evt, computeRisk)
+        );
+      }
+    });
+  }
+
+  // Demo Functions
+  document.getElementById('demoA')?.addEventListener('click',()=>{
+    g('swing_ticker').value='PLTR'; 
+    g('zacks').value='2'; 
+    g('pe').value='62'; 
+    g('evebitda').value='39'; 
+    g('pb').value='14'; 
+    g('dshares').value='-3.5'; 
+    g('epspos').checked=true; 
+    BasicSwing.compute();
+    
+    g('acct').value='25000'; 
+    g('riskpct').value='1'; 
+    g('entryPx').value='20'; 
+    g('stopPct').value='5'; 
+    g('targetPct').value='12'; 
+    computeRisk();
+  });
+
+  document.getElementById('demoB')?.addEventListener('click',()=>{
+    g('swing_ticker2').value='PLTR'; 
+    g('epsSurp').value='6.5'; 
+    g('revSurp').value='2.1'; 
+    g('epsRevise').value='1.0'; 
+    g('zacks2').value='2'; 
+    g('rel6w').value='4.2'; 
+    g('dma20').checked=true; 
+    g('dma50').checked=true; 
+    g('dma200').checked=false; 
+    g('brk').value='2.5'; 
+    g('avgVol').value='1.8'; 
+    g('beta').value='1.3'; 
+    g('si').value='4.5'; 
+    g('fpe').value='45'; 
+    g('pe5').value='40'; 
+    g('peg').value='2.1'; 
+    g('ev2').value='32'; 
+    g('kev').value='25'; 
+    g('earn5').checked=false; 
+    AnalystSwing.compute();
+    
+    g('acct').value='25000'; 
+    g('riskpct').value='1'; 
+    g('entryPx').value='30'; 
+    g('stopPx').value='27.6'; 
+    g('targetPx').value='34.5'; 
+    computeRisk();
+    
+    setModel('analyst');
+  });
+
+  document.getElementById('resetBtn')?.addEventListener('click', () => location.reload());
+
+  // Initialize everything
+  function initializeApp() {
+    wireSwingEvents();
+    setModel('basic');
+    setRiskMode('fixed');
+    BasicSwing.compute();
+    AnalystSwing.compute();
+    computeRisk();
+    computeAll();
+    renderStatus();
+    
+    // Test SEC endpoints on startup
+    testSECEndpoints().then(results => {
+      if (!results.tickers || !results.companyfacts) {
+        show('Warning: SEC API endpoints may not be properly configured. Some features may not work.');
+        console.log('SEC endpoint test results:', results);
+      } else {
+        console.log('SEC endpoints are working properly');
+      }
+    });
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeApp);
+  } else {
+    initializeApp();
+  }
+
+  // Live updates for stock evaluation
+  ['ebit','rev0','std','ltd0','cpltd','termdebt','cash','ebitda','tax','cs','cap','re','ca0','cl0','assets0','r1','r2','r3','r4','wacc']
+    .forEach(function(id){
+      var el = document.getElementById(id);
+      if (el) el.addEventListener('input', () => {
+        computeSnapshot();
+        computeVerdict();
+      });
+    });
+
+  // Debug toggle
+  g('debugToggle')?.addEventListener('change', (e) => {
+    const debugCard = document.querySelector('#fmpDebugCard, #dbg');
+    if (debugCard) debugCard.style.display = e.target.checked ? 'block' : 'none';
+  });
+
+  // API key toggles
+  g('toggleFinnhubKey')?.addEventListener('click', () => {
+    const input = g('finnhubKey');
+    input.type = input.type === 'password' ? 'text' : 'password';
+  });
+
+  g('toggleFmpKey')?.addEventListener('click', () => {
+    const input = g('fmpKey');
+    input.type = input.type === 'password' ? 'text' : 'password';
+  });
+
+</script>
+
+<!-- Debug drawer (Alt+D) -->
+<details id="dbg" style="display:none;margin:12px 0;">
+  <summary>Debug</summary>
+  <div id="dbg-body" style="padding:8px;border:1px dashed rgba(245,158,11,.6);border-radius:8px;">
+    <div style="display:flex;gap:8px;margin-bottom:8px;">
+      <button id="dbg-copy" type="button">Copy log</button>
+      <button id="dbg-clear" type="button">Clear</button>
+    </div>
+    <div id="dbg-live" style="font-family:ui-monospace,monospace;font-size:12px;white-space:pre-wrap;"></div>
+    <table id="dbg-net" style="width:100%;margin-top:8px;font-size:12px;border-collapse:collapse;">
+      <thead>
+        <tr><th align="left">When</th><th align="left">Label</th><th align="left">Status</th><th align="left">ms</th><th align="left">Bytes</th><th align="left">URL</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</details>
+
+</body>
+</html>
