@@ -2316,6 +2316,7 @@ function computeVerdict(){
       if (typeof ensureComputedFallbacks === 'function') ensureComputedFallbacks();
       if (typeof finalizeStatusAfterFetch === 'function') finalizeStatusAfterFetch();
       if (typeof computeAll === 'function') computeAll();
+      try { if (typeof computeFactorComposite === 'function') computeFactorComposite(); } catch(e) { console.warn('FactorComposite compute after SEC load failed', e); }
       
       show(`SEC data loaded successfully for ${t}`);
     } catch(e){
