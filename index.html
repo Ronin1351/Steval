@@ -2150,6 +2150,57 @@ function computeVerdict(){
   }
 
   async function populateSEC(){
+  //=== Patch: augment Factor Composite inputs from SEC + quote ===
+  async function __ufa_fetchLastPrice(sym){
+    try{
+      const fkEl = document.getElementById('finnhubKey');
+      const mkEl = document.getElementById('fmpKey');
+      const fk = fkEl && fkEl.value ? fkEl.value.trim() : '';
+      const mk = mkEl && mkEl.value ? mkEl.value.trim() : '';
+      if(fk){
+        try{
+          const r = await fetch(`https://finnhub.io/api/v1/quote?symbol=${sym}&token=${fk}`);
+          if(r.ok){ const q = await r.json(); if(q && typeof q.c === 'number' && isFinite(q.c)) return q.c; }
+        }catch(e){}
+      }
+      if(mk){
+        try{
+          const r = await fetch(`https://financialmodelingprep.com/api/v3/quote-short/${sym}?apikey=${mk}`);
+          if(r.ok){ const a = await r.json(); if(Array.isArray(a) && a[0] && isFinite(Number(a[0].price))) return Number(a[0].price); }
+        }catch(e){}
+      }
+      return NaN;
+    }catch(e){ return NaN; }
+  }
+  try{
+    // shares outstanding from SEC (current or prior)
+    const sh0El = document.getElementById('sh0');
+    const sh1El = document.getElementById('sh1');
+    const SH = isFinite(Number(sh0El?.value)) ? Number(sh0El.value) : Number(sh1El?.value);
+    // ticker should be available in the same scope; if not, try from input
+    const symEl = document.getElementById('ticker');
+    const __sym = (typeof t !== 'undefined' && t) ? t : (symEl ? symEl.value.trim().toUpperCase() : '');
+    const __px = await __ufa_fetchLastPrice(__sym);
+    if(isFinite(__px) && isFinite(SH)) { window._mcap = __px * SH; }
+    // Interest expense from SEC facts if present
+    if (typeof facts !== 'undefined') {
+      const paths = ['InterestExpense','InterestExpenseDebt','InterestExpenseOperating'];
+      let val = NaN;
+      for(const p of paths){
+        try{
+          const f = facts?.[p]?.annual || facts?.[p];
+          if(f && typeof f === 'object'){
+            // pick latest numeric
+            const vs = Object.values(f).map(Number).filter(x=>isFinite(x));
+            if(vs.length){ val = vs[0]; break; }
+          }
+        }catch(e){}
+      }
+      if(isFinite(val)) window._interestExp = val;
+    }
+  }catch(e){ /* non-fatal */ }
+  //=== End Patch ===
+
     const t = getTicker();
     if (!t){ show('Enter a ticker.'); return; }
 
@@ -2768,7 +2819,7 @@ function unifiedInputs(){
 function computeFactorComposite(){
   const U = unifiedInputs();
   // Derived basics
-  const marketCap = NaN; // optional, not in this UI; leave NaN so FCF yield will be '—' unless user adds later
+  const marketCap = (Number.isFinite(window._mcap) ? window._mcap : NaN); // optional, not in this UI; leave NaN so FCF yield will be '—' unless user adds later
   const equity = (isFinite(U.cap) ? U.cap : 0) + (isFinite(U.re) ? U.re : 0);
   const bookEquity = isFinite(equity) ? equity : NaN;
   const debt = (isFinite(U.ltd0)?U.ltd0:0) + (isFinite(U.std)?U.std:0) + (isFinite(U.cpltd)?U.cpltd:0) + (isFinite(U.termdebt)?U.termdebt:0);
