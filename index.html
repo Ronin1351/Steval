@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Unified Financial Analyzer — F-Score + ROIC/Growth + Swing Trade Quality</title>
 <style>
   :root {
@@ -328,12 +326,12 @@
       <button id="downloadHtml" class="btn small">Download (.html)</button>
       <label class="row small muted" style="gap:8px;">
         <span>Light</span>
-        <input id="themeToggle" type="checkbox" />
+        <input id="themeToggle" type="checkbox">
         <span class="pill">Theme</span>
       </label>
       <label class="row small muted" style="gap:8px;">
         <span>Debug</span>
-        <input id="debugToggle" type="checkbox" />
+        <input id="debugToggle" type="checkbox">
         <span class="pill">Show</span>
       </label>
     </div>
@@ -350,7 +348,7 @@
 
     <!-- Stock Evaluation Tab -->
     <div id="stock-evaluation" class="tab-content active">
-     <details class="card" id="helpCard" open>
+     <details class="card" id="helpCard" open="">
   <summary><strong>Help</strong> <span class="small muted">How to use, meanings, and where to find each input</span></summary>
 
   <div class="grid" style="grid-template-columns: 1fr; gap:14px; margin-top:10px;">
@@ -529,7 +527,7 @@
           </ul>
         </li>
 
-        <li><b>Cash & Equivalents, Short-term Debt, CPLTD, Term Debt</b>
+        <li><b>Cash &amp; Equivalents, Short-term Debt, CPLTD, Term Debt</b>
           <ul class="small muted" style="margin-left:18px">
             <li>Zacks → “Financials” → Balance Sheet.</li>
             <li>Alt: SEC filings; APIs.</li>
@@ -623,7 +621,7 @@
             <span class="popover">Enter a 1—5 letter ticker symbol (e.g., AAPL, MSFT, GOOG). Uppercase A—Z.</span>
           </span>
         </div>
-        <input id="ticker" class="input round mono" maxlength="5" placeholder="e.g., AAPL" pattern="[A-Z]{1,5}" />
+        <input id="ticker" class="input round mono" maxlength="5" placeholder="e.g., AAPL" pattern="[A-Z]{1,5}">
 
         <div style="height:12px"></div>
         <div class="row"><span class="tag">Data Sources</span></div>
@@ -634,7 +632,7 @@
               <a class="small" href="https://finnhub.io" target="_blank" rel="noopener">Get key</a>
             </div>
             <label class="small muted" for="finnhubKey">API Key</label>
-            <div class="row" style="gap:8px;"><input id="finnhubKey" type="password" class="input mono" placeholder="FINNHUB_API_KEY" /><button class="btn small" id="toggleFinnhubKey" title="Show/Hide">👁</button></div>
+            <div class="row" style="gap:8px;"><input id="finnhubKey" type="password" class="input mono" placeholder="FINNHUB_API_KEY"><button class="btn small" id="toggleFinnhubKey" title="Show/Hide">👁</button></div>
             <div style="height:8px"></div>
             <button class="btn" id="btnFinnhub">Fetch via Finnhub</button>
             <p class="small muted">Primary: financials-reported; Optional: metric for shares.</p>
@@ -646,7 +644,7 @@
               <a class="small" href="https://site.financialmodelingprep.com/developer" target="_blank" rel="noopener">Get key</a>
             </div>
             <label class="small muted" for="fmpKey">API Key</label>
-            <div class="row" style="gap:8px;"><input id="fmpKey" type="password" class="input mono" placeholder="FMP_API_KEY" /><button class="btn small" id="toggleFmpKey" title="Show/Hide">👁</button></div>
+            <div class="row" style="gap:8px;"><input id="fmpKey" type="password" class="input mono" placeholder="FMP_API_KEY"><button class="btn small" id="toggleFmpKey" title="Show/Hide">👁</button></div>
             <div style="height:8px"></div>
             <button class="btn" id="btnFmp">Fetch via FMP</button>
             <p class="small muted">Quiet build: marks missing as manual.</p>
@@ -658,200 +656,200 @@
         <div style="height:12px"></div>
 
         <!-- Unified Inputs -->
-        <details open class="card">
+        <details open="" class="card">
           <summary><strong>Unified Inputs</strong> <span class="small muted">(auto-fill or manual; reused across all metrics)</span></summary>
           <div class="fieldset"><div class="uni-grid">
       <div class="uni-row">
         <label>Revenue / Sales</label>
         <div class="note-wrap">
-          <input id="rev0" class="input mono" placeholder="current year" />
+          <input id="rev0" class="input mono" placeholder="current year">
           <span class="note-toggle" data-for="note_rev0">note</span>
           <div class="note-box" id="note_rev0_box"><div class="note-head">Revenue / Sales note</div><textarea id="note_rev0"></textarea></div>
         </div>
         <div>
-          <input id="rev1" class="input mono" placeholder="last year" />
+          <input id="rev1" class="input mono" placeholder="last year">
         </div>
       </div>
 
       <div class="uni-row">
         <label>Gross Profit</label>
         <div class="note-wrap">
-          <input id="gp0" class="input mono" placeholder="current year" />
+          <input id="gp0" class="input mono" placeholder="current year">
           <span class="note-toggle" data-for="note_gp0">note</span>
           <div class="note-box" id="note_gp0_box"><div class="note-head">Gross Profit note</div><textarea id="note_gp0"></textarea></div>
         </div>
         <div>
-          <input id="gp1" class="input mono" placeholder="last year" />
+          <input id="gp1" class="input mono" placeholder="last year">
         </div>
       </div>
 
       <div class="uni-row">
         <label>Total Assets</label>
         <div class="note-wrap">
-          <input id="assets0" class="input mono" placeholder="current year" />
+          <input id="assets0" class="input mono" placeholder="current year">
           <span class="note-toggle" data-for="note_assets0">note</span>
           <div class="note-box" id="note_assets0_box"><div class="note-head">Total Assets note</div><textarea id="note_assets0"></textarea></div>
         </div>
         <div>
-          <input id="assets1" class="input mono" placeholder="last year" />
+          <input id="assets1" class="input mono" placeholder="last year">
         </div>
       </div>
 
       <div class="uni-row">
         <label>Net Income</label>
         <div class="note-wrap">
-          <input id="ni0" class="input mono" placeholder="current year" />
+          <input id="ni0" class="input mono" placeholder="current year">
           <span class="note-toggle" data-for="note_ni0">note</span>
           <div class="note-box" id="note_ni0_box"><div class="note-head">Net Income note</div><textarea id="note_ni0"></textarea></div>
         </div>
         <div>
-          <input id="ni1" class="input mono" placeholder="last year" />
+          <input id="ni1" class="input mono" placeholder="last year">
         </div>
       </div>
 
       <div class="uni-row">
         <label>Operating Cash Flow (CFO)</label>
         <div class="note-wrap">
-          <input id="cfo0" class="input mono" placeholder="current year" />
+          <input id="cfo0" class="input mono" placeholder="current year">
           <span class="note-toggle" data-for="note_cfo0">note</span>
           <div class="note-box" id="note_cfo0_box"><div class="note-head">Operating Cash Flow (CFO) note</div><textarea id="note_cfo0"></textarea></div>
         </div>
         <div>
-          <input id="cfo1" class="input mono" placeholder="last year" />
+          <input id="cfo1" class="input mono" placeholder="last year">
         </div>
       </div>
 
       <div class="uni-row">
         <label>Long-term Debt</label>
         <div class="note-wrap">
-          <input id="ltd0" class="input mono" placeholder="current year" />
+          <input id="ltd0" class="input mono" placeholder="current year">
           <span class="note-toggle" data-for="note_ltd0">note</span>
           <div class="note-box" id="note_ltd0_box"><div class="note-head">Long-term Debt note</div><textarea id="note_ltd0"></textarea></div>
         </div>
         <div>
-          <input id="ltd1" class="input mono" placeholder="last year" />
+          <input id="ltd1" class="input mono" placeholder="last year">
         </div>
       </div>
 
       <div class="uni-row">
         <label>Current Assets</label>
         <div class="note-wrap">
-          <input id="ca0" class="input mono" placeholder="current year" />
+          <input id="ca0" class="input mono" placeholder="current year">
           <span class="note-toggle" data-for="note_ca0">note</span>
           <div class="note-box" id="note_ca0_box"><div class="note-head">Current Assets note</div><textarea id="note_ca0"></textarea></div>
         </div>
         <div>
-          <input id="ca1" class="input mono" placeholder="last year" />
+          <input id="ca1" class="input mono" placeholder="last year">
         </div>
       </div>
 
       <div class="uni-row">
         <label>Current Liabilities</label>
         <div class="note-wrap">
-          <input id="cl0" class="input mono" placeholder="current year" />
+          <input id="cl0" class="input mono" placeholder="current year">
           <span class="note-toggle" data-for="note_cl0">note</span>
           <div class="note-box" id="note_cl0_box"><div class="note-head">Current Liabilities note</div><textarea id="note_cl0"></textarea></div>
         </div>
         <div>
-          <input id="cl1" class="input mono" placeholder="last year" />
+          <input id="cl1" class="input mono" placeholder="last year">
         </div>
       </div>
 
       <div class="uni-row">
         <label>Shares Outstanding (weighted avg)</label>
         <div class="note-wrap">
-          <input id="sh0" class="input mono" placeholder="current year" />
+          <input id="sh0" class="input mono" placeholder="current year">
           <span class="note-toggle" data-for="note_sh0">note</span>
           <div class="note-box" id="note_sh0_box"><div class="note-head">Shares Outstanding (weighted avg) note</div><textarea id="note_sh0"></textarea></div>
         </div>
         <div>
-          <input id="sh1" class="input mono" placeholder="last year" />
+          <input id="sh1" class="input mono" placeholder="last year">
         </div>
       </div>
   </div>
   <div class="full"><h4>Additional (for ROIC / Debt / Margins / Growth)</h4></div>
             <div class="note-wrap">
               <label>EBIT</label>
-              <input id="ebit" class="input mono" placeholder="e.g., 1254" />
+              <input id="ebit" class="input mono" placeholder="e.g., 1254">
               <span class="note-toggle" data-for="note_ebit">note</span>
               <div class="note-box" id="note_ebit_box"><div class="note-head">EBIT note</div><textarea id="note_ebit"></textarea></div>
             </div>
             <div class="note-wrap">
               <label>EBITDA</label>
-              <input id="ebitda" class="input mono" placeholder="e.g., 1571" />
+              <input id="ebitda" class="input mono" placeholder="e.g., 1571">
               <span class="note-toggle" data-for="note_ebitda">note</span>
               <div class="note-box" id="note_ebitda_box"><div class="note-head">EBITDA note</div><textarea id="note_ebitda"></textarea></div>
             </div>
             <div class="note-wrap">
               <label>Income Tax</label>
-              <input id="tax" class="input mono" placeholder="e.g., 152" />
+              <input id="tax" class="input mono" placeholder="e.g., 152">
               <span class="note-toggle" data-for="note_tax">note</span>
               <div class="note-box" id="note_tax_box"><div class="note-head">Income Tax note</div><textarea id="note_tax"></textarea></div>
             </div>
             <div class="note-wrap">
-              <label>Cash & Equivalents</label>
-              <input id="cash" class="input mono" placeholder="e.g., 471" />
+              <label>Cash &amp; Equivalents</label>
+              <input id="cash" class="input mono" placeholder="e.g., 471">
               <span class="note-toggle" data-for="note_cash">note</span>
-              <div class="note-box" id="note_cash_box"><div class="note-head">Cash & Equivalents note</div><textarea id="note_cash"></textarea></div>
+              <div class="note-box" id="note_cash_box"><div class="note-head">Cash &amp; Equivalents note</div><textarea id="note_cash"></textarea></div>
             </div>
             <div class="note-wrap">
               <label>Short-term Debt</label>
-              <input id="std" class="input mono" placeholder="e.g., 0" />
+              <input id="std" class="input mono" placeholder="e.g., 0">
               <span class="note-toggle" data-for="note_std">note</span>
               <div class="note-box" id="note_std_box"><div class="note-head">Short-term Debt note</div><textarea id="note_std"></textarea></div>
             </div>
             <div class="note-wrap">
               <label>Current Portion of LT Debt</label>
-              <input id="cpltd" class="input mono" placeholder="e.g., 307" />
+              <input id="cpltd" class="input mono" placeholder="e.g., 307">
               <span class="note-toggle" data-for="note_cpltd">note</span>
               <div class="note-box" id="note_cpltd_box"><div class="note-head">CPLTD note</div><textarea id="note_cpltd"></textarea></div>
             </div>
             <div class="note-wrap">
               <label>Term Debt</label>
-              <input id="termdebt" class="input mono" placeholder="e.g., 0" />
+              <input id="termdebt" class="input mono" placeholder="e.g., 0">
               <span class="note-toggle" data-for="note_termdebt">note</span>
               <div class="note-box" id="note_termdebt_box"><div class="note-head">Term Debt note</div><textarea id="note_termdebt"></textarea></div>
             </div>
             <div class="note-wrap">
               <label>Common Stock</label>
-              <input id="cs" class="input mono" placeholder="e.g., 181" />
+              <input id="cs" class="input mono" placeholder="e.g., 181">
               <span class="note-toggle" data-for="note_cs">note</span>
               <div class="note-box" id="note_cs_box"><div class="note-head">Common Stock note</div><textarea id="note_cs"></textarea></div>
             </div>
             <div class="note-wrap">
               <label>Capital Surplus</label>
-              <input id="cap" class="input mono" placeholder="e.g., 2189" />
+              <input id="cap" class="input mono" placeholder="e.g., 2189">
               <span class="note-toggle" data-for="note_cap">note</span>
               <div class="note-box" id="note_cap_box"><div class="note-head">Capital Surplus note</div><textarea id="note_cap"></textarea></div>
             </div>
             <div class="note-wrap">
               <label>Retained Earnings</label>
-              <input id="re" class="input mono" placeholder="e.g., 9635" />
+              <input id="re" class="input mono" placeholder="e.g., 9635">
               <span class="note-toggle" data-for="note_re">note</span>
               <div class="note-box" id="note_re_box"><div class="note-head">Retained Earnings note</div><textarea id="note_re"></textarea></div>
             </div>
 
             <div class="note-wrap">
               <label>Revenue Growth % (Y1)</label>
-              <input id="r1" class="input mono" placeholder="e.g., 10" />
+              <input id="r1" class="input mono" placeholder="e.g., 10">
               <span class="note-toggle" data-for="note_r1">note</span>
               <div class="note-box" id="note_r1_box"><div class="note-head">Growth Y1 note</div><textarea id="note_r1"></textarea></div>
             </div>
             <div class="note-wrap">
               <label>Revenue Growth % (Y2)</label>
-              <input id="r2" class="input mono" placeholder="e.g., 12" />
+              <input id="r2" class="input mono" placeholder="e.g., 12">
               <span class="note-toggle" data-for="note_r2">note</span>
               <div class="note-box" id="note_r2_box"><div class="note-head">Growth Y2 note</div><textarea id="note_r2"></textarea></div>
             </div>
             <div class="note-wrap">
               <label>Revenue Growth % (Y3)</label>
-              <input id="r3" class="input mono" placeholder="e.g., 8" />
+              <input id="r3" class="input mono" placeholder="e.g., 8">
               <span class="note-toggle" data-for="note_r3">note</span>
               <div class="note-box" id="note_r3_box"><div class="note-head">Growth Y3 note</div><textarea id="note_r3"></textarea></div>
             </div>
             <div class="note-wrap">
               <label>Revenue Growth % (Y4)</label>
-              <input id="r4" class="input mono" placeholder="e.g., 6" />
+              <input id="r4" class="input mono" placeholder="e.g., 6">
               <span class="note-toggle" data-for="note_r4">note</span>
               <div class="note-box" id="note_r4_box"><div class="note-head">Growth Y4 note</div><textarea id="note_r4"></textarea></div>
             </div>
@@ -872,10 +870,10 @@
         </div>
         <div id="scoreBlock" class="kpi" style="margin-top:8px;">
           <div>Total F-Score</div>
-          <div class="score right" id="totalScore">— / 9</div>
+          <div class="score right" id="totalScore">0 / 9</div>
         </div>
         <div style="height:8px"></div>
-        <div id="criteriaList" class="grid"></div>
+        <div id="criteriaList" class="grid"><div class="kpi na"><div>ROA &gt; 0</div><div class="right">—</div><div class="small muted" style="grid-column:1 / -1">ROA — (NI/Assets)</div></div><div class="kpi na"><div>CFO &gt; 0</div><div class="right">—</div><div class="small muted" style="grid-column:1 / -1">CFO —</div></div><div class="kpi na"><div>ΔROA &gt; 0</div><div class="right">—</div><div class="small muted" style="grid-column:1 / -1">ΔROA —</div></div><div class="kpi na"><div>Accruals (CFO &gt; NI)</div><div class="right">—</div><div class="small muted" style="grid-column:1 / -1">CFO — vs NI —</div></div><div class="kpi na"><div>Leverage down</div><div class="right">—</div><div class="small muted" style="grid-column:1 / -1">LT Debt/Assets — → — (prior → current)</div></div><div class="kpi na"><div>Current ratio up</div><div class="right">—</div><div class="small muted" style="grid-column:1 / -1">CR — → — (prior → current)</div></div><div class="kpi na"><div>No new shares</div><div class="right">—</div><div class="small muted" style="grid-column:1 / -1">Shares — → — (prior → current)</div></div><div class="kpi na"><div>Gross margin up</div><div class="right">—</div><div class="small muted" style="grid-column:1 / -1">GM — → — (prior → current)</div></div><div class="kpi na"><div>Asset turnover up</div><div class="right">—</div><div class="small muted" style="grid-column:1 / -1">AT — → — (prior → current)</div></div></div>
 
         <div style="height:16px"></div>
         <div class="row" style="justify-content:space-between;">
@@ -885,7 +883,135 @@
         <div class="status-grid small muted" style="margin-top:6px; font-weight:600;">
           <div>Field</div><div>Source</div><div>Value</div>
         </div>
-        <div id="statusList" class="status-grid small" style="margin-top:2px;"></div>
+        <div id="statusList" class="status-grid small" style="margin-top:2px;"><div class="status-grid">
+        <div>Revenue (Current)</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>Gross Profit (Current)</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>Total Assets (Current)</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>Net Income (Current)</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>CFO (Current)</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>LT Debt (Current)</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>Current Assets (Current)</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>Current Liabilities (Current)</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>Shares (Current)</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>Revenue (Prior)</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>Gross Profit (Prior)</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>Total Assets (Prior)</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>Net Income (Prior)</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>CFO (Prior)</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>LT Debt (Prior)</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>Current Assets (Prior)</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>Current Liabilities (Prior)</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>Shares (Prior)</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>EBIT</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>EBITDA</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>Income Tax</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>Cash &amp; Equivalents</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>Short-term Debt</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>Current Portion of LT Debt</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>Term Debt</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>Common Stock</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>Capital Surplus</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>Retained Earnings</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>Revenue Growth % (Y1)</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>Revenue Growth % (Y2)</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>Revenue Growth % (Y3)</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div><div class="status-grid">
+        <div>Revenue Growth % (Y4)</div>
+        <div><span class="pill warn">—</span></div>
+        <div class="mono">—</div>
+      </div></div>
 
         <div class="footer small">ROIC uses operating capital only. Cash reused from Net-Debt section if ROIC cash blank. © 2025 Kevin Shokrollahi ALL RIGHT RESERVED</div>
       </section>
@@ -897,21 +1023,21 @@
         </div>
 
         <div class="grid" style="grid-template-columns: 1fr 1fr; gap:12px; margin-top:8px;">
-          <div class="kpi"><div>EBIT Margin</div><div class="right" id="ebitMarginOut">—</div></div>
-          <div class="kpi"><div>Net-Debt / EBITDA</div><div class="right" id="ndebtOut">—</div></div>
-          <div class="kpi"><div>ROIC</div><div class="right" id="roicOut">—</div></div>
-          <div class="kpi"><div>Cumulative Growth (4y)</div><div class="right" id="cumOut">—</div></div>
+          <div class="kpi"><div>EBIT Margin</div><div class="right" id="ebitMarginOut">0.00%</div></div>
+          <div class="kpi"><div>Net-Debt / EBITDA</div><div class="right" id="ndebtOut">0.00</div></div>
+          <div class="kpi"><div>ROIC</div><div class="right" id="roicOut">0.00%</div></div>
+          <div class="kpi"><div>Cumulative Growth (4y)</div><div class="right" id="cumOut">0.00%</div></div>
         </div>
 
         <div class="row" style="margin-top:10px; gap:8px;">
-          <span class="chip">Growth Class: <span id="growthClass">—</span></span>
+          <span class="chip">Growth Class: <span id="growthClass">Poor</span></span>
           <span class="chip" id="valueFlag">—</span>
           <span class="chip">Spread (ROIC − WACC): <span id="spread">—</span></span>
         </div>
 
         <div class="row" style="margin-top:10px;">
           <label for="wacc">WACC (%)</label>
-          <input id="wacc" class="input mono" style="max-width:200px" placeholder="e.g., 10" />
+          <input id="wacc" class="input mono" style="max-width:200px" placeholder="e.g., 10">
         </div>
 
         <div style="margin-top:14px" class="kpi na">
@@ -926,20 +1052,52 @@
           <div class="small muted">F-Score + ROIC vs WACC + Growth</div>
         </div>
         <div class="kpi" id="verdictBadge" style="margin-top:8px;">
-          <div id="verdictLabel">—</div>
-          <div class="right" id="verdictEmoji">—</div>
+          <div id="verdictLabel">Hold</div>
+          <div class="right" id="verdictEmoji">◐</div>
         </div>
         <div class="grid" style="grid-template-columns: 1fr 1fr; gap:10px; margin-top:8px;">
-          <div class="kpi"><div>F-Score</div><div class="right" id="vFscore">—</div></div>
+          <div class="kpi"><div>F-Score</div><div class="right" id="vFscore">0 / 9</div></div>
           <div class="kpi"><div>ROIC − WACC</div><div class="right" id="vSpread">—</div></div>
-          <div class="kpi"><div>Growth Class</div><div class="right" id="vGrowthClass">—</div></div>
-          <div class="kpi"><div>Cumulative Growth (4y)</div><div class="right" id="vGrowthNum">—</div></div>
+          <div class="kpi"><div>Growth Class</div><div class="right" id="vGrowthClass">Poor</div></div>
+          <div class="kpi"><div>Cumulative Growth (4y)</div><div class="right" id="vGrowthNum">0.00%</div></div>
         </div>
         <div class="kpi na" style="margin-top:8px;">
           <div>Reasoning</div>
-          <div class="right small" id="verdictReason">Provide WACC and compute to see the verdict.</div>
+          <div class="right small" id="verdictReason">Missing: ROIC &amp; WACC (to compute spread).</div>
         </div>
       </section>
+
+      <!-- Z-Score Normalized Factors (Sector-Neutral) -->
+      <section class="card" id="zFactorsCard">
+        <div class="row" style="justify-content:space-between;">
+          <strong>Z-Score Factors (Sector-Neutral)</strong>
+          <div class="small muted">Median/MAD normalization with outlier caps</div>
+        </div>
+
+        <div class="grid" style="grid-template-columns: 1fr 1fr; gap:12px; margin-top:8px;">
+          <div class="kpi"><div>Composite (0–100)</div><div class="right" id="zf_comp">—</div></div>
+          <div class="kpi"><div>Grade</div><div class="right" id="zf_grade">—</div></div>
+          <div class="kpi"><div>Accruals (Sloan)</div><div class="right" id="zf_accruals">—</div></div>
+          <div class="kpi"><div>Net Debt / EBITDA</div><div class="right" id="zf_ndebt">—</div></div>
+          <div class="kpi"><div>EBIT Margin</div><div class="right" id="zf_ebitm">—</div></div>
+          <div class="kpi"><div>Current Ratio</div><div class="right" id="zf_cr">—</div></div>
+          <div class="kpi"><div>Interest Coverage</div><div class="right" id="zf_icov">—</div></div>
+          <div class="kpi"><div>Growth (3y Avg)</div><div class="right" id="zf_gcagr">—</div></div>
+        </div>
+
+        <details style="margin-top:12px;">
+          <summary class="small muted" style="cursor:pointer;">Why this score?</summary>
+          <table class="table" id="zf_table">
+            <thead>
+              <tr>
+                <th>Factor</th><th>Metric</th><th class="right">Value</th><th class="right">Sector Med</th><th class="right">MAD</th><th class="right">z</th><th class="right">0–1</th><th class="right">Weight</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </details>
+      </section>
+
       </div>
     </div>
 
@@ -948,7 +1106,7 @@
       <!-- Model Switch -->
       <div class="row" style="margin-bottom:20px;">
         <div class="risk-switch" id="modelSwitch">
-          <div class="risk-switch-indicator" id="modelIndicator"></div>
+          <div class="risk-switch-indicator" id="modelIndicator" style="width: 50%; transform: translateX(0%);"></div>
           <button class="risk-switch-btn active" data-model="basic">Basic Swing</button>
           <button class="risk-switch-btn" data-model="analyst">Analyst + Technical</button>
         </div>
@@ -960,17 +1118,17 @@
       </div>
 
       <!-- Basic Model Panel -->
-      <div id="basic-panel" class="grid grid-cols-2">
+      <div id="basic-panel" class="grid grid-cols-2" style="display: grid;">
         <!-- Basic Inputs -->
         <section class="card">
           <h2 class="row" style="justify-content:space-between; margin-bottom:16px;">
             <strong>Inputs — Basic</strong>
-            <span id="entryOkPill" class="swing-pill">Entry OK?</span>
+            <span id="entryOkPill" class="swing-pill entry-not-ok">Entry Not OK</span>
           </h2>
           <div class="fieldset">
             <div>
               <label for="swing_ticker">Ticker</label>
-              <input id="swing_ticker" class="input mono" placeholder="PLTR" />
+              <input id="swing_ticker" class="input mono" placeholder="PLTR">
             </div>
             <div>
               <label for="zacks">Zacks Rank (1—5)</label>
@@ -985,22 +1143,22 @@
             </div>
             <div>
               <label for="pe">P/E</label>
-              <input id="pe" type="number" step="0.01" min="0" class="input" placeholder="25" />
+              <input id="pe" type="number" step="0.01" min="0" class="input" placeholder="25">
             </div>
             <div>
               <label for="evebitda">EV/EBITDA</label>
-              <input id="evebitda" type="number" step="0.01" class="input" placeholder="18" />
+              <input id="evebitda" type="number" step="0.01" class="input" placeholder="18">
             </div>
             <div>
               <label for="pb">P/B</label>
-              <input id="pb" type="number" step="0.01" min="0" class="input" placeholder="6" />
+              <input id="pb" type="number" step="0.01" min="0" class="input" placeholder="6">
             </div>
             <div>
               <label for="dshares">Shares Outstanding Δ% (3y)</label>
-              <input id="dshares" type="number" step="0.01" class="input" placeholder="-5 for −5%" />
+              <input id="dshares" type="number" step="0.01" class="input" placeholder="-5 for −5%">
             </div>
             <div class="full row" style="gap:8px; margin-top:8px;">
-              <input id="epspos" type="checkbox" />
+              <input id="epspos" type="checkbox">
               <label for="epspos">EPS Positive? (check = yes)</label>
             </div>
           </div>
@@ -1014,7 +1172,7 @@
             <div style="flex:1;">
               <div class="small muted">SW Score</div>
               <div id="scoreText" class="score-display">—</div>
-              <div id="decisionText" style="font-weight:600; margin-top:4px;">—</div>
+              <div id="decisionText" style="font-weight:600; margin-top:4px;">Pass</div>
             </div>
             <div style="width:120px;">
               <div class="score-bar">
@@ -1031,11 +1189,11 @@
             </div>
             <div class="metric-card">
               <div class="metric-label">M (EPS)</div>
-              <div id="M" class="metric-value">—</div>
+              <div id="M" class="metric-value">0.30</div>
             </div>
             <div class="metric-card">
               <div class="metric-label">V (Valuation)</div>
-              <div id="V" class="metric-value">—</div>
+              <div id="V" class="metric-value">1.00</div>
             </div>
             <div class="metric-card">
               <div class="metric-label">R (Dilution)</div>
@@ -1052,11 +1210,11 @@
               </div>
               <div class="metric-card">
                 <div class="metric-label">n_ev</div>
-                <div id="n_ev" style="font-size:14px; font-weight:600;">—</div>
+                <div id="n_ev" style="font-size:14px; font-weight:600;">1.00</div>
               </div>
               <div class="metric-card">
                 <div class="metric-label">n_pb</div>
-                <div id="n_pb" style="font-size:14px; font-weight:600;">—</div>
+                <div id="n_pb" style="font-size:14px; font-weight:600;">1.00</div>
               </div>
               <div class="metric-card">
                 <div class="metric-label">n_dil</div>
@@ -1068,7 +1226,7 @@
               </div>
               <div class="metric-card">
                 <div class="metric-label">Rule</div>
-                <div id="rule" style="font-size:10px;">—</div>
+                <div id="rule" style="font-size:10px;">&gt;=75 Setup-A, &gt;=60 Watch, &gt;=45 Speculative, else Pass</div>
               </div>
             </div>
           </details>
@@ -1081,24 +1239,24 @@
         <section class="card" style="grid-column: 1 / -1;">
           <h2 class="row" style="justify-content:space-between; margin-bottom:16px;">
             <strong>Inputs — Analyst + Technical</strong>
-            <span id="entry2" class="swing-pill">Entry OK?</span>
+            <span id="entry2" class="swing-pill entry-not-ok">Entry Not OK</span>
           </h2>
           <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:12px;">
             <div>
               <label for="swing_ticker2">Ticker</label>
-              <input id="swing_ticker2" class="input mono" placeholder="PLTR"/>
+              <input id="swing_ticker2" class="input mono" placeholder="PLTR">
             </div>
             <div>
               <label for="epsSurp">Avg EPS Surprise % (2q)</label>
-              <input id="epsSurp" type="number" step="0.01" class="input" placeholder="5"/>
+              <input id="epsSurp" type="number" step="0.01" class="input" placeholder="5">
             </div>
             <div>
               <label for="revSurp">Avg Revenue Surprise % (2q)</label>
-              <input id="revSurp" type="number" step="0.01" class="input" placeholder="2.5"/>
+              <input id="revSurp" type="number" step="0.01" class="input" placeholder="2.5">
             </div>
             <div>
               <label for="epsRevise">Δ EPS Consensus (30d) %</label>
-              <input id="epsRevise" type="number" step="0.01" class="input" placeholder="1.2"/>
+              <input id="epsRevise" type="number" step="0.01" class="input" placeholder="1.2">
             </div>
             <div>
               <label for="zacks2">Zacks Rank (1—5)</label>
@@ -1113,61 +1271,61 @@
             </div>
             <div>
               <label for="rel6w">Rel Strength vs SPY (6w) %</label>
-              <input id="rel6w" type="number" step="0.01" class="input" placeholder="6"/>
+              <input id="rel6w" type="number" step="0.01" class="input" placeholder="6">
             </div>
             <div>
               <label for="brk">Breakout % above swing high</label>
-              <input id="brk" type="number" step="0.01" class="input" placeholder="3"/>
+              <input id="brk" type="number" step="0.01" class="input" placeholder="3">
             </div>
             <div>
               <label for="avgVol">Avg Daily Volume (millions)</label>
-              <input id="avgVol" type="number" step="0.01" class="input" placeholder="1.2"/>
+              <input id="avgVol" type="number" step="0.01" class="input" placeholder="1.2">
             </div>
             <div>
               <label for="beta">Beta (20—90d)</label>
-              <input id="beta" type="number" step="0.01" class="input" placeholder="1.3"/>
+              <input id="beta" type="number" step="0.01" class="input" placeholder="1.3">
             </div>
             <div>
               <label for="si">Short Interest % of float</label>
-              <input id="si" type="number" step="0.01" class="input" placeholder="4"/>
+              <input id="si" type="number" step="0.01" class="input" placeholder="4">
             </div>
             <div>
               <label for="fpe">Forward P/E</label>
-              <input id="fpe" type="number" step="0.01" class="input" placeholder="30"/>
+              <input id="fpe" type="number" step="0.01" class="input" placeholder="30">
             </div>
             <div>
               <label for="pe5">P/E 5yr Avg</label>
-              <input id="pe5" type="number" step="0.01" class="input" placeholder="35"/>
+              <input id="pe5" type="number" step="0.01" class="input" placeholder="35">
             </div>
             <div>
               <label for="peg">PEG (1y fwd)</label>
-              <input id="peg" type="number" step="0.01" class="input" placeholder="1.8"/>
+              <input id="peg" type="number" step="0.01" class="input" placeholder="1.8">
             </div>
             <div>
               <label for="ev2">EV/EBITDA</label>
-              <input id="ev2" type="number" step="0.01" class="input" placeholder="22"/>
+              <input id="ev2" type="number" step="0.01" class="input" placeholder="22">
             </div>
             <div>
               <label for="kev">Industry EV/EBITDA (k_EV)</label>
-              <input id="kev" type="number" step="0.01" class="input" placeholder="18"/>
+              <input id="kev" type="number" step="0.01" class="input" placeholder="18">
             </div>
           </div>
           
           <div class="row" style="gap:16px; margin-top:16px; flex-wrap:wrap;">
             <label class="row" style="gap:8px;">
-              <input id="dma20" type="checkbox" />
-              <span>Price > 20DMA</span>
+              <input id="dma20" type="checkbox">
+              <span>Price &gt; 20DMA</span>
             </label>
             <label class="row" style="gap:8px;">
-              <input id="dma50" type="checkbox" />
-              <span>Price > 50DMA</span>
+              <input id="dma50" type="checkbox">
+              <span>Price &gt; 50DMA</span>
             </label>
             <label class="row" style="gap:8px;">
-              <input id="dma200" type="checkbox" />
-              <span>Price > 200DMA</span>
+              <input id="dma200" type="checkbox">
+              <span>Price &gt; 200DMA</span>
             </label>
             <label class="row" style="gap:8px;">
-              <input id="earn5" type="checkbox" />
+              <input id="earn5" type="checkbox">
               <span>Earnings in next 5 trading days?</span>
             </label>
           </div>
@@ -1183,7 +1341,7 @@
                 <div style="flex:1;">
                   <div class="small muted">SW Score (Model B)</div>
                   <div id="score2" class="score-display">—</div>
-                  <div id="decision2" style="font-weight:600; margin-top:4px;">—</div>
+                  <div id="decision2" style="font-weight:600; margin-top:4px;">Pass</div>
                 </div>
                 <div style="width:120px;">
                   <div class="score-bar">
@@ -1220,7 +1378,7 @@
                 <div style="flex:1;">
                   <div class="small muted">SW Score (No-Analyst)</div>
                   <div id="scoreNA" style="font-size:36px; font-weight:800;">—</div>
-                  <div id="decisionNA" style="font-weight:600; margin-top:4px;">—</div>
+                  <div id="decisionNA" style="font-weight:600; margin-top:4px;">Pass</div>
                 </div>
                 <div style="width:120px;">
                   <div class="score-bar">
@@ -1257,7 +1415,7 @@
               </div>
               <div class="metric-card">
                 <div class="metric-label">n_ma</div>
-                <div id="n_ma" style="font-size:14px; font-weight:600;">—</div>
+                <div id="n_ma" style="font-size:14px; font-weight:600;">0.00</div>
               </div>
               <div class="metric-card">
                 <div class="metric-label">n_brk</div>
@@ -1305,7 +1463,7 @@
         <div class="row" style="justify-content:space-between; margin-bottom:16px;">
           <h2><strong>Risk Management</strong></h2>
           <div class="risk-switch" id="riskSwitch">
-            <div class="risk-switch-indicator" id="riskIndicator"></div>
+            <div class="risk-switch-indicator" id="riskIndicator" style="width: 33.3333%; transform: translateX(0%);"></div>
             <button class="risk-switch-btn active" data-risk="fixed">Fixed Target</button>
             <button class="risk-switch-btn" data-risk="trail">Trailing Stop</button>
             <button class="risk-switch-btn" data-risk="time">Time Exit</button>
@@ -1318,39 +1476,39 @@
             <div class="fieldset">
               <div>
                 <label>Account Size ($)</label>
-                <input id="acct" type="number" class="input" placeholder="25000" />
+                <input id="acct" type="number" class="input" placeholder="25000">
               </div>
               <div>
                 <label>Risk per Trade (%)</label>
-                <input id="riskpct" type="number" step="0.01" class="input" placeholder="1" />
+                <input id="riskpct" type="number" step="0.01" class="input" placeholder="1">
               </div>
               <div>
                 <label>Entry Price</label>
-                <input id="entryPx" type="number" step="0.01" class="input" placeholder="20.00" />
+                <input id="entryPx" type="number" step="0.01" class="input" placeholder="20.00">
               </div>
               <div>
                 <label>Stop-Loss % (or leave blank)</label>
-                <input id="stopPct" type="number" step="0.01" class="input" placeholder="5" />
+                <input id="stopPct" type="number" step="0.01" class="input" placeholder="5">
               </div>
               <div>
                 <label>Stop-Loss Price (optional)</label>
-                <input id="stopPx" type="number" step="0.01" class="input" placeholder="19.00" />
+                <input id="stopPx" type="number" step="0.01" class="input" placeholder="19.00">
               </div>
               <div>
                 <label>Target % (Fixed Target)</label>
-                <input id="targetPct" type="number" step="0.01" class="input" placeholder="10" />
+                <input id="targetPct" type="number" step="0.01" class="input" placeholder="10">
               </div>
               <div>
                 <label>Target Price (optional)</label>
-                <input id="targetPx" type="number" step="0.01" class="input" placeholder="22.00" />
+                <input id="targetPx" type="number" step="0.01" class="input" placeholder="22.00">
               </div>
               <div>
                 <label>Trailing Stop %</label>
-                <input id="trailPct" type="number" step="0.01" class="input" placeholder="7" />
+                <input id="trailPct" type="number" step="0.01" class="input" placeholder="7">
               </div>
               <div>
                 <label>Time Exit (days)</label>
-                <input id="timeDays" type="number" step="1" class="input" placeholder="15" />
+                <input id="timeDays" type="number" step="1" class="input" placeholder="15">
               </div>
             </div>
           </div>
@@ -1371,8 +1529,8 @@
                 <div id="rratio" class="metric-value">—</div>
               </div>
               <div class="metric-card">
-                <div class="metric-label">Stops & Exits</div>
-                <div id="rulesOut" style="font-size:12px; font-weight:600;">—</div>
+                <div class="metric-label">Stops &amp; Exits</div>
+                <div id="rulesOut" style="font-size:12px; font-weight:600;">Target —, Stop —</div>
               </div>
             </div>
             <div class="card" style="padding:16px; background:rgba(148,163,184,.05);">
@@ -2563,5 +2721,174 @@ function computeVerdict(){
   </div>
 </details>
 
-</body>
-</html>
+
+
+
+<script>
+// ===== Z-Score Factors (sector-neutral) — Non-invasive wiring =====
+
+// Sector stats placeholder (replace med/mad per sector in production)
+const ZF_SECTOR_STATS = {
+  "_fallback": {
+    med: { ebit_margin: 0.12, accruals_sloan: 0.03, net_debt_ebitda: 1.2, current_ratio: 1.5, interest_cov: 6, rev_cagr_3y: 0.08 },
+    mad: { ebit_margin: 0.06, accruals_sloan: 0.02, net_debt_ebitda: 0.8, current_ratio: 0.5, interest_cov: 4, rev_cagr_3y: 0.05 }
+  }
+};
+
+const ZF_CFG = { zCap: 3, flip: { accruals_sloan:true, net_debt_ebitda:true } };
+
+function zf_num(id){
+  const el = document.getElementById(id);
+  if(!el) return NaN;
+  const raw = (el.value||'').toString().replace(/,/g,'');
+  const v = parseFloat(raw);
+  return Number.isFinite(v) ? v : NaN;
+}
+function zf_clip(x,a,b){ return Math.min(b,Math.max(a,x)); }
+function zf_madZ(val, med, mad, flip=false, cap=3){
+  if(!Number.isFinite(val) || !Number.isFinite(med) || !Number.isFinite(mad) || mad===0) return null;
+  let z = (val - med) / mad;
+  if(flip) z = -z;
+  return zf_clip(z, -cap, cap);
+}
+function zf_z01(z, cap=3){
+  if(z==null) return null;
+  return zf_clip(0.5 + z/(2*cap), 0, 1);
+}
+
+function zf_readInputs(){
+  return {
+    revenue: zf_num('rev0'),
+    ebit: zf_num('ebit'),
+    ebitda: zf_num('ebitda'),
+    assets: zf_num('assets0'),
+    netIncome: zf_num('ni0'),
+    cfo: zf_num('cfo0'),
+    currentAssets: zf_num('ca0'),
+    currentLiab: zf_num('cl0'),
+    ltd: zf_num('ltd0'),
+    std: zf_num('std'),
+    cpltd: zf_num('cpltd'),
+    termdebt: zf_num('termdebt'),
+    cash: zf_num('cash'),
+    tax: zf_num('tax'),
+    // Growth series (entered as percentages Y1..Y4)
+    g1: zf_num('r1'),
+    g2: zf_num('r2'),
+    g3: zf_num('r3'),
+    g4: zf_num('r4')
+  };
+}
+
+function zf_derive(I){
+  const debt = (I.ltd||0) + (I.std||0) + (I.cpltd||0) + (I.termdebt||0);
+  const netDebt = (Number.isFinite(debt)?debt:NaN) - (I.cash||0);
+  const accruals = (Number.isFinite(I.assets) && I.assets>0 && Number.isFinite(I.netIncome) && Number.isFinite(I.cfo))
+      ? ((I.netIncome - I.cfo)/I.assets) : null;
+  const nde = (Number.isFinite(netDebt) && Number.isFinite(I.ebitda) && I.ebitda!==0) ? netDebt / I.ebitda : null;
+  const ebitm = (Number.isFinite(I.revenue) && I.revenue>0 && Number.isFinite(I.ebit)) ? I.ebit / I.revenue : null;
+  const cr = (Number.isFinite(I.currentAssets) && Number.isFinite(I.currentLiab) && I.currentLiab>0) ? I.currentAssets / I.currentLiab : null;
+  // Interest coverage: prefer interest expense if available later; proxy with tax for now
+  const icov = (Number.isFinite(I.tax) && I.tax>0 && Number.isFinite(I.ebit)) ? I.ebit / I.tax : null;
+  // 3y growth avg from Y2..Y4 (older years), entered as %
+  const growths = [I.g2, I.g3, I.g4].filter(x=>Number.isFinite(x));
+  const gcagr = growths.length ? (growths.reduce((a,b)=>a+b,0)/growths.length)/100 : null;
+
+  return { accruals_sloan: accruals, net_debt_ebitda: nde, ebit_margin: ebitm, current_ratio: cr, interest_cov: icov, rev_cagr_3y: gcagr };
+}
+
+function zf_renderKpis(D){
+  function fmtPct(x){ return Number.isFinite(x) ? (x*100).toFixed(2)+'%' : '—'; }
+  function fmtNum(x){ return Number.isFinite(x) ? x.toFixed(2) : '—'; }
+  document.getElementById('zf_accruals').textContent = fmtPct(D.accruals_sloan);
+  document.getElementById('zf_ndebt').textContent = fmtNum(D.net_debt_ebitda);
+  document.getElementById('zf_ebitm').textContent = fmtPct(D.ebit_margin);
+  document.getElementById('zf_cr').textContent = fmtNum(D.current_ratio);
+  document.getElementById('zf_icov').textContent = fmtNum(D.interest_cov);
+  document.getElementById('zf_gcagr').textContent = fmtPct(D.rev_cagr_3y);
+}
+
+function zf_getStats(){ return ZF_SECTOR_STATS["_fallback"]; }
+
+function zf_buildRows(D, Z01){
+  const tbody = document.querySelector('#zf_table tbody');
+  if(!tbody) return;
+  tbody.innerHTML = '';
+  const rows = [
+    {factor:'Quality', key:'ebit_margin', label:'EBIT Margin', w:.35},
+    {factor:'Risk', key:'accruals_sloan', label:'Accruals (Sloan)', w:.20},
+    {factor:'Risk', key:'net_debt_ebitda', label:'Net Debt / EBITDA', w:.20},
+    {factor:'Liquidity', key:'current_ratio', label:'Current Ratio', w:.10},
+    {factor:'Quality', key:'interest_cov', label:'Interest Coverage', w:.05},
+    {factor:'Growth', key:'rev_cagr_3y', label:'Growth (3y Avg)', w:.10}
+  ];
+  const {med, mad} = zf_getStats();
+  const fmt = (k,v)=> k.includes('margin')||k.includes('cagr')||k.includes('accrual') ? (Number.isFinite(v)? (v*100).toFixed(2)+'%':'—') : (Number.isFinite(v)? v.toFixed(2):'—');
+  rows.forEach(r=>{
+    const val = D[r.key];
+    const z = zf_madZ(val, med[r.key], mad[r.key], !!ZF_CFG.flip[r.key], ZF_CFG.zCap);
+    const s01 = zf_z01(z, ZF_CFG.zCap);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${r.factor}</td>
+      <td>${r.label}</td>
+      <td class="right">${fmt(r.key,val)}</td>
+      <td class="right">${fmt(r.key,med[r.key])}</td>
+      <td class="right">${fmt(r.key,mad[r.key])}</td>
+      <td class="right">${z==null?'—':z.toFixed(2)}</td>
+      <td class="right">${s01==null?'—':s01.toFixed(2)}</td>
+      <td class="right">${(r.w*100).toFixed(0)}%</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function zf_factorComposite(Z01){
+  // Use the same rows/weights as in buildRows
+  const rows = [
+    {key:'ebit_margin', w:.35},
+    {key:'accruals_sloan', w:.20, invert:false}, // already flipped in z
+    {key:'net_debt_ebitda', w:.20},
+    {key:'current_ratio', w:.10},
+    {key:'interest_cov', w:.05},
+    {key:'rev_cagr_3y', w:.10}
+  ];
+  let num=0, den=0;
+  rows.forEach(r=>{
+    const s = Z01[r.key];
+    if(s != null){ num += s * r.w; den += r.w; }
+  });
+  const score01 = den? (num/den) : 0;
+  const score = Math.round(score01*1000)/10;
+  return score;
+}
+
+function zf_compute(){
+  const I = zf_readInputs();
+  const D = zf_derive(I);
+  zf_renderKpis(D);
+
+  // Normalize vs sector
+  const {med, mad} = zf_getStats();
+  const Z = {};
+  const Z01 = {};
+  Object.keys(D).forEach(k=>{
+    const z = zf_madZ(D[k], med[k], mad[k], !!ZF_CFG.flip[k], ZF_CFG.zCap);
+    Z[k] = z;
+    Z01[k] = zf_z01(z, ZF_CFG.zCap);
+  });
+
+  // Build table and composite
+  zf_buildRows(D, Z01);
+  const comp = zf_factorComposite(Z01);
+  const grade = comp>=80?'Strong Buy': comp>=65?'Buy': comp>=45?'Hold': comp>=30?'Sell':'Strong Sell';
+  const compEl = document.getElementById('zf_comp'); if(compEl) compEl.textContent = comp.toFixed(1);
+  const grdEl = document.getElementById('zf_grade'); if(grdEl) grdEl.textContent = grade;
+}
+
+// Hook into the existing Compute button without overriding anything else
+window.addEventListener('DOMContentLoaded', function(){
+  const btn = document.getElementById('btnCompute');
+  if(btn){ btn.addEventListener('click', function(){ try{ zf_compute(); }catch(e){ console.warn('zFactors error', e); } }); }
+});
+</script>
+
+</body></html>
