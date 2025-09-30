@@ -1065,39 +1065,37 @@
           <div>Reasoning</div>
           <div class="right small" id="verdictReason">Missing: ROIC &amp; WACC (to compute spread).</div>
         </div>
-      </section>
-
-      <!-- Z-Score Normalized Factors (Sector-Neutral) -->
-      <section class="card" id="zFactorsCard">
+      
+      <!-- Factor Composite (Pilot) -->
+      <section class="card" id="factorComposite">
         <div class="row" style="justify-content:space-between;">
-          <strong>Z-Score Factors (Sector-Neutral)</strong>
-          <div class="small muted">Median/MAD normalization with outlier caps</div>
+          <strong>Factor Composite (Pilot)</strong>
+          <div class="small muted">Value • Profitability • Growth • Momentum • Risk</div>
         </div>
 
         <div class="grid" style="grid-template-columns: 1fr 1fr; gap:12px; margin-top:8px;">
-          <div class="kpi"><div>Composite (0–100)</div><div class="right" id="zf_comp">—</div></div>
-          <div class="kpi"><div>Grade</div><div class="right" id="zf_grade">—</div></div>
-          <div class="kpi"><div>Accruals (Sloan)</div><div class="right" id="zf_accruals">—</div></div>
-          <div class="kpi"><div>Net Debt / EBITDA</div><div class="right" id="zf_ndebt">—</div></div>
-          <div class="kpi"><div>EBIT Margin</div><div class="right" id="zf_ebitm">—</div></div>
-          <div class="kpi"><div>Current Ratio</div><div class="right" id="zf_cr">—</div></div>
-          <div class="kpi"><div>Interest Coverage</div><div class="right" id="zf_icov">—</div></div>
-          <div class="kpi"><div>Growth (3y Avg)</div><div class="right" id="zf_gcagr">—</div></div>
+          <div class="kpi"><div>EV / EBIT</div><div class="right" id="fc_ev_ebit">—</div></div>
+          <div class="kpi"><div>P/B</div><div class="right" id="fc_pb">—</div></div>
+          <div class="kpi"><div>FCF Yield</div><div class="right" id="fc_fcf_yield">—</div></div>
+          <div class="kpi"><div>Interest Coverage</div><div class="right" id="fc_int_cov">—</div></div>
+          <div class="kpi"><div>Accruals (Sloan)</div><div class="right" id="fc_accruals">—</div></div>
+          <div class="kpi"><div>Net Debt / EBITDA</div><div class="right" id="fc_nd_ebitda">—</div></div>
         </div>
 
-        <details style="margin-top:12px;">
+        <div class="row" style="margin-top:12px; gap:8px;">
+          <span class="chip">Composite Score: <span id="fc_score">—</span></span>
+          <span class="chip">Grade: <span id="fc_grade">—</span></span>
+        </div>
+
+        <details style="margin-top:10px;">
           <summary class="small muted" style="cursor:pointer;">Why this score?</summary>
-          <table class="table" id="zf_table">
-            <thead>
-              <tr>
-                <th>Factor</th><th>Metric</th><th class="right">Value</th><th class="right">Sector Med</th><th class="right">MAD</th><th class="right">z</th><th class="right">0–1</th><th class="right">Weight</th>
-              </tr>
-            </thead>
+          <table class="table" id="fc_table">
+            <thead><tr><th>Factor</th><th>Metric</th><th>Value</th><th>Scaled</th><th>Weight</th></tr></thead>
             <tbody></tbody>
           </table>
         </details>
       </section>
-
+</section>
       </div>
     </div>
 
@@ -2725,170 +2723,132 @@ function computeVerdict(){
 
 
 <script>
-// ===== Z-Score Factors (sector-neutral) — Non-invasive wiring =====
+// ===== Factor Composite (Pilot) JS =====
 
-// Sector stats placeholder (replace med/mad per sector in production)
-const ZF_SECTOR_STATS = {
-  "_fallback": {
-    med: { ebit_margin: 0.12, accruals_sloan: 0.03, net_debt_ebitda: 1.2, current_ratio: 1.5, interest_cov: 6, rev_cagr_3y: 0.08 },
-    mad: { ebit_margin: 0.06, accruals_sloan: 0.02, net_debt_ebitda: 0.8, current_ratio: 0.5, interest_cov: 4, rev_cagr_3y: 0.05 }
-  }
-};
-
-const ZF_CFG = { zCap: 3, flip: { accruals_sloan:true, net_debt_ebitda:true } };
-
-function zf_num(id){
+// Helper numeric getter
+function num(id){
   const el = document.getElementById(id);
   if(!el) return NaN;
-  const raw = (el.value||'').toString().replace(/,/g,'');
-  const v = parseFloat(raw);
-  return Number.isFinite(v) ? v : NaN;
+  const v = parseFloat((el.value || '').toString().replace(/,/g,''));
+  return isFinite(v) ? v : NaN;
 }
-function zf_clip(x,a,b){ return Math.min(b,Math.max(a,x)); }
-function zf_madZ(val, med, mad, flip=false, cap=3){
-  if(!Number.isFinite(val) || !Number.isFinite(med) || !Number.isFinite(mad) || mad===0) return null;
-  let z = (val - med) / mad;
-  if(flip) z = -z;
-  return zf_clip(z, -cap, cap);
-}
-function zf_z01(z, cap=3){
-  if(z==null) return null;
-  return zf_clip(0.5 + z/(2*cap), 0, 1);
-}
-
-function zf_readInputs(){
+// From Unified Inputs
+function unifiedInputs(){
   return {
-    revenue: zf_num('rev0'),
-    ebit: zf_num('ebit'),
-    ebitda: zf_num('ebitda'),
-    assets: zf_num('assets0'),
-    netIncome: zf_num('ni0'),
-    cfo: zf_num('cfo0'),
-    currentAssets: zf_num('ca0'),
-    currentLiab: zf_num('cl0'),
-    ltd: zf_num('ltd0'),
-    std: zf_num('std'),
-    cpltd: zf_num('cpltd'),
-    termdebt: zf_num('termdebt'),
-    cash: zf_num('cash'),
-    tax: zf_num('tax'),
-    // Growth series (entered as percentages Y1..Y4)
-    g1: zf_num('r1'),
-    g2: zf_num('r2'),
-    g3: zf_num('r3'),
-    g4: zf_num('r4')
+    rev0: num('rev0'),
+    rev1: num('rev1'),
+    gp0: num('gp0'),
+    gp1: num('gp1'),
+    assets0: num('assets0'),
+    assets1: num('assets1'),
+    ni0: num('ni0'),
+    ni1: num('ni1'),
+    cfo0: num('cfo0'),
+    cfo1: num('cfo1'),
+    ltd0: num('ltd0'),
+    ltd1: num('ltd1'),
+    ca0: num('ca0'),
+    ca1: num('ca1'),
+    cl0: num('cl0'),
+    cl1: num('cl1'),
+    sh0: num('sh0'),
+    sh1: num('sh1'),
+    ebit: num('ebit'),
+    ebitda: num('ebitda'),
+    tax: num('tax'),
+    cash: num('cash'),
+    std: num('std'),
+    cpltd: num('cpltd'),
+    termdebt: num('termdebt'),
+    cap: num('cap'),
+    re: num('re')
   };
 }
 
-function zf_derive(I){
-  const debt = (I.ltd||0) + (I.std||0) + (I.cpltd||0) + (I.termdebt||0);
-  const netDebt = (Number.isFinite(debt)?debt:NaN) - (I.cash||0);
-  const accruals = (Number.isFinite(I.assets) && I.assets>0 && Number.isFinite(I.netIncome) && Number.isFinite(I.cfo))
-      ? ((I.netIncome - I.cfo)/I.assets) : null;
-  const nde = (Number.isFinite(netDebt) && Number.isFinite(I.ebitda) && I.ebitda!==0) ? netDebt / I.ebitda : null;
-  const ebitm = (Number.isFinite(I.revenue) && I.revenue>0 && Number.isFinite(I.ebit)) ? I.ebit / I.revenue : null;
-  const cr = (Number.isFinite(I.currentAssets) && Number.isFinite(I.currentLiab) && I.currentLiab>0) ? I.currentAssets / I.currentLiab : null;
-  // Interest coverage: prefer interest expense if available later; proxy with tax for now
-  const icov = (Number.isFinite(I.tax) && I.tax>0 && Number.isFinite(I.ebit)) ? I.ebit / I.tax : null;
-  // 3y growth avg from Y2..Y4 (older years), entered as %
-  const growths = [I.g2, I.g3, I.g4].filter(x=>Number.isFinite(x));
-  const gcagr = growths.length ? (growths.reduce((a,b)=>a+b,0)/growths.length)/100 : null;
+function computeFactorComposite(){
+  const U = unifiedInputs();
+  // Derived basics
+  const marketCap = NaN; // optional, not in this UI; leave NaN so FCF yield will be '—' unless user adds later
+  const equity = (isFinite(U.cap) ? U.cap : 0) + (isFinite(U.re) ? U.re : 0);
+  const bookEquity = isFinite(equity) ? equity : NaN;
+  const debt = (isFinite(U.ltd0)?U.ltd0:0) + (isFinite(U.std)?U.std:0) + (isFinite(U.cpltd)?U.cpltd:0) + (isFinite(U.termdebt)?U.termdebt:0);
+  const netDebt = (isFinite(debt)?debt:NaN) - (isFinite(U.cash)?U.cash:0);
+  const fcf = (isFinite(U.cfo0)?U.cfo0:NaN); // capex not collected in UI; treat as CFO proxy
+  const ev = (isFinite(marketCap)?marketCap:0) + (isFinite(netDebt)?netDebt:0);
 
-  return { accruals_sloan: accruals, net_debt_ebitda: nde, ebit_margin: ebitm, current_ratio: cr, interest_cov: icov, rev_cagr_3y: gcagr };
-}
+  const ev_ebit = (isFinite(ev) && isFinite(U.ebit) && U.ebit>0) ? ev / U.ebit : NaN;
+  const pb = (isFinite(marketCap) && isFinite(bookEquity) && bookEquity>0) ? marketCap / bookEquity : NaN;
+  const fcf_yield = (isFinite(marketCap) && isFinite(fcf)) ? (fcf / marketCap) : NaN;
+  const int_cov = (isFinite(U.tax) && isFinite(U.ebit) && U.tax>0) ? (U.ebit / U.tax) : NaN; // using tax as proxy if no interest exp
+  const accruals = (isFinite(U.ni0) && isFinite(U.cfo0) && isFinite(U.assets0) && U.assets0>0) ? ((U.ni0 - U.cfo0)/U.assets0) : NaN;
+  const nd_ebitda = (isFinite(netDebt) && isFinite(U.ebitda) && U.ebitda!==0) ? (netDebt / U.ebitda) : NaN;
 
-function zf_renderKpis(D){
-  function fmtPct(x){ return Number.isFinite(x) ? (x*100).toFixed(2)+'%' : '—'; }
-  function fmtNum(x){ return Number.isFinite(x) ? x.toFixed(2) : '—'; }
-  document.getElementById('zf_accruals').textContent = fmtPct(D.accruals_sloan);
-  document.getElementById('zf_ndebt').textContent = fmtNum(D.net_debt_ebitda);
-  document.getElementById('zf_ebitm').textContent = fmtPct(D.ebit_margin);
-  document.getElementById('zf_cr').textContent = fmtNum(D.current_ratio);
-  document.getElementById('zf_icov').textContent = fmtNum(D.interest_cov);
-  document.getElementById('zf_gcagr').textContent = fmtPct(D.rev_cagr_3y);
-}
+  // Simple scaled scores (0..1) with sensible ranges
+  function scaleLowerBetter(x, lo, hi){ if(!isFinite(x)) return null; const v = (x<=lo)?1:(x>=hi)?0:1-(x-lo)/(hi-lo); return Math.max(0,Math.min(1,v)); }
+  function scaleHigherBetter(x, lo, hi){ if(!isFinite(x)) return null; const v = (x<=lo)?0:(x>=hi)?1:(x-lo)/(hi-lo); return Math.max(0,Math.min(1,v)); }
 
-function zf_getStats(){ return ZF_SECTOR_STATS["_fallback"]; }
-
-function zf_buildRows(D, Z01){
-  const tbody = document.querySelector('#zf_table tbody');
-  if(!tbody) return;
-  tbody.innerHTML = '';
-  const rows = [
-    {factor:'Quality', key:'ebit_margin', label:'EBIT Margin', w:.35},
-    {factor:'Risk', key:'accruals_sloan', label:'Accruals (Sloan)', w:.20},
-    {factor:'Risk', key:'net_debt_ebitda', label:'Net Debt / EBITDA', w:.20},
-    {factor:'Liquidity', key:'current_ratio', label:'Current Ratio', w:.10},
-    {factor:'Quality', key:'interest_cov', label:'Interest Coverage', w:.05},
-    {factor:'Growth', key:'rev_cagr_3y', label:'Growth (3y Avg)', w:.10}
+  const metrics = [
+    {factor:'Value', key:'EV/EBIT', val: ev_ebit, scaled: scaleLowerBetter(ev_ebit, 6, 24), w:.35},
+    {factor:'Value', key:'P/B', val: pb, scaled: scaleLowerBetter(pb, 1, 8), w:.15},
+    {factor:'Value', key:'FCF Yield', val: fcf_yield, scaled: scaleHigherBetter(fcf_yield, 0.00, 0.06), w:.35},
+    {factor:'Quality', key:'Interest Coverage', val: int_cov, scaled: scaleHigherBetter(int_cov, 1, 12), w:.05},
+    {factor:'Risk', key:'Accruals', val: accruals, scaled: scaleLowerBetter(accruals, 0.02, 0.12), w:.05},
+    {factor:'Risk', key:'Net Debt/EBITDA', val: nd_ebitda, scaled: scaleLowerBetter(nd_ebitda, 0, 4), w:.05},
   ];
-  const {med, mad} = zf_getStats();
-  const fmt = (k,v)=> k.includes('margin')||k.includes('cagr')||k.includes('accrual') ? (Number.isFinite(v)? (v*100).toFixed(2)+'%':'—') : (Number.isFinite(v)? v.toFixed(2):'—');
-  rows.forEach(r=>{
-    const val = D[r.key];
-    const z = zf_madZ(val, med[r.key], mad[r.key], !!ZF_CFG.flip[r.key], ZF_CFG.zCap);
-    const s01 = zf_z01(z, ZF_CFG.zCap);
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${r.factor}</td>
-      <td>${r.label}</td>
-      <td class="right">${fmt(r.key,val)}</td>
-      <td class="right">${fmt(r.key,med[r.key])}</td>
-      <td class="right">${fmt(r.key,mad[r.key])}</td>
-      <td class="right">${z==null?'—':z.toFixed(2)}</td>
-      <td class="right">${s01==null?'—':s01.toFixed(2)}</td>
-      <td class="right">${(r.w*100).toFixed(0)}%</td>`;
-    tbody.appendChild(tr);
+
+  // Update UI raw values
+  function show(id, v, pct=false){
+    const el = document.getElementById(id);
+    if(!el) return;
+    if(!isFinite(v)) { el.textContent = '—'; return; }
+    el.textContent = pct ? (v*100).toFixed(2)+'%' : (Math.abs(v) >= 1e4 ? v.toExponential(2) : v.toFixed(2));
+  }
+  show('fc_ev_ebit', ev_ebit);
+  show('fc_pb', pb);
+  show('fc_fcf_yield', fcf_yield, true);
+  show('fc_int_cov', int_cov);
+  show('fc_accruals', accruals, true);
+  show('fc_nd_ebitda', nd_ebitda);
+
+  // Table
+  const tbody = document.querySelector('#fc_table tbody');
+  if(tbody){
+    tbody.innerHTML = '';
+    metrics.forEach(m=>{
+      const valDisp = (!isFinite(m.val) && m.val!==0) ? '—' : (Math.abs(m.val)>=1e4 ? m.val.toExponential(2) : m.key==='FCF Yield' || m.key==='Accruals' ? (m.val*100).toFixed(2)+'%' : Number(m.val).toFixed(2));
+      const scaledDisp = (m.scaled==null) ? '—' : m.scaled.toFixed(2);
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${m.factor}</td><td>${m.key}</td><td>${valDisp}</td><td>${scaledDisp}</td><td>${(m.w*100).toFixed(0)}%</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // Composite score (0..100)
+  let score01 = 0, wsum = 0;
+  metrics.forEach(m=>{
+    if(m.scaled!=null){ score01 += m.scaled * m.w; wsum += m.w; }
   });
+  const score = wsum>0 ? (score01/wsum)*100 : 0;
+  const grade = score>=80?'Strong Buy': score>=65?'Buy': score>=45?'Hold': score>=30?'Sell':'Strong Sell';
+
+  const sc = document.getElementById('fc_score'); if(sc) sc.textContent = score.toFixed(1);
+  const gr = document.getElementById('fc_grade'); if(gr) gr.textContent = grade;
 }
 
-function zf_factorComposite(Z01){
-  // Use the same rows/weights as in buildRows
-  const rows = [
-    {key:'ebit_margin', w:.35},
-    {key:'accruals_sloan', w:.20, invert:false}, // already flipped in z
-    {key:'net_debt_ebitda', w:.20},
-    {key:'current_ratio', w:.10},
-    {key:'interest_cov', w:.05},
-    {key:'rev_cagr_3y', w:.10}
-  ];
-  let num=0, den=0;
-  rows.forEach(r=>{
-    const s = Z01[r.key];
-    if(s != null){ num += s * r.w; den += r.w; }
-  });
-  const score01 = den? (num/den) : 0;
-  const score = Math.round(score01*1000)/10;
-  return score;
-}
-
-function zf_compute(){
-  const I = zf_readInputs();
-  const D = zf_derive(I);
-  zf_renderKpis(D);
-
-  // Normalize vs sector
-  const {med, mad} = zf_getStats();
-  const Z = {};
-  const Z01 = {};
-  Object.keys(D).forEach(k=>{
-    const z = zf_madZ(D[k], med[k], mad[k], !!ZF_CFG.flip[k], ZF_CFG.zCap);
-    Z[k] = z;
-    Z01[k] = zf_z01(z, ZF_CFG.zCap);
-  });
-
-  // Build table and composite
-  zf_buildRows(D, Z01);
-  const comp = zf_factorComposite(Z01);
-  const grade = comp>=80?'Strong Buy': comp>=65?'Buy': comp>=45?'Hold': comp>=30?'Sell':'Strong Sell';
-  const compEl = document.getElementById('zf_comp'); if(compEl) compEl.textContent = comp.toFixed(1);
-  const grdEl = document.getElementById('zf_grade'); if(grdEl) grdEl.textContent = grade;
-}
-
-// Hook into the existing Compute button without overriding anything else
-window.addEventListener('DOMContentLoaded', function(){
+// Hook into existing Compute button
+(function(){
   const btn = document.getElementById('btnCompute');
-  if(btn){ btn.addEventListener('click', function(){ try{ zf_compute(); }catch(e){ console.warn('zFactors error', e); } }); }
-});
+  if(btn){
+    const original = btn.onclick;
+    btn.onclick = function(ev){
+      try{ if(typeof original === 'function') original.call(this, ev); }catch(e){ /* ignore */ }
+      try{ computeFactorComposite(); }catch(e){ console.warn('FactorComposite error', e); }
+    };
+  } else {
+    // If not present, compute on load once
+    document.addEventListener('DOMContentLoaded', computeFactorComposite);
+  }
+})();
 </script>
 
 </body></html>
