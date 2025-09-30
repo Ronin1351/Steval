@@ -2905,571 +2905,131 @@ function computeFactorComposite(){
 
 
 <!-- =======================
-     FACTOR PILLARS (NON-BREAKING ADD-ON)
+     SEC → UFA ADAPTER (NON-BREAKING)
      ======================= -->
-<section id="factor-pillars" class="card section">
-  <h2>Factor Pillars</h2>
-  <p class="muted">Uses your existing SEC/estimates ingestor. Reads from <code>window.UFA</code> if present; otherwise shows placeholders. No changes to your SEC module.</p>
-
-  <div class="grid two">
-    <div class="panel">
-      <h3>Value</h3>
-      <ul id="value-metrics" class="kv"></ul>
-    </div>
-    <div class="panel">
-      <h3>Momentum &amp; Technicals</h3>
-      <ul id="mom-metrics" class="kv"></ul>
-    </div>
-    <div class="panel">
-      <h3>Earnings &amp; Revisions</h3>
-      <ul id="rev-metrics" class="kv"></ul>
-    </div>
-    <div class="panel">
-      <h3>Risk &amp; Financial Health</h3>
-      <ul id="risk-metrics" class="kv"></ul>
-    </div>
-    <div class="panel">
-      <h3>Quality &amp; Growth</h3>
-      <ul id="qual-metrics" class="kv"></ul>
-    </div>
-    <div class="panel">
-      <h3>Market Structure &amp; Flows</h3>
-      <ul id="flow-metrics" class="kv"></ul>
-    </div>
-    <div class="panel">
-      <h3>Ownership Signals</h3>
-      <ul id="own-metrics" class="kv"></ul>
-    </div>
-    <div class="panel danger">
-      <h3>Red‑Flag Rules</h3>
-      <ul id="redflags" class="kv"></ul>
-    </div>
-  </div>
-
-  <div class="panel">
-    <h3>Composite Score</h3>
-    <div class="flex between">
-      <div>
-        <div class="kv-row"><span>Quality</span><span id="w-quality">25%</span></div>
-        <div class="kv-row sub">F‑Score 12, ROIC−WACC 13</div>
-      </div>
-      <div>
-        <div class="kv-row"><span>Value</span><span id="w-value">20%</span></div>
-      </div>
-      <div>
-        <div class="kv-row"><span>Growth</span><span id="w-growth">15%</span></div>
-      </div>
-      <div>
-        <div class="kv-row"><span>Momentum</span><span id="w-mom">20%</span></div>
-      </div>
-      <div>
-        <div class="kv-row"><span>Revisions</span><span id="w-rev">15%</span></div>
-      </div>
-      <div>
-        <div class="kv-row"><span>Risk (inverse)</span><span id="w-risk">5%</span></div>
-      </div>
-    </div>
-    <div class="score-wrap">
-      <div id="composite-score" class="big-score">—</div>
-      <div id="guardrail-note" class="muted small"></div>
-    </div>
-  </div>
-
-  <div class="grid two">
-    <div class="panel">
-      <h3>Why this score?</h3>
-      <canvas id="waterfallChart" height="220"></canvas>
-      <div id="waterfall-legend" class="muted small"></div>
-    </div>
-    <div class="panel">
-      <h3>What changed this week?</h3>
-      <ul id="weekly-diff" class="kv"></ul>
-    </div>
-  </div>
-
-  <div class="grid two">
-    <div class="panel">
-      <h3>Peer Stack Rank</h3>
-      <table id="peer-table" class="table compact">
-        <thead><tr><th>Ticker</th><th>Composite</th><th>Value</th><th>Quality</th><th>Growth</th><th>Mom</th><th>Rev</th><th>Risk</th></tr></thead>
-        <tbody></tbody>
-      </table>
-    </div>
-    <div class="panel">
-      <h3>Radar vs Industry Median</h3>
-      <canvas id="radarChart" height="260"></canvas>
-    </div>
-  </div>
-
-  <div class="panel">
-    <h3>Reverse‑DCF</h3>
-    <div class="grid three">
-      <label>WACC <input id="rdcf-wacc" type="number" step="0.1" value="10"></label>
-      <label>Term (yrs) <input id="rdcf-years" type="number" step="1" value="10"></label>
-      <label>Terminal g% <input id="rdcf-termg" type="number" step="0.1" value="2"></label>
-    </div>
-    <div class="grid two">
-      <label>FCF₀ (latest) <input id="rdcf-fcf0" type="number" step="1" value="0"></label>
-      <label>Price <input id="rdcf-price" type="number" step="0.01" value="0"></label>
-    </div>
-    <button id="rdcf-run">Solve implied growth</button>
-    <div id="rdcf-out" class="muted"></div>
-  </div>
-
-  <div class="panel">
-    <h3>Backtesting &amp; Risk</h3>
-    <ul class="kv" id="bt-notes">
-      <li>Walk‑forward, sector‑neutral, with transaction costs.</li>
-      <li>Decay/turnover diagnostics.</li>
-      <li>Out‑of‑sample shadow portfolio.</li>
-      <li>ATR%/stdev sizing, stops, rebalance cadence.</li>
-      <li>Stress tests: 2020 shock, rates, oil.</li>
-    </ul>
-  </div>
-</section>
-
-<style>
-  .card.section { margin-top: 24px; }
-  .grid.two { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:12px; }
-  .grid.three { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:12px; }
-  .panel { background: var(--card-bg, #111); padding:12px; border-radius:12px; box-shadow: var(--shadow, 0 0 0 1px #222); }
-  .panel.danger { border:1px solid #8a2b2b; }
-  .kv { list-style:none; padding:0; margin:0; }
-  .kv-row, .kv li { display:flex; justify-content:space-between; padding:4px 0; border-bottom: 1px dashed rgba(255,255,255,0.06); }
-  .kv-row.sub { font-size: 12px; opacity:.7; border:none; margin-top:-6px }
-  .big-score { font-size: 42px; font-weight: 700; }
-  .score-wrap { display:flex; align-items:center; gap:16px; }
-  .table.compact { width:100%; border-collapse: collapse; }
-  .table.compact th, .table.compact td { padding:6px 8px; border-bottom:1px solid rgba(255,255,255,.06); text-align:right }
-  .table.compact th:first-child, .table.compact td:first-child { text-align:left }
-  .muted { opacity:.8 }
-  .small { font-size:12px }
-  .flex.between { display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px }
-  label input { width:100%; }
-  button { padding:8px 12px; border-radius:8px; border:1px solid rgba(255,255,255,.15); background:transparent; cursor:pointer }
-  button:hover { background: rgba(255,255,255,.05) }
-</style>
-
 <script>
-// ============= Non-breaking analytics add-on =============
-// We read from window.UFA if your app defines it. Expected shape:
-// UFA = { fundamentals: {...}, prices: {daily: [{date, close}], adv: number, spread_bp: number}, peers: [...], estimates: {...}, flows: {...}, ownership: {...} }
-
-window.Pillars = (function(){
-  const isNum = v => typeof v === 'number' && isFinite(v);
-
-  // Z-score helper (sector/cap neutral expected upstream). Fallback uses simple z from peer array.
-  function zscore(value, arr) {
-    if(!isNum(value) || !Array.isArray(arr) || arr.length < 3) return null;
-    const mu = arr.reduce((a,b)=>a+b,0)/arr.length;
-    const sd = Math.sqrt(arr.reduce((a,b)=>a+(b-mu)*(b-mu),0)/(arr.length-1));
-    if(sd===0) return 0;
-    return (value - mu)/sd;
-  }
-
-  // Percent change helper for momentum windows
-  function pctChange(series, days) {
-    if(!Array.isArray(series) || series.length < days+1) return null;
-    const a = series[series.length-1].close;
-    const b = series[series.length-1-days].close;
-    return isNum(a)&&isNum(b) && b!==0 ? (a/b - 1) : null;
-  }
-
-  // Simple SMA for trend filters
-  function sma(series, n) {
-    if(!Array.isArray(series) || series.length < n) return null;
-    let s = 0; for(let i=series.length-n;i<series.length;i++) s += series[i].close;
-    return s / n;
-  }
-
-  // ATR% using HLCC classic approximation if available; fallback to stdev of returns
-  function atrPct(daily, n=20) {
-    if(!Array.isArray(daily) || daily.length < n+1) return null;
-    // fallback: use close-to-close true range approximation
-    let tr = [];
-    for(let i=1;i<daily.length;i++){
-      const hi = daily[i].high ?? daily[i].close;
-      const lo = daily[i].low ?? daily[i].close;
-      const pc = daily[i-1].close;
-      const trueRange = Math.max(hi-lo, Math.abs(hi-pc), Math.abs(lo-pc));
-      tr.push(trueRange);
-    }
-    const avgTR = tr.slice(-n).reduce((a,b)=>a+b,0)/n;
-    const lastClose = daily[daily.length-1].close;
-    return lastClose ? avgTR/lastClose : null;
-  }
-
-  function stdev(series, n=60) {
-    if(!Array.isArray(series) || series.length < n+1) return null;
-    let rets = [];
-    for(let i=1;i<series.length;i++){
-      const r = series[i].close/series[i-1].close - 1;
-      if(isFinite(r)) rets.push(r);
-    }
-    const slice = rets.slice(-n);
-    const mu = slice.reduce((a,b)=>a+b,0)/slice.length;
-    const sd = Math.sqrt(slice.reduce((a,b)=>a+(b-mu)*(b-mu),0)/(slice.length-1));
-    return sd;
-  }
-
-  // Reverse DCF: solve for constant growth g that matches price = sum(FCF_t discounted) + TV
-  function impliedGrowthFromPrice({fcf0, wacc, years, termg, price, shares}) {
-    if(![fcf0,wacc,years,termg,price].every(isNum) || wacc<=termg/100 || years<1) return null;
-    const r = wacc/100; const gT = termg/100;
-    // brute-force search g in [-10%, 30%]
-    let best = null, bestErr = 1e18;
-    for(let g=-0.10; g<=0.30; g+=0.0005){
-      let pv = 0, fcf = fcf0;
-      for(let t=1; t<=years; t++){
-        fcf = fcf * (1+g);
-        pv += fcf / ((1+r)**t);
-      }
-      const tv = (fcf * (1+gT)) / (r - gT);
-      pv += tv / ((1+r)**years);
-      const eqv = shares ? pv / shares : pv; // if caller supplies shares, convert to per-share
-      const err = Math.abs(eqv - price);
-      if(err < bestErr){ bestErr = err; best = g; }
-    }
-    return best*100;
-  }
-
-  // Composite scoring
-  function composite(weights, zs, knockouts) {
-    if(knockouts && knockouts.length && knockouts.some(Boolean)) {
-      return {score: 50, guardrail: "Knockout triggered → capped at Hold"};
-    }
-    const wsum = Object.values(weights).reduce((a,b)=>a+b,0);
-    let s = 0;
-    s += (zs.quality ?? 0) * (weights.quality/wsum);
-    s += (zs.value ?? 0)   * (weights.value/wsum);
-    s += (zs.growth ?? 0)  * (weights.growth/wsum);
-    s += (zs.mom ?? 0)     * (weights.mom/wsum);
-    s += (zs.rev ?? 0)     * (weights.rev/wsum);
-    s += (zs.risk ?? 0)    * (weights.risk/wsum) * -1; // inverse risk
-    // map z ~[-2, +2] → 0..100
-    const norm = Math.max(0, Math.min(100, 50 + 25*s));
-    return {score: Math.round(norm), guardrail: ""};
-  }
-
-  // Render helpers
-  function setKV(id, rows) {
-    const el = document.getElementById(id);
-    if(!el) return;
-    el.innerHTML = "";
-    rows.forEach(([k,v])=>{
-      const li = document.createElement('li');
-      li.innerHTML = `<span>${k}</span><span>${v ?? '—'}</span>`;
-      el.appendChild(li);
-    });
-  }
-
-  // minimal canvas waterfall (no external libs)
-  function drawWaterfall(canvas, items) {
-    if(!canvas || !canvas.getContext) return;
-    const ctx = canvas.getContext('2d');
-    const W = canvas.width, H = canvas.height;
-    ctx.clearRect(0,0,W,H);
-    const margin = 20, barW = Math.max(14, Math.floor((W - margin*2) / (items.length*1.5)));
-    let x = margin, y0 = H - margin;
-    let cur = 0;
-    const maxAbs = Math.max(1, ...items.map(it => Math.abs(it.delta)));
-    const scale = (H - margin*2) / (2*maxAbs);
-    items.forEach(it=>{
-      const y = -it.delta * scale;
-      ctx.fillStyle = it.delta>=0 ? '#57b26a' : '#d05c5c';
-      ctx.fillRect(x, y0 + Math.min(0,y), barW, Math.abs(y));
-      // running total line
-      cur += it.delta;
-      ctx.strokeStyle = '#aaa';
-      ctx.beginPath();
-      ctx.moveTo(x+barW/2, y0 - cur*scale);
-      ctx.lineTo(x+barW/2, y0 - cur*scale);
-      ctx.stroke();
-      x += barW * 1.4;
-    });
-  }
-
-  
-  function renderAll(UFA){
+(function(){
+  const num = v => (typeof v === 'number' && isFinite(v)) ? v : null;
+  function take(obj, path, dflt=null){
     try{
-      const f = UFA?.fundamentals || {};
-      const p = UFA?.prices || {};
-      const d = Array.isArray(p.daily) ? p.daily : [];
-      const peers = Array.isArray(UFA?.peers) ? UFA.peers : [];
+      const v = path.split('.').reduce((o,k)=> (o && o[k]!==undefined)? o[k] : undefined, obj);
+      return (v===undefined)? dflt : v;
+    }catch(e){ return dflt; }
+  }
+  window.buildUFAFromSEC = function(sec, prices){
+    sec = sec || {}; prices = prices || {};
+    const t = sec.tTM || sec.ttm || {};
+    const q = sec.qtr || sec.quarter || {};
 
-      // ===== VALUE =====
-      const ev   = f.enterprise_value;
-      const ebit = f.ebit;
-      const fcf  = f.fcf;
-      const mkt  = f.market_cap;
-      const buyb = f.buybacks;
-      const divs = f.dividends;
-      const iss  = f.share_issuance;
-      const ev_ebit = (isNum(ev) && isNum(ebit) && ebit!==0) ? ev/ebit : null;
-      const ev_fcf  = (isNum(ev) && isNum(fcf) && fcf!==0) ? ev/fcf  : null;
-      const fcf_y   = (isNum(fcf) && isNum(mkt) && mkt>0) ? (fcf/mkt)*100 : null;
-      const sh_y    = (isNum(buyb) && isNum(divs) && isNum(iss) && isNum(mkt) && mkt>0) ? ((buyb+divs-iss)/mkt)*100 : null;
+    const CFO  = num(t.cfo ?? t.netCashFromOperations ?? t.netCashProvidedByUsedInOperatingActivities);
+    const CapEx= num(t.capex ?? t.capitalExpenditures ?? t.paymentsToAcquirePPE);
+    const OI   = num(t.operIncome ?? t.operatingIncomeLoss ?? t.operatingIncome);
+    const DA   = num(t.dna ?? t.deprAmort ?? t.depreciationDepletionAndAmortization);
+    const EBITDA = (OI!=null ? OI : null) + (DA||0);
 
-      setKV('value-metrics', [
-        ['EV/EBIT', (ev_ebit!=null)? ev_ebit.toFixed(2): null],
-        ['EV/FCF', (ev_fcf!=null)? ev_fcf.toFixed(2): null],
-        ['FCF Yield %', (fcf_y!=null)? fcf_y.toFixed(2): null],
-        ['Shareholder Yield %', (sh_y!=null)? sh_y.toFixed(2): null],
-      ]);
+    const LTD   = num(q.longTermDebt);
+    const LTDC  = num(q.longTermDebtCurrent);
+    const STB   = num(q.shortTermBorrowings ?? q.shortTermDebt);
+    const totalDebt = [LTD,LTDC,STB].some(v=>v!=null) ? (LTD||0)+(LTDC||0)+(STB||0) : null;
 
-      // ===== MOMENTUM & TECHNICALS =====
-      const r1  = pctChange(d, 21);
-      const r3  = pctChange(d, 63);
-      const r6  = pctChange(d, 126);
-      const r12 = pctChange(d, 252);
-      const sma150 = sma(d, 150);
-      const sma200 = sma(d, 200);
-      const px = d.length ? d[d.length-1].close : null;
-      const above150 = (isNum(px)&&isNum(sma150)) ? (px>sma150?'Yes':'No') : null;
-      const above200 = (isNum(px)&&isNum(sma200)) ? (px>sma200?'Yes':'No') : null;
-      const atrp = atrPct(d, 20);
-      const sd60 = stdev(d, 60);
+    const cash  = num(q.cashAndEquivalents ?? q.cashAndCashEquivalentsAtCarryingValue);
+    const equity= num(q.stockholdersEquity ?? q.totalEquity);
+    const currA = num(q.currentAssets ?? q.assetsCurrent);
+    const currL = num(q.currentLiabilities ?? q.liabilitiesCurrent);
+    const totL  = num(q.totalLiabilities ?? q.liabilities);
+    const totA  = num(q.totalAssets ?? q.assets);
 
-      setKV('mom-metrics', [
-        ['1M Total Return %', (r1!=null)? (r1*100).toFixed(2): null],
-        ['3M Total Return %', (r3!=null)? (r3*100).toFixed(2): null],
-        ['6M Total Return %', (r6!=null)? (r6*100).toFixed(2): null],
-        ['12M Total Return %', (r12!=null)? (r12*100).toFixed(2): null],
-        ['Price > 150DMA', above150],
-        ['Price > 200DMA', above200],
-        ['ATR% (20d)', (atrp!=null)? (atrp*100).toFixed(2): null],
-        ['Stdev (60d)', (sd60!=null)? sd60.toFixed(3): null],
-      ]);
+    const lastClose = take(prices, 'last.close', null)
+                   ?? (Array.isArray(prices.dailyOHLC) && prices.dailyOHLC.length ? num(prices.dailyOHLC[prices.dailyOHLC.length-1].close) : null)
+                   ?? (Array.isArray(prices.dailyClose) && prices.dailyClose.length ? num(prices.dailyClose[prices.dailyClose.length-1].close) : null);
 
-      // ===== EARNINGS & REVISIONS =====
-      const e = UFA?.estimates || {};
-      const revBreadth = e.revision_breadth_nextFY;      // % of analysts raising est
-      const revMagEPS  = e.revision_magnitude_eps_nextFY; // delta in EPS
-      const revMagSales= e.revision_magnitude_sales_nextFY;
-      const surpriseEPS4 = e.surprise_eps_last4q;
-      const surpriseRev4 = e.surprise_sales_last4q;
-      const nextCatalyst = e.next_catalyst; // ISO date or label
+    const sharesOut = num(q.commonSharesOutstanding ?? q.sharesBasic ?? q.sharesDiluted);
+    let marketCap = num(prices.marketCap);
+    if(marketCap==null && lastClose!=null && sharesOut!=null){ marketCap = lastClose * sharesOut; }
 
-      setKV('rev-metrics', [
-        ['EPS Surprise (L4Q) %', (isNum(surpriseEPS4))? surpriseEPS4.toFixed(1): null],
-        ['Sales Surprise (L4Q) %', (isNum(surpriseRev4))? surpriseRev4.toFixed(1): null],
-        ['Rev. Breadth (Next FY) %', (isNum(revBreadth))? revBreadth.toFixed(1): null],
-        ['Rev. Magnitude EPS (Next FY)', (isNum(revMagEPS))? revMagEPS.toFixed(2): null],
-        ['Rev. Magnitude Sales (Next FY) %', (isNum(revMagSales))? revMagSales.toFixed(1): null],
-        ['Next Catalyst', nextCatalyst || '—'],
-      ]);
+    const EV = (marketCap!=null && totalDebt!=null && cash!=null) ? (marketCap + totalDebt - cash) : null;
+    const EBIT = OI!=null ? OI : null;
+    const FCF  = (CFO!=null && CapEx!=null) ? (CFO - CapEx) : null;
 
-      // ===== RISK & FIN HEALTH =====
-      const nd = f.net_debt;
-      const ebitda = f.ebitda;
-      const intExp = f.interest_expense;
-      const intCov = (isNum(f.ebit) && isNum(intExp) && intExp!==0) ? f.ebit/Math.abs(intExp) : null;
-      const ndebitda = (isNum(nd) && isNum(ebitda) && ebitda!==0) ? nd/ebitda : null;
-      const de = (isNum(f.total_debt) && isNum(f.shareholders_equity) && f.shareholders_equity!==0) ? f.total_debt/f.shareholders_equity : null;
-      const currentRatio = (isNum(f.current_assets) && isNum(f.current_liabilities) && f.current_liabilities!==0) ? f.current_assets/f.current_liabilities : null;
-      const ocf = f.cfo;
-      const ocfCov = (isNum(ocf) && isNum(f.total_liabilities) && f.total_liabilities>0) ? ocf/f.total_liabilities : null;
-      const accruals = (isNum(f.net_income) && isNum(ocf) && isNum(f.total_assets) && f.total_assets!==0) ? ((f.net_income-ocf)/f.total_assets) : null;
+    const fundamentals = {
+      enterprise_value: EV,
+      ebit: EBIT,
+      ebitda: EBITDA,
+      fcf: FCF,
+      market_cap: marketCap,
+      buybacks: num(t.buybacks ?? t.paymentsForRepurchaseOfCommonStock),
+      dividends: num(t.dividends ?? t.paymentsOfDividends),
+      share_issuance: num(t.shareIssuance ?? t.proceedsFromIssuanceOfCommonStock),
+      net_debt: (totalDebt!=null && cash!=null) ? (totalDebt - cash) : null,
+      total_debt: totalDebt,
+      shareholders_equity: equity,
+      current_assets: currA,
+      current_liabilities: currL,
+      total_liabilities: totL,
+      total_assets: totA,
+      interest_expense: num(t.interestExpense),
+      cfo: CFO,
+      capitalized_expenses: num(t.capitalizedCosts ?? t.capitalizedSoftware ?? t.capitalExpenditures),
+      roic: num(sec.ttm_roic),
+      wacc: num(prices.wacc),
+      fscore: num(sec.fscore),
+      fscore_cash: num(sec.fscore_cash),
+      revenue_cagr3: num(sec.cagr3),
+      revenue_cagr5: num(sec.cagr5),
+      rule_of_40: num(sec.rule40),
+      shares_out: sharesOut,
+      shares_out_yoy: num(sec.yoy_shares_out)
+    };
 
-      setKV('risk-metrics', [
-        ['Net Debt/EBITDA', (ndebitda!=null)? ndebitda.toFixed(2): null],
-        ['Interest Coverage', (intCov!=null)? intCov.toFixed(2): null],
-        ['Debt/Equity', (de!=null)? de.toFixed(2): null],
-        ['Current Ratio', (currentRatio!=null)? currentRatio.toFixed(2): null],
-        ['OCF Coverage (TL)', (ocfCov!=null)? ocfCov.toFixed(2): null],
-        ['Sloan Accruals', (accruals!=null)? accruals.toFixed(3): null],
-      ]);
+    const ufa = {
+      fundamentals,
+      prices: {
+        daily: prices.dailyOHLC ?? prices.dailyClose ?? [],
+        adv: num(prices.advUSD),
+        spread_bp: num(prices.spreadBp)
+      },
+      peers: Array.isArray(prices.peers) ? prices.peers : [],
+      estimates: prices.estimates || {},
+      short_interest: prices.shortInterest || {},
+      options: prices.options || {},
+      ownership: prices.ownership || {},
+      audit: sec.auditFlags || {},
+      adr: sec.adrFlags || {},
+      diff: prices.weeklyDiff || [],
+      z: prices.precomputedZ || null
+    };
 
-      // ===== QUALITY & GROWTH =====
-      const roic = f.roic;
-      const wacc = f.wacc;
-      const roicSpread = (isNum(roic)&&isNum(wacc)) ? (roic - wacc) : null;
-      const reinvestRate = f.reinvestment_rate; // capex+R&D as %? or provided
-      const reinvestROIC = (isNum(roic) && isNum(reinvestRate)) ? roic*reinvestRate/100 : null;
-      const fscore = f.fscore;         // 0..9 classic Piotroski
-      const fscore_cash = f.fscore_cash; // cash-based variant 0..9
-      const cagr3 = f.revenue_cagr3;
-      const cagr5 = f.revenue_cagr5;
-      const sw_rule40 = f.rule_of_40;
-
-      setKV('qual-metrics', [
-        ['F‑Score', (isNum(fscore))? fscore.toFixed(0): null],
-        ['F‑Score (Cash)', (isNum(fscore_cash))? fscore_cash.toFixed(0): null],
-        ['ROIC − WACC %', (roicSpread!=null)? roicSpread.toFixed(2): null],
-        ['Reinvestment Rate %', (isNum(reinvestRate))? reinvestRate.toFixed(1): null],
-        ['Reinvestment ROIC %', (isNum(reinvestROIC))? reinvestROIC.toFixed(2): null],
-        ['CAGR 3y %', (isNum(cagr3))? cagr3.toFixed(1): null],
-        ['CAGR 5y %', (isNum(cagr5))? cagr5.toFixed(1): null],
-        ['Rule of 40 %', (isNum(sw_rule40))? sw_rule40.toFixed(1): null],
-      ]);
-
-      // ===== FLOWS =====
-      const adv = p.adv; // average daily $ value traded
-      const spread = p.spread_bp;
-      const dtl3 = (isNum(adv) && isNum(mkt) && adv>0) ? ( (mkt * 0.02) / adv ) : null; // days to liquidate 2% mkt cap @ ADV
-      const si = UFA?.short_interest || {};
-      const dtc = si.days_to_cover;
-      const si1m = si.change_1m;
-      const si3m = si.change_3m;
-      const opt = UFA?.options || {};
-      const ivr = opt.iv_rank;
-      const skew = opt.skew;
-      const pcr = opt.put_call_ratio;
-
-      setKV('flow-metrics', [
-        ['ADV ($)', (isNum(adv))? adv.toLocaleString(): null],
-        ['Bid‑Ask (bp)', (isNum(spread))? spread.toFixed(1): null],
-        ['Days to Liquidate (2% mktcap)', (dtl3!=null)? dtl3.toFixed(2): null],
-        ['Short Interest DTC', (isNum(dtc))? dtc.toFixed(2): null],
-        ['SI Δ1M %', (isNum(si1m))? si1m.toFixed(1): null],
-        ['SI Δ3M %', (isNum(si3m))? si3m.toFixed(1): null],
-        ['IV Rank', (isNum(ivr))? ivr.toFixed(2): null],
-        ['Skew', (isNum(skew))? skew.toFixed(2): null],
-        ['Put/Call Ratio', (isNum(pcr))? pcr.toFixed(2): null],
-      ]);
-
-      // ===== OWNERSHIP =====
-      const own = UFA?.ownership || {};
-      const ins3m = own.insider_net_3m_valuew;
-      const instChg = own.institutional_change_3m;
-      const etfImpact = own.etf_flow_impact;
-
-      setKV('own-metrics', [
-        ['Insider Net (3M, $)', (isNum(ins3m))? ins3m.toLocaleString(): null],
-        ['Institutional Δ (3M, % shares)', (isNum(instChg))? instChg.toFixed(2): null],
-        ['ETF Flow Impact (bps)', (isNum(etfImpact))? etfImpact.toFixed(1): null],
-      ]);
-
-      // ===== RED FLAGS =====
-      const red = [];
-      if (UFA?.audit?.qualified_opinion) red.push('Qualified audit opinion');
-      if (UFA?.audit?.going_concern) red.push('Going‑concern language');
-      if (isNum(f.cfo) && isNum(f.capitalized_expenses) && f.cfo<0 && f.capitalized_expenses>0) red.push('Negative CFO + rising capitalized costs');
-      if (isNum(f.shares_out_yoy) && f.shares_out_yoy>5 && isNum(roic) && (!isNum(wacc) || (roic - (wacc||0) < 0))) red.push('Share count up >5% YoY without ROIC improvement');
-      if (UFA?.offcycle_guidance_cut) red.push('Off‑cycle guidance cut');
-      if (UFA?.covenant_breach) red.push('Covenant breach');
-      if (UFA?.adr && UFA.adr.pcaob_issue) red.push('ADR audit/PCAOB accessibility issue');
-
-      setKV('redflags', red.length ? red.map(x=>[x,'']).slice(0,12) : [['None detected','']]);
-
-      // ===== COMPOSITE =====
-      // Expect z-scores precomputed upstream (sector/cap neutral). Fallback: naive z vs peers for demo.
-      function zFallback(key){
-        const arr = peers.map(t=> t?.z?.[key]).filter(isNum);
-        return (UFA?.z && isNum(UFA.z[key])) ? UFA.z[key] : zscore(UFA?.raw?.[key], arr);
-      }
-      const zs = {
-        quality: UFA?.z?.quality ?? zFallback('quality') ?? 0,
-        value:   UFA?.z?.value   ?? zFallback('value')   ?? 0,
-        growth:  UFA?.z?.growth  ?? zFallback('growth')  ?? 0,
-        mom:     UFA?.z?.mom     ?? zFallback('mom')     ?? 0,
-        rev:     UFA?.z?.rev     ?? zFallback('rev')     ?? 0,
-        risk:    UFA?.z?.risk    ?? zFallback('risk')    ?? 0,
-      };
-      const weights = {quality:25, value:20, growth:15, mom:20, rev:15, risk:5};
-      const {score, guardrail} = composite(weights, zs, red.length? [true]: []);
-      const scoreEl = document.getElementById('composite-score');
-      if(scoreEl) scoreEl.textContent = isNum(score) ? String(score) : '—';
-      const guardEl = document.getElementById('guardrail-note');
-      if(guardEl) guardEl.textContent = guardrail || '';
-
-      // Waterfall contributions (toy: scale z by weight)
-      const items = [
-        {label:'Quality', delta: zs.quality * (weights.quality/25)},
-        {label:'Value',   delta: zs.value   * (weights.value/25)},
-        {label:'Growth',  delta: zs.growth  * (weights.growth/25)},
-        {label:'Momentum',delta: zs.mom     * (weights.mom/25)},
-        {label:'Revisions',delta:zs.rev     * (weights.rev/25)},
-        {label:'Risk (inv)',delta:-zs.risk  * (weights.risk/25)},
-      ];
-      const wf = document.getElementById('waterfallChart');
-      if (wf) drawWaterfall(wf, items);
-      const leg = document.getElementById('waterfall-legend');
-      if (leg) leg.textContent = 'Bars show each factor’s contribution to the composite (normalized).';
-
-      // Radar: we draw a minimalist polygon using canvas
-      (function drawRadar(){
-        const cvs = document.getElementById('radarChart');
-        if(!cvs || !cvs.getContext) return;
-        const ctx = cvs.getContext('2d'), W=cvs.width, H=cvs.height;
-        ctx.clearRect(0,0,W,H);
-        const axes = ['Quality','Value','Growth','Momentum','Revisions','Risk(inv)'];
-        const vals = [zs.quality, zs.value, zs.growth, zs.mom, zs.rev, -zs.risk].map(v=> Math.max(-2, Math.min(2, v)));
-        const R = Math.min(W,H)/2 - 20, cx=W/2, cy=H/2;
-        // grid
-        ctx.strokeStyle = '#333';
-        for(let r=0;r<=4;r++){
-          ctx.beginPath();
-          for(let i=0;i<axes.length;i++){
-            const a = (Math.PI*2/axes.length)*i;
-            const x = cx + (R*r/4)*Math.cos(a);
-            const y = cy + (R*r/4)*Math.sin(a);
-            if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-          }
-          ctx.closePath(); ctx.stroke();
-        }
-        // polygon
-        ctx.beginPath(); ctx.strokeStyle='#6aa7ff'; ctx.fillStyle='rgba(106,167,255,.2)';
-        for(let i=0;i<axes.length;i++){
-          const a = (Math.PI*2/axes.length)*i;
-          const x = cx + (R*(vals[i]+2)/4)*Math.cos(a);
-          const y = cy + (R*(vals[i]+2)/4)*Math.sin(a);
-          if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-        }
-        ctx.closePath(); ctx.fill(); ctx.stroke();
-      })();
-
-      // Weekly diff placeholder
-      setKV('weekly-diff', UFA?.diff?.map(d=>[d.label, d.delta>0?`+${d.delta.toFixed(1)}`:d.delta?.toFixed(1)]) || [['No change log','']]);
-
-      // Peer table placeholder
-      const tbody = document.querySelector('#peer-table tbody');
-      if(tbody){
-        tbody.innerHTML = '';
-        (peers.slice(0,25) || []).forEach(t=>{
-          const tr = document.createElement('tr');
-          function cell(v){ const td = document.createElement('td'); td.textContent = (v!=null)? v: '—'; return td; }
-          tr.appendChild(cell(t.ticker || '—'));
-          tr.appendChild(cell(t.composite!=null? t.composite.toFixed(0): '—'));
-          tr.appendChild(cell(t.value!=null? t.value.toFixed(2): '—'));
-          tr.appendChild(cell(t.quality!=null? t.quality.toFixed(2): '—'));
-          tr.appendChild(cell(t.growth!=null? t.growth.toFixed(2): '—'));
-          tr.appendChild(cell(t.mom!=null? t.mom.toFixed(2): '—'));
-          tr.appendChild(cell(t.rev!=null? t.rev.toFixed(2): '—'));
-          tr.appendChild(cell(t.risk!=null? t.risk.toFixed(2): '—'));
-          tbody.appendChild(tr);
-        });
-      }
-    }catch(e){
-      console.warn('Pillars render error', e);
+    window.UFA = ufa;
+    if (window.Pillars && window.Pillars.renderAll) {
+      try { window.Pillars.renderAll(ufa); } catch(e){ console.warn('renderAll error', e); }
     }
-  }
+    return ufa;
+  };
 
-  return { renderAll, composite, impliedGrowthFromPrice, zscore };
+  // Optional event glue: dispatch this from your loader when SEC+prices are ready
+  // window.dispatchEvent(new CustomEvent('SEC_DATA_READY', {detail:{sec, prices}}));
+  window.addEventListener('SEC_DATA_READY', (ev)=>{
+    try{
+      const d = ev.detail || {};
+      window.buildUFAFromSEC(d.sec, d.prices);
+    }catch(e){ console.warn('SEC_DATA_READY handler failed', e); }
+  });
+
+  // Try once if UFA already exists (page restore/hot reload)
+  if (window.UFA && window.Pillars && window.Pillars.renderAll){
+    try{ window.Pillars.renderAll(window.UFA); }catch(e){}
+  } else {
+    // gentle retry for a few seconds
+    let tries=0; const iv=setInterval(()=>{
+      tries++;
+      if (window.UFA && window.Pillars && window.Pillars.renderAll){
+        try{ window.Pillars.renderAll(window.UFA); }catch(e){}
+        clearInterval(iv);
+      }
+      if (tries>50) clearInterval(iv);
+    }, 200);
+  }
 })();
-
-// Auto-bind Reverse DCF
-document.addEventListener('DOMContentLoaded', function(){
-  // reverse DCF button
-  const btn = document.getElementById('rdcf-run');
-  if(btn){
-    btn.addEventListener('click', ()=>{
-      const g = window.Pillars.impliedGrowthFromPrice({
-        fcf0: parseFloat(document.getElementById('rdcf-fcf0').value || '0'),
-        wacc: parseFloat(document.getElementById('rdcf-wacc').value || '10'),
-        years: parseInt(document.getElementById('rdcf-years').value || '10'),
-        termg: parseFloat(document.getElementById('rdcf-termg').value || '2'),
-        price: parseFloat(document.getElementById('rdcf-price').value || '0'),
-        shares: (window.UFA && window.UFA.fundamentals && window.UFA.fundamentals.shares_out) ? window.UFA.fundamentals.shares_out : null
-      });
-      const out = document.getElementById('rdcf-out');
-      out.textContent = (g==null) ? 'Insufficient inputs.' : ('Implied constant growth ≈ ' + g.toFixed(2) + '%');
-    });
-  }
-
-  // attempt to render immediately if UFA exists
-  if(window.UFA){ try{ window.Pillars.renderAll(window.UFA); }catch(e){} }
-});
 </script>
 
 </body></html>
