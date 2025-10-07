@@ -1,3 +1,4 @@
+
 <html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -127,203 +128,192 @@
 
   /* Notes toggler */
   .note-wrap{ position:relative; }
-  .note-toggle{ margin-left:8px; font-size:11px; cursor:pointer; color: var(--link); text-decoration:underline; }
+  .note-toggle{ margin-left:8px; font-size:11px; cursor:pointer; color:var(--link); text-decoration:underline; }
   .note-box{ display:none; margin-top:8px; border:1px solid rgba(245,158,11,.55); background:linear-gradient(180deg, rgba(245,158,11,.06), rgba(245,158,11,.02)); border-radius:12px; padding:8px; }
   .note-head{ font-size:12px; font-weight:800; letter-spacing:.3px; color:#ffd89a; display:flex; align-items:center; gap:6px; margin-bottom:6px; }
-  .note-box textarea{ width:100%; min-height:70px; resize:vertical; padding:10px 12px; border-radius:10px; border:1px solid #3b2b12; outline:none; background:var(--input); color: var(--fg); }
+  .note-box textarea{ width:100%; min-height:70px; resize:vertical; padding:10px 12px; border-radius:10px; border:1px solid #3b2b12; outline:none; background:var(--input); color:var(--fg); }
   .missing { box-shadow: 0 0 0 3px rgba(220,38,38,.35) inset; }
 
   .footer { margin-top: 24px; font-size: 12px; color: var(--muted); text-align: center; }
 
-  /* Unified Inputs: 3-column compact layout (Label | Current | Last) */
-  .uni-grid{display:grid;gap:10px}
-  .uni-row{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:10px;align-items:center}
-  .uni-row label{margin:0;font-weight:600}
-  @media(max-width:880px){.uni-row{grid-template-columns:1fr}}
-  /* Unified Inputs spacing: label | current | last */
-  .uni-grid{row-gap:18px;}
+/* Unified Inputs: 3-column compact layout (Label | Current | Last) */
+.uni-grid{display:grid;gap:10px}
+.uni-row{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:10px;align-items:center}
+.uni-row label{margin:0;font-weight:600}
+@media(max-width:880px){.uni-row{grid-template-columns:1fr}}
+/* Unified Inputs spacing: label | current | last */
+.uni-grid{row-gap:18px;}
+.uni-row{
+  grid-template-columns: minmax(220px,1.2fr) minmax(220px,1fr) minmax(220px,1fr);
+  column-gap:24px;
+  align-items:start;
+  padding:6px 0;
+}
+.uni-row .input{width:100%;}
+@media (max-width:1200px){
   .uni-row{
-    grid-template-columns: minmax(220px,1.2fr) minmax(220px,1fr) minmax(220px,1fr);
-    column-gap:24px;
-    align-items:start;
-    padding:6px 0;
+    grid-template-columns: 1fr 1fr;
+    row-gap:10px;
+    column-gap:16px;
   }
-  .uni-row .input{width:100%;}
-  @media (max-width:1200px){
-    .uni-row{
-      grid-template-columns: 1fr 1fr;
-      row-gap:10px;
-      column-gap:16px;
-    }
-    .uni-row > label{grid-column:1/-1;}
-  }
-  @media (max-width:760px){
-    .uni-row{grid-template-columns:1fr; row-gap:8px;}
-  }
-  /* Make Unified Inputs span full width so Additional starts below */
-  .fieldset > .uni-grid{ grid-column: 1 / -1; }
-  /* Make Unified Inputs use full width and avoid clipping */
-  .fieldset:has(> .uni-grid){overflow:visible;}
-  .fieldset > .uni-grid{
-    grid-column:1 / -1;
-    width:100%;
-    margin-top:8px;
-  }
+  .uni-row > label{grid-column:1/-1;}
+}
+@media (max-width:760px){
+  .uni-row{grid-template-columns:1fr; row-gap:8px;}
+}
+/* Make Unified Inputs span full width so Additional starts below */
+.fieldset > .uni-grid{ grid-column: 1 / -1; }
+/* Make Unified Inputs use full width and avoid clipping */
+.fieldset:has(> .uni-grid){overflow:visible;}
+.fieldset > .uni-grid{
+  grid-column:1 / -1;
+  width:100%;
+  margin-top:8px;
+}
 
-  /* Roomy, flexible columns that won't hide text */
-  .uni-grid{row-gap:18px;}
-  .uni-row{
-    grid-template-columns: minmax(0,1.25fr) minmax(0,1fr) minmax(0,1fr);
-    column-gap:20px;
-    align-items:start;
-  }
-  .uni-row > label{white-space:normal; line-height:1.25;}
-  .uni-row .input{width:100%; max-width:100%;}
+/* Roomy, flexible columns that won't hide text */
+.uni-grid{row-gap:18px;}
+.uni-row{
+  grid-template-columns: minmax(0,1.25fr) minmax(0,1fr) minmax(0,1fr);
+  column-gap:20px;
+  align-items:start;
+}
+.uni-row > label{white-space:normal; line-height:1.25;}
+.uni-row .input{width:100%; max-width:100%;}
 
-  /* Responsive: wrap label or stack on smaller screens */
-  @media (max-width:1200px){
-    .uni-row{grid-template-columns:1fr 1fr; row-gap:10px; column-gap:16px;}
-    .uni-row > label{grid-column:1/-1;}
-  }
-  @media (max-width:760px){
-    .uni-row{grid-template-columns:1fr; row-gap:8px;}
-  }
-  /* Make the note span under both inputs */
-  .uni-row .note-wrap{display: contents;}
-  .uni-row .note-toggle{grid-column: 2; grid-row: 2;}
-  .uni-row .note-box{
-    grid-column: 2 / 4;   /* spans current + last */
-    grid-row: 3;          /* sits below the toggles */
-    width: 100%;
-    margin-top: 4px;
-  }
+/* Responsive: wrap label or stack on smaller screens */
+@media (max-width:1200px){
+  .uni-row{grid-template-columns:1fr 1fr; row-gap:10px; column-gap:16px;}
+  .uni-row > label{grid-column:1/-1;}
+}
+@media (max-width:760px){
+  .uni-row{grid-template-columns:1fr; row-gap:8px;}
+}
+/* Make the note span under both inputs */
+.uni-row .note-wrap{display: contents;}
+.uni-row .note-toggle{grid-column: 2; grid-row: 2;}
+.uni-row .note-box{
+  grid-column: 2 / 4;   /* spans current + last */
+  grid-row: 3;          /* sits below the toggles */
+  width: 100%;
+  margin-top: 4px;
+}
 
-  /* Tab system */
-  .tab-nav {
-    display: flex;
-    margin-bottom: 20px;
-    border-bottom: 2px solid rgba(148,163,184,.18);
-  }
-  .tab-btn {
-    padding: 12px 24px;
-    background: none;
-    border: none;
-    color: var(--muted);
-    cursor: pointer;
-    font-weight: 600;
-    border-bottom: 2px solid transparent;
-    transition: all 0.2s;
-  }
-  .tab-btn.active {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-  }
-  .tab-btn:hover {
-    color: var(--fg);
-  }
-  .tab-content {
-    display: none;
-  }
-  .tab-content.active {
-    display: block;
-  }
+/* Tab system */
+.tab-nav {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 2px solid rgba(148,163,184,.18);
+}
+.tab-btn {
+  padding: 12px 24px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-weight: 600;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+.tab-btn.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.tab-btn:hover {
+  color: var(--fg);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+}
 
-  /* Swing Trade specific styles */
-  .swing-pill {
-    display: inline-flex;
-    align-items: center;
-    padding: 6px 12px;
-    border-radius: 999px;
-    font-size: 14px;
-    font-weight: 600;
-    border: 1px solid rgba(148,163,184,.35);
-  }
-  .swing-pill.entry-ok {
-    background: var(--good);
-    color: white;
-    border-color: var(--good);
-  }
-  .swing-pill.entry-not-ok {
-    background: rgba(148,163,184,.35);
-    color: var(--muted);
-  }
-  .score-display {
-    font-size: 48px;
-    font-weight: 800;
-    line-height: 1;
-  }
-  .score-bar {
-    height: 12px;
-    border-radius: 6px;
-    background: rgba(148,163,184,.2);
-    overflow: hidden;
-  }
-  .score-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--bad), var(--warn), var(--good));
-    transition: width 0.3s ease;
-  }
-  .metric-card {
-    padding: 12px;
-    border: 1px solid rgba(148,163,184,.18);
-    border-radius: 12px;
-    background: rgba(148,163,184,.05);
-  }
-  .metric-label {
-    font-size: 11px;
-    color: var(--muted);
-    margin-bottom: 4px;
-  }
-  .metric-value {
-    font-size: 20px;
-    font-weight: 700;
-  }
+/* Swing Trade specific styles */
+.swing-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid rgba(148,163,184,.35);
+}
+.swing-pill.entry-ok {
+  background: var(--good);
+  color: white;
+  border-color: var(--good);
+}
+.swing-pill.entry-not-ok {
+  background: rgba(148,163,184,.35);
+  color: var(--muted);
+}
+.score-display {
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1;
+}
+.score-bar {
+  height: 12px;
+  border-radius: 6px;
+  background: rgba(148,163,184,.2);
+  overflow: hidden;
+}
+.score-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--bad), var(--warn), var(--good));
+  transition: width 0.3s ease;
+}
+.metric-card {
+  padding: 12px;
+  border: 1px solid rgba(148,163,184,.18);
+  border-radius: 12px;
+  background: rgba(148,163,184,.05);
+}
+.metric-label {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.metric-value {
+  font-size: 20px;
+  font-weight: 700;
+}
 
-  /* Risk management styles */
-  .risk-switch {
-    display: inline-flex;
-    background: rgba(148,163,184,.1);
-    border-radius: 999px;
-    padding: 4px;
-    position: relative;
-  }
-  .risk-switch-btn {
-    padding: 8px 16px;
-    background: none;
-    border: none;
-    color: var(--muted);
-    cursor: pointer;
-    border-radius: 999px;
-    font-weight: 600;
-    transition: all 0.2s;
-    position: relative;
-    z-index: 2;
-  }
-  .risk-switch-btn.active {
-    color: var(--fg);
-  }
-  .risk-switch-indicator {
-    position: absolute;
-    top: 4px;
-    left: 4px;
-    height: calc(100% - 8px);
-    background: var(--card);
-    border-radius: 999px;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(148,163,184,.18);
-  }
+/* Risk management styles */
+.risk-switch {
+  display: inline-flex;
+  background: rgba(148,163,184,.1);
+  border-radius: 999px;
+  padding: 4px;
+  position: relative;
+}
+.risk-switch-btn {
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  border-radius: 999px;
+  font-weight: 600;
+  transition: all 0.2s;
+  position: relative;
+  z-index: 2;
+}
+.risk-switch-btn.active {
+  color: var(--fg);
+}
+.risk-switch-indicator {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  height: calc(100% - 8px);
+  background: var(--card);
+  border-radius: 999px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(148,163,184,.18);
+}
 
-  /* Centered bottom credit */
-  .site-credit {
-    position: fixed;
-    left: 50%;
-    bottom: 10px;
-    transform: translateX(-50%);
-    font-size: 12px;
-    color: var(--muted);
-    z-index: 9999;
-    pointer-events: none;
-  }
 </style>
 
 </head>
@@ -2017,11 +2007,1032 @@ function computeVerdict(){
     computeVerdict();
   }
 
-  // (Rest of your existing JS continues...)
+  // SEC Integration
+  const SEC_BASE = `${location.origin}/api`;
+
+  const byId = (id) => document.getElementById(id);
+  function show(msg){ const box=document.getElementById('alerts'); if(box){ const d=document.createElement('div'); d.className='alert warn'; d.textContent=msg; box.appendChild(d);} else { console.log('[SEC]', msg); } }
+  
+  const TAGS = {
+    rev: ['RevenueFromContractWithCustomerExcludingAssessedTax','SalesRevenueNet','Revenues'],
+    gp:  ['GrossProfit'],
+    assets: ['Assets'],
+    ni: ['NetIncomeLoss'],
+    cfo: ['NetCashProvidedByUsedInOperatingActivities'],
+    ltd: ['LongTermDebtNoncurrent','LongTermDebtAndCapitalLeaseObligations','LongTermDebt'],
+    ca:  ['AssetsCurrent'],
+    cl:  ['LiabilitiesCurrent'],
+    sh:  ['WeightedAverageNumberOfDilutedSharesOutstanding','WeightedAverageNumberOfSharesOutstandingBasic','WeightedAverageNumberOfSharesOutstandingBasicAndDiluted','CommonStockSharesOutstanding']
+  };
+
+  // Extra tags for the "Additional" section
+  const EXTRA = {
+    ebit:   ['EarningsBeforeInterestAndTaxes','OperatingIncomeLoss'],
+    ebitda: ['EarningsBeforeInterestAndTaxesDepreciationAndAmortization','EarningsBeforeInterestDepreciationAndAmortization'],
+    tax:    ['IncomeTaxExpenseBenefit'],
+    da:     ['DepreciationAndAmortization','DepreciationDepletionAndAmortization'],
+    cash:   ['CashAndCashEquivalentsAtCarryingValue','CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents'],
+    std:    ['ShortTermBorrowings','ShortTermDebt','DebtCurrent','OtherShortTermBorrowingsCurrent','CommercialPaper','NotesPayableCurrent'],
+    cpltd:  ['LongTermDebtCurrent','LongTermDebtAndFinanceLeaseObligationsCurrent'],
+    termdebt: ['LongTermDebtNoncurrent','LongTermDebt'],
+    commonstock: ['CommonStockValue','CommonStockNoParValue','CommonStockParValue'],
+    apic:        ['AdditionalPaidInCapital','AdditionalPaidInCapitalCommonStock','PaidInCapital'],
+    retained:    ['RetainedEarningsAccumulatedDeficit','RetainedEarnings','AccumulatedDeficit']
+  };
+
+  // return latest FY value for any of the tags (prefers USD/shares/pure)
+  function latestAnnual(facts, tagList){
+    const root = facts?.facts?.['us-gaap'] || facts?.facts?.['US-GAAP'];
+    if (!root) return null;
+    const prefer = ['USD','shares','pure'];
+    for (const tag of tagList){
+      const obj = root[tag]; if (!obj?.units) continue;
+      for (const u of prefer.concat(Object.keys(obj.units))){
+        const arr = obj.units[u]; if (!Array.isArray(arr)) continue;
+        const annual = arr.filter(x => x.fp==='FY' || /10-K|20-F|40-F/i.test(x.form))
+                          .sort((a,b)=> (b.fy||0)-(a.fy||0) || new Date(b.end)-new Date(a.end));
+        if (annual.length) return annual[0].val ?? null;
+      }
+    }
+    return null;
+  }
+
+  // return up to N most recent FY revenue values (descending: latest first)
+  function revenueSeries(facts, n=5){
+    const root = facts?.facts?.['us-gaap'] || facts?.facts?.['US-GAAP'];
+    if (!root) return [];
+    const tags = ['RevenueFromContractWithCustomerExcludingAssessedTax','SalesRevenueNet','Revenues'];
+    for (const tag of tags){
+      const obj = root[tag]; if (!obj?.units?.USD) continue;
+      const annual = obj.units.USD
+        .filter(x => x.fp==='FY' || /10-K|20-F|40-F/i.test(x.form))
+        .sort((a,b)=> (b.fy||0)-(a.fy||0) || new Date(b.end)-new Date(a.end));
+      const out = [];
+      const seen = new Set();
+      for (const x of annual){
+        const key = x.fy || x.end;
+        if (!seen.has(key)) { out.push(x.val ?? null); seen.add(key); }
+        if (out.length === n) break;
+      }
+      if (out.length) return out; // latest → older
+    }
+    return [];
+  }
+
+  function pctChange(a,b){ if (b === 0 || b == null || a == null) return null; return (a/b - 1) * 100; }
+  function set(id, v){ const el = document.getElementById(id); if (el) el.value = (v ?? ''); }
+
+  function getTicker(){
+    const t = document.querySelector('#ticker, input[name*=ticker i], input[placeholder*=ticker i]');
+    return (t?.value || '').trim().toUpperCase();
+  }
+  function padCIK(n){ n=String(n||'').replace(/\D/g,''); return n.padStart(10,'0'); }
+
+  async function tickerToCIK(symbol){
+    const r = await fetch(`${SEC_BASE}/sec-tickers`);
+    if (!r.ok) return null;
+    const data = await r.json();
+    const hit = Object.values(data).find(x => (x.ticker||'').toUpperCase() === symbol.toUpperCase());
+    return hit ? padCIK(hit.cik_str) : null;
+  }
+
+  function pickTwoAnnual(series){
+    if (!Array.isArray(series)) return null;
+    const annual = series.filter(x => x.fp==='FY' || /10-K|20-F|40-F/i.test(x.form))
+                         .sort((a,b)=> (b.fy||0)-(a.fy||0) || new Date(b.end)-new Date(a.end));
+    const out=[], seen=new Set();
+    for (const x of annual){
+      const key = x.fy || x.end;
+      if (!seen.has(key)) { out.push(x); seen.add(key); }
+      if (out.length===2) break;
+    }
+    return out.length ? [out[0].val ?? null, (out[1]?.val) ?? null] : null;
+  }
+
+  function findPair(facts, tagList){
+    const root = facts?.facts?.['us-gaap'] || facts?.facts?.['US-GAAP'];
+    if (!root) return null;
+
+    for (const tag of tagList){
+      const obj = root[tag];
+      if (!obj || !obj.units) continue;
+
+      // Preferred units first
+      const pref = ['USD','shares','pure'];
+      for (const want of pref){
+        if (obj.units[want]) {
+          const p = pickTwoAnnual(obj.units[want]);
+          if (p) { return {pair:p, tag, unit:want}; }
+        }
+      }
+      // Any unit that yields annuals
+      for (const [unit, arr] of Object.entries(obj.units)){
+        const p = pickTwoAnnual(arr);
+        if (p) { return {pair:p, tag, unit}; }
+      }
+    }
+    return null;
+  }
+
+  function setVal2(id, v){ 
+    const el = byId(id); 
+    if(el) el.value = v ?? ''; 
+    status[id] = {source: 'SEC', value: v};
+    try{ 
+      if (typeof computeSnapshot==='function') computeSnapshot(); 
+      if (typeof computeVerdict==='function') computeVerdict(); 
+    }catch(e){} 
+  }
+  
+  function writePair(label, meta, ids){
+    if (!meta || !meta.pair){ return; }
+    const [aId,bId]=ids; const [a,b]=meta.pair; 
+    setVal2(aId,a); setVal2(bId,b);
+  }
+
+  async function populateSEC(){
+  //=== Patch: augment Factor Composite inputs from SEC + quote ===
+  async function __ufa_fetchLastPrice(sym){
+    try{
+      const fkEl = document.getElementById('finnhubKey');
+      const mkEl = document.getElementById('fmpKey');
+      const fk = fkEl && fkEl.value ? fkEl.value.trim() : '';
+      const mk = mkEl && mkEl.value ? mkEl.value.trim() : '';
+      if(fk){
+        try{
+          const r = await fetch(`https://finnhub.io/api/v1/quote?symbol=${sym}&token=${fk}`);
+          if(r.ok){ const q = await r.json(); if(q && typeof q.c === 'number' && isFinite(q.c)) return q.c; }
+        }catch(e){}
+      }
+      if(mk){
+        try{
+          const r = await fetch(`https://financialmodelingprep.com/api/v3/quote-short/${sym}?apikey=${mk}`);
+          if(r.ok){ const a = await r.json(); if(Array.isArray(a) && a[0] && isFinite(Number(a[0].price))) return Number(a[0].price); }
+        }catch(e){}
+      }
+      return NaN;
+    }catch(e){ return NaN; }
+  }
+  try{
+    // shares outstanding from SEC (current or prior)
+    const sh0El = document.getElementById('sh0');
+    const sh1El = document.getElementById('sh1');
+    const SH = isFinite(Number(sh0El?.value)) ? Number(sh0El.value) : Number(sh1El?.value);
+    // ticker should be available in the same scope; if not, try from input
+    const symEl = document.getElementById('ticker');
+    const __sym = (typeof t !== 'undefined' && t) ? t : (symEl ? symEl.value.trim().toUpperCase() : '');
+    const __px = await __ufa_fetchLastPrice(__sym);
+    if(isFinite(__px) && isFinite(SH)) { window._mcap = __px * SH; }
+    // Interest expense from SEC facts if present
+    if (typeof facts !== 'undefined') {
+      const paths = ['InterestExpense','InterestExpenseDebt','InterestExpenseOperating'];
+      let val = NaN;
+      for(const p of paths){
+        try{
+          const f = facts?.[p]?.annual || facts?.[p];
+          if(f && typeof f === 'object'){
+            // pick latest numeric
+            const vs = Object.values(f).map(Number).filter(x=>isFinite(x));
+            if(vs.length){ val = vs[0]; break; }
+          }
+        }catch(e){}
+      }
+      if(isFinite(val)) window._interestExp = val;
+    }
+  }catch(e){ /* non-fatal */ }
+  //=== End Patch ===
+
+    const t = getTicker();
+    if (!t){ show('Enter a ticker.'); return; }
+
+    try{
+      let cik = await tickerToCIK(t);
+      
+      // Fallback for common tickers that might not be found
+      if (!cik) {
+        const knownCIKs = {
+          'PLTR': '0001321655',
+          'AAPL': '0000320193',
+          'MSFT': '0000789019',
+          'GOOG': '0001652044',
+          'GOOGL': '0001652044',
+          'TSLA': '0001318605',
+          'AMZN': '0001018724',
+          'META': '0001326801',
+          'NVDA': '0001045810'
+        };
+        
+        cik = knownCIKs[t.toUpperCase()];
+        if (cik) {
+          console.log(`Using fallback CIK for ${t}: ${cik}`);
+        }
+      }
+      
+      if (!cik){ 
+        show(`CIK not found for ${t}. Try: AAPL, MSFT, GOOG, TSLA, AMZN, META, NVDA, PLTR`); 
+        return; 
+      }
+
+      console.log(`Fetching SEC data for ${t} with CIK: ${cik}`);
+      const rf = await fetch(`${SEC_BASE}/sec-companyfacts?cik=${cik}`);
+      if (!rf.ok){ 
+        show(`SEC companyfacts ${rf.status} for CIK ${cik}`); 
+        console.error('SEC companyfacts error:', rf.status, rf.statusText);
+        return; 
+      }
+      const facts = await rf.json();
+      console.log('SEC facts received:', facts);
+
+      const rev = findPair(facts, TAGS.rev);
+      const gp  = findPair(facts, TAGS.gp);
+      const cogs= findPair(facts, ['CostOfGoodsAndServicesSold','CostOfRevenue']);
+      const assets=findPair(facts, TAGS.assets);
+      const ni   =findPair(facts, TAGS.ni);
+      const cfo  =findPair(facts, TAGS.cfo);
+      const ltd  =findPair(facts, TAGS.ltd);
+      const ca   =findPair(facts, TAGS.ca);
+      const cl   =findPair(facts, TAGS.cl);
+      const sh   =findPair(facts, TAGS.sh);
+
+      writePair('Revenue', rev, ['rev0','rev1']);
+      if (gp){ writePair('Gross Profit', gp, ['gp0','gp1']); }
+      else if (rev && cogs){ 
+        const pair=[(rev.pair[0]??0)-(cogs.pair[0]??0),(rev.pair[1]??0)-(cogs.pair[1]??0)]; 
+        setVal2('gp0',pair[0]); setVal2('gp1',pair[1]); 
+      }
+      writePair('Assets', assets, ['assets0','assets1']);
+      writePair('Net Income', ni, ['ni0','ni1']);
+      writePair('CFO', cfo, ['cfo0','cfo1']);
+      writePair('LT Debt', ltd, ['ltd0','ltd1']);
+      writePair('Current Assets', ca, ['ca0','ca1']);
+      writePair('Current Liabilities', cl, ['cl0','cl1']);
+      writePair('Shares', sh, ['sh0','sh1']);
+
+      // Additional section population
+      let EBIT = latestAnnual(facts, EXTRA.ebit);
+      if (EBIT == null) {
+        const NI  = latestAnnual(facts, ['NetIncomeLoss']);
+        const INT = latestAnnual(facts, ['InterestExpense','InterestExpenseDebt']);
+        const TAX = latestAnnual(facts, EXTRA.tax);
+        if (NI != null && (INT != null || TAX != null)) EBIT = (NI ?? 0) + (INT ?? 0) + (TAX ?? 0);
+      }
+
+      let EBITDA = latestAnnual(facts, EXTRA.ebitda);
+      if (EBITDA == null) {
+        const DA = latestAnnual(facts, EXTRA.da);
+        if (EBIT != null && DA != null) EBITDA = EBIT + DA;
+      }
+
+      const TAX = latestAnnual(facts, EXTRA.tax);
+      const CASH = latestAnnual(facts, EXTRA.cash);
+      const STD   = latestAnnual(facts, EXTRA.std);
+      const CPLTD = latestAnnual(facts, EXTRA.cpltd);
+      const TERM  = latestAnnual(facts, EXTRA.termdebt);
+      const CSTK = latestAnnual(facts, EXTRA.commonstock);
+      const APIC = latestAnnual(facts, EXTRA.apic);
+      const RETE = latestAnnual(facts, EXTRA.retained);
+
+      // Revenue growth % (last four YoY)
+      const revs = revenueSeries(facts, 5); // [Y0,Y-1,Y-2,Y-3,Y-4]
+      const g1 = revs.length>=2 ? pctChange(revs[0], revs[1]) : null;
+      const g2 = revs.length>=3 ? pctChange(revs[1], revs[2]) : null;
+      const g3 = revs.length>=4 ? pctChange(revs[2], revs[3]) : null;
+      const g4 = revs.length>=5 ? pctChange(revs[3], revs[4]) : null;
+
+      set('ebit', EBIT);
+      set('ebitda', EBITDA);
+      set('tax', TAX);
+      set('cash', CASH);
+      set('std', STD);
+      set('cpltd', CPLTD);
+      set('termdebt', TERM);
+      set('cs',  CSTK);
+      set('cap', APIC);
+      set('re',  RETE);
+      set('r1', g1?.toFixed(2));
+      set('r2', g2?.toFixed(2));
+      set('r3', g3?.toFixed(2));
+      set('r4', g4?.toFixed(2));
+
+      if (typeof ensureComputedFallbacks === 'function') ensureComputedFallbacks();
+      if (typeof finalizeStatusAfterFetch === 'function') finalizeStatusAfterFetch();
+      if (typeof computeAll === 'function') computeAll();
+      try { if (typeof computeFactorComposite === 'function') computeFactorComposite(); } catch(e) { console.warn('FactorComposite compute after SEC load failed', e); }
+      
+      show(`SEC data loaded successfully for ${t}`);
+    } catch(e){
+      show(`SEC error: ${e.message || e}`);
+      console.error('SEC populate error:', e);
+    }
+  }
+
+  // Wire SEC button
+  document.getElementById('btnSec')?.addEventListener('click', populateSEC);
+
+  // Compute button
+  document.getElementById('btnCompute')?.addEventListener('click', computeAll);
+
+  // Swing Trading Models
+  function clip(x, lo=0, hi=1){ if (isNaN(x)) return NaN; return Math.max(lo, Math.min(hi, x)); }
+  function avg(arr){ const a=arr.filter(v=>typeof v==='number'&&!isNaN(v)); return a.length? a.reduce((p,c)=>p+c,0)/a.length : NaN }
+  function snum(v){ let t=String(v??''); t=t.split(',').join(''); t=t.replace('%',''); t=t.trim(); const x=parseFloat(t); return isFinite(x)? x : NaN }
+  function sfmt(v){ return isNaN(v)? '—' : v.toFixed(2) }
+  function setBar(el, score){ const w = isNaN(score)?0:Math.max(0,Math.min(100,score)); el.style.width = `${w}%` }
+
+  const nZacksMap = {1:1.0, 2:0.8, 3:0.5, 4:0.2, 5:0.0}
+
+  // Model Switch
+  const modelSwitch = document.getElementById('modelSwitch');
+  const modelIndicator = document.getElementById('modelIndicator');
+  let currentModel = 'basic';
+
+  function setModel(model) {
+    currentModel = model;
+    document.getElementById('basic-panel').style.display = model === 'basic' ? 'grid' : 'none';
+    document.getElementById('analyst-panel').style.display = model === 'analyst' ? 'grid' : 'none';
+    
+    // Update indicator position
+    const btns = modelSwitch.querySelectorAll('button');
+    const activeBtn = modelSwitch.querySelector(`[data-model="${model}"]`);
+    const index = Array.from(btns).indexOf(activeBtn);
+    modelIndicator.style.width = `${100/btns.length}%`;
+    modelIndicator.style.transform = `translateX(${index * 100}%)`;
+    
+    // Update button states
+    btns.forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-model') === model);
+    });
+  }
+
+  modelSwitch?.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-model]');
+    if (btn) setModel(btn.getAttribute('data-model'));
+  });
+
+  // Basic Swing Model
+  const BasicSwing = {
+    compute() {
+      const z = snum(g('zacks').value);
+      const PE = snum(g('pe').value);
+      const EV = snum(g('evebitda').value);
+      const PB = snum(g('pb').value);
+      const dS = snum(g('dshares').value);
+      const epsPos = !!g('epspos').checked;
+
+      const E = nZacksMap[z] ?? NaN;
+      const M = epsPos ? 0.7 : 0.3;
+      const n_dil = clip(-(dS/100)/0.10,0,1);
+      const R = n_dil;
+      const n_pe = (epsPos && PE>0)? Math.min(15/PE,1) : (epsPos?0:NaN);
+      const n_ev = (EV>0)? Math.min(10/EV,1) : 1;
+      const n_pb = (PB>0)? Math.min(1.5/PB,1) : 1;
+      const V = epsPos ? avg([n_pe,n_ev,n_pb]) : avg([n_ev,n_pb]);
+      const raw = 100*(0.40*E + 0.25*M + 0.20*V + 0.15*R);
+      const score = raw;
+      const entryOk = (epsPos===true) && (z && z<=3);
+      
+      let decision='Pass'; 
+      if(score>=75) decision='Setup-A'; 
+      else if(score>=60) decision='Watch'; 
+      else if(score>=45) decision='Speculative';
+
+      g('scoreText').textContent = isNaN(score)? '—' : score.toFixed(1);
+      g('decisionText').textContent = decision;
+      setBar(g('scoreBar'), score);
+      
+      const entryPill = g('entryOkPill');
+      entryPill.textContent = entryOk? 'Entry OK' : 'Entry Not OK';
+      entryPill.className = 'swing-pill ' + (entryOk? 'entry-ok' : 'entry-not-ok');
+      
+      g('E').textContent = sfmt(E);
+      g('M').textContent = sfmt(M);
+      g('V').textContent = sfmt(V);
+      g('R').textContent = sfmt(R);
+      g('n_pe').textContent = sfmt(n_pe);
+      g('n_ev').textContent = sfmt(n_ev);
+      g('n_pb').textContent = sfmt(n_pb);
+      g('n_dil').textContent = sfmt(n_dil);
+      g('raw').textContent = sfmt(raw);
+      g('rule').textContent = '>=75 Setup-A, >=60 Watch, >=45 Speculative, else Pass';
+    }
+  };
+
+  // Analyst + Technical Model
+  const AnalystSwing = {
+    compute() {
+      const eps_s = snum(g('epsSurp').value);
+      const rev_s = snum(g('revSurp').value);
+      const d30 = snum(g('epsRevise').value);
+      const z2 = snum(g('zacks2').value);
+      const n_eps_surp = clip((eps_s + 2)/10,0,1);
+      const n_rev_surp = clip((rev_s + 1)/6,0,1);
+      const n_revise = clip((d30 + 2)/8,0,1);
+      const n_zacks = nZacksMap[z2] ?? NaN;
+      const E = 0.35*n_eps_surp + 0.20*n_rev_surp + 0.25*n_revise + 0.20*n_zacks;
+      
+      const rel = snum(g('rel6w').value);
+      const n_rel = clip((rel + 5)/15,0,1);
+      const maFlags = [g('dma20').checked?1:0, g('dma50').checked?1:0, g('dma200').checked?1:0];
+      const n_ma = avg(maFlags);
+      const brk = snum(g('brk').value);
+      const n_brk = clip(brk/8,0,1);
+      const M = 0.5*n_rel + 0.3*n_ma + 0.2*n_brk;
+      
+      const vol = snum(g('avgVol').value);
+      const beta = snum(g('beta').value);
+      const si = snum(g('si').value);
+      const n_vol = clip((vol - 0.8)/1.2,0,1);
+      const n_beta = 1 - clip(Math.abs((beta??NaN) - 1.4)/0.8,0,1);
+      const n_si = clip(si/20,0,1);
+      const R = 0.5*n_vol + 0.3*n_beta + 0.2*n_si;
+      
+      const fpe = snum(g('fpe').value);
+      const pe5 = snum(g('pe5').value);
+      const peg = snum(g('peg').value);
+      const ev = snum(g('ev2').value);
+      const kev = snum(g('kev').value);
+      const n_fpe = (fpe>0 && pe5>0)? Math.min(pe5/fpe,1) : NaN;
+      const n_peg = (peg>0)? Math.min(1/peg,1) : NaN;
+      const n_ev = (ev>0 && kev>0)? Math.min(kev/ev,1) : NaN;
+      const V = 0.4*n_fpe + 0.4*n_peg + 0.2*n_ev;
+      
+      let raw = 100*(0.35*E + 0.35*M + 0.20*V + 0.10*R);
+      let guards = [];
+      if (g('earn5').checked){ raw *= 0.8; guards.push('×0.8 earnings<5d'); }
+      if (!isNaN(vol) && vol < 0.5){ raw *= 0.7; guards.push('×0.7 vol<0.5m'); }
+      const score = raw;
+      const entryOk = (n_ma>=0.67) && (n_rel>=0.5);
+      
+      let decision='Pass'; 
+      if(score>=75) decision='Setup-A'; 
+      else if(score>=60) decision='Watch'; 
+      else if(score>=45) decision='Speculative';
+
+      const scoreNA = 100*(0.6*M + 0.4*R);
+      let decisionNA='Pass'; 
+      if(scoreNA>=75) decisionNA='Setup-A'; 
+      else if(scoreNA>=60) decisionNA='Watch'; 
+      else if(scoreNA>=45) decisionNA='Speculative';
+
+      g('score2').textContent = isNaN(score)? '—' : score.toFixed(1);
+      g('decision2').textContent = decision;
+      setBar(g('bar2'), score);
+      
+      const entryPill2 = g('entry2');
+      entryPill2.textContent = entryOk? 'Entry OK' : 'Entry Not OK';
+      entryPill2.className = 'swing-pill ' + (entryOk? 'entry-ok' : 'entry-not-ok');
+      
+      g('E2').textContent = sfmt(E);
+      g('M2').textContent = sfmt(M);
+      g('V2').textContent = sfmt(V);
+      g('R2').textContent = sfmt(R);
+      
+      g('n_eps_surp').textContent = sfmt(n_eps_surp);
+      g('n_rev_surp').textContent = sfmt(n_rev_surp);
+      g('n_revise').textContent = sfmt(n_revise);
+      g('n_zacks2').textContent = sfmt(n_zacks);
+      g('n_rel').textContent = sfmt(n_rel);
+      g('n_ma').textContent = sfmt(n_ma);
+      g('n_brk').textContent = sfmt(n_brk);
+      g('n_vol').textContent = sfmt(n_vol);
+      g('n_beta').textContent = sfmt(n_beta);
+      g('n_si').textContent = sfmt(n_si);
+      g('n_fpe').textContent = sfmt(n_fpe);
+      g('n_peg').textContent = sfmt(n_peg);
+      g('n_ev2').textContent = sfmt(n_ev);
+      g('raw2').textContent = sfmt(score);
+      g('guards2').textContent = guards.length? guards.join(' · ') : '—';
+      
+      g('scoreNA').textContent = isNaN(scoreNA)? '—' : scoreNA.toFixed(1);
+      g('decisionNA').textContent = decisionNA;
+      setBar(g('barNA'), scoreNA);
+    }
+  };
+
+  // Risk Management
+  const riskState = { mode:'fixed' };
+  const riskSwitch = document.getElementById('riskSwitch');
+  const riskIndicator = document.getElementById('riskIndicator');
+
+  function setRiskMode(mode) {
+    riskState.mode = mode;
+    const btns = riskSwitch.querySelectorAll('button');
+    const activeBtn = riskSwitch.querySelector(`[data-risk="${mode}"]`);
+    const index = Array.from(btns).indexOf(activeBtn);
+    riskIndicator.style.width = `${100/btns.length}%`;
+    riskIndicator.style.transform = `translateX(${index * 100}%)`;
+    
+    btns.forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-risk') === mode);
+    });
+    computeRisk();
+  }
+
+  riskSwitch?.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-risk]');
+    if (btn) setRiskMode(btn.getAttribute('data-risk'));
+  });
+
+  function computeRisk(){
+    const acct=snum(g('acct').value), rPct=snum(g('riskpct').value), entry=snum(g('entryPx').value);
+    let stopP=snum(g('stopPx').value), stopPc=snum(g('stopPct').value);
+    let tgtP=snum(g('targetPx').value), tgtPc=snum(g('targetPct').value); 
+    const trail=snum(g('trailPct').value); const tDays=snum(g('timeDays').value);
+    
+    if(!isNaN(stopPc) && isNaN(stopP) && !isNaN(entry)) stopP=entry*(1 - stopPc/100);
+    if(!isNaN(tgtPc) && isNaN(tgtP) && !isNaN(entry)) tgtP=entry*(1 + tgtPc/100);
+    
+    const rps = (!isNaN(entry) && !isNaN(stopP)) ? (entry - stopP) : NaN;
+    const risk$ = (!isNaN(acct) && !isNaN(rPct)) ? acct*(rPct/100) : NaN;
+    const shares = (!isNaN(risk$) && rps>0) ? Math.floor(risk$/rps) : NaN;
+    const rwdps = (!isNaN(tgtP) && !isNaN(entry)) ? (tgtP - entry) : NaN;
+    const rwd$ = (!isNaN(shares) && !isNaN(rwdps)) ? shares*rwdps : NaN;
+    const rr = (!isNaN(rps) && rps>0 && !isNaN(rwdps)) ? (rwdps/rps) : NaN;
+    
+    g('posShares').textContent = isNaN(shares)? '—' : shares.toLocaleString();
+    g('riskReward').textContent = (!isNaN(risk$)||!isNaN(rwd$)) ? `${isNaN(risk$)?'—':risk$.toFixed(2)} / ${isNaN(rwd$)?'—':rwd$.toFixed(2)}` : '—';
+    g('rratio').textContent = isNaN(rr)? '—' : rr.toFixed(2)+'R';
+
+    const rules = [];
+    if(riskState.mode==='fixed') rules.push(`Target ${isNaN(tgtP)?'—':tgtP.toFixed(2)}, Stop ${isNaN(stopP)?'—':stopP.toFixed(2)}`);
+    if(riskState.mode==='trail') rules.push(`Trailing stop ${isNaN(trail)?'—':trail+'%'} from peak`);
+    if(riskState.mode==='time') rules.push(`Exit after ${isNaN(tDays)?'—':tDays} days or at 1R`);
+    g('rulesOut').textContent = rules.join(' · ');
+
+    drawRR(entry, stopP, tgtP);
+  }
+
+  function drawRR(entry, stopP, tgtP){
+    const svg = g('rrChart'); 
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+    if(isNaN(entry) || isNaN(stopP)){ return; }
+    
+    const margin=40, W=800, H=90; 
+    const min = Math.min(stopP, entry, (isNaN(tgtP)? entry : tgtP)); 
+    const max = Math.max(stopP, entry, (isNaN(tgtP)? entry*1.02 : tgtP));
+    const pad = (max-min)*0.08 || 1; 
+    const lo=min-pad, hi=max+pad; 
+    const scale = p=> margin + ( (p-lo)/(hi-lo) )*(W-2*margin);
+    
+    // axis
+    const axis=document.createElementNS('http://www.w3.org/2000/svg','line'); 
+    axis.setAttribute('x1',scale(lo)); axis.setAttribute('x2',scale(hi)); 
+    axis.setAttribute('y1',45); axis.setAttribute('y2',45); 
+    axis.setAttribute('stroke','#9ca3af'); axis.setAttribute('stroke-width','2'); 
+    svg.appendChild(axis);
+    
+    // zones
+    const stopX=scale(stopP), entryX=scale(entry), tgtX=isNaN(tgtP)? null : scale(tgtP);
+    const rectR=document.createElementNS('http://www.w3.org/2000/svg','rect'); 
+    rectR.setAttribute('x',Math.min(stopX,entryX)); rectR.setAttribute('y',30); 
+    rectR.setAttribute('width',Math.abs(entryX-stopX)); rectR.setAttribute('height',30); 
+    rectR.setAttribute('fill','#fecaca'); svg.appendChild(rectR);
+    
+    if(tgtX){ 
+      const rectG=document.createElementNS('http://www.w3.org/2000/svg','rect'); 
+      rectG.setAttribute('x',Math.min(entryX,tgtX)); rectG.setAttribute('y',30); 
+      rectG.setAttribute('width',Math.abs(tgtX-entryX)); rectG.setAttribute('height',30); 
+      rectG.setAttribute('fill','#bbf7d0'); svg.appendChild(rectG); 
+    }
+    
+    // markers
+    function vline(x, color, label){
+      const l=document.createElementNS('http://www.w3.org/2000/svg','line'); 
+      l.setAttribute('x1',x); l.setAttribute('x2',x); l.setAttribute('y1',20); l.setAttribute('y2',70); 
+      l.setAttribute('stroke',color); l.setAttribute('stroke-width','2'); svg.appendChild(l);
+      const t=document.createElementNS('http://www.w3.org/2000/svg','text'); 
+      t.setAttribute('x',x); t.setAttribute('y',15); t.setAttribute('text-anchor','middle'); 
+      t.setAttribute('font-size','10'); t.textContent=label; svg.appendChild(t);
+    }
+    vline(stopX,'#ef4444',`Stop ${stopP.toFixed(2)}`); 
+    vline(entryX,'#6b7280',`Entry ${entry.toFixed(2)}`); 
+    if(tgtX){ vline(tgtX,'#16a34a',`Target ${tgtP.toFixed(2)}`); }
+  }
+
+  // Event Listeners for Swing Trading
+  const basicInputs = ['swing_ticker','zacks','pe','evebitda','pb','dshares','epspos'];
+  const analystInputs = ['swing_ticker2','epsSurp','revSurp','epsRevise','zacks2','rel6w','dma20','dma50','dma200','brk','avgVol','beta','si','fpe','pe5','peg','ev2','kev','earn5'];
+  const riskInputs = ['acct','riskpct','entryPx','stopPct','stopPx','targetPct','targetPx','trailPct','timeDays'];
+
+  function wireSwingEvents() {
+    basicInputs.forEach(id => {
+      const el = g(id);
+      if (el) {
+        ['input','change'].forEach(evt => 
+          el.addEventListener(evt, () => BasicSwing.compute())
+        );
+      }
+    });
+
+    analystInputs.forEach(id => {
+      const el = g(id);
+      if (el) {
+        ['input','change'].forEach(evt => 
+          el.addEventListener(evt, () => AnalystSwing.compute())
+        );
+      }
+    });
+
+    riskInputs.forEach(id => {
+      const el = g(id);
+      if (el) {
+        ['input','change'].forEach(evt => 
+          el.addEventListener(evt, computeRisk)
+        );
+      }
+    });
+  }
+
+  // Demo Functions
+  document.getElementById('demoA')?.addEventListener('click',()=>{
+    g('swing_ticker').value='PLTR'; 
+    g('zacks').value='2'; 
+    g('pe').value='62'; 
+    g('evebitda').value='39'; 
+    g('pb').value='14'; 
+    g('dshares').value='-3.5'; 
+    g('epspos').checked=true; 
+    BasicSwing.compute();
+    
+    g('acct').value='25000'; 
+    g('riskpct').value='1'; 
+    g('entryPx').value='20'; 
+    g('stopPct').value='5'; 
+    g('targetPct').value='12'; 
+    computeRisk();
+  });
+
+  document.getElementById('demoB')?.addEventListener('click',()=>{
+    g('swing_ticker2').value='PLTR'; 
+    g('epsSurp').value='6.5'; 
+    g('revSurp').value='2.1'; 
+    g('epsRevise').value='1.0'; 
+    g('zacks2').value='2'; 
+    g('rel6w').value='4.2'; 
+    g('dma20').checked=true; 
+    g('dma50').checked=true; 
+    g('dma200').checked=false; 
+    g('brk').value='2.5'; 
+    g('avgVol').value='1.8'; 
+    g('beta').value='1.3'; 
+    g('si').value='4.5'; 
+    g('fpe').value='45'; 
+    g('pe5').value='40'; 
+    g('peg').value='2.1'; 
+    g('ev2').value='32'; 
+    g('kev').value='25'; 
+    g('earn5').checked=false; 
+    AnalystSwing.compute();
+    
+    g('acct').value='25000'; 
+    g('riskpct').value='1'; 
+    g('entryPx').value='30'; 
+    g('stopPx').value='27.6'; 
+    g('targetPx').value='34.5'; 
+    computeRisk();
+    
+    setModel('analyst');
+  });
+
+  document.getElementById('resetBtn')?.addEventListener('click', () => location.reload());
+
+  // Initialize everything
+  function initializeApp() {
+    wireSwingEvents();
+    setModel('basic');
+    setRiskMode('fixed');
+    BasicSwing.compute();
+    AnalystSwing.compute();
+    computeRisk();
+    computeAll();
+    renderStatus();
+    
+    // Test SEC endpoints on startup
+    testSECEndpoints().then(results => {
+      if (!results.tickers || !results.companyfacts) {
+        show('Warning: SEC API endpoints may not be properly configured. Some features may not work.');
+        console.log('SEC endpoint test results:', results);
+      } else {
+        console.log('SEC endpoints are working properly');
+      }
+    });
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeApp);
+  } else {
+    initializeApp();
+  }
+
+  // Live updates for stock evaluation
+  ['ebit','rev0','std','ltd0','cpltd','termdebt','cash','ebitda','tax','cs','cap','re','ca0','cl0','assets0','r1','r2','r3','r4','wacc']
+    .forEach(function(id){
+      var el = document.getElementById(id);
+      if (el) el.addEventListener('input', () => {
+        computeSnapshot();
+        computeVerdict();
+      });
+    });
+
+  // Debug toggle
+  g('debugToggle')?.addEventListener('change', (e) => {
+    const debugCard = document.querySelector('#fmpDebugCard, #dbg');
+    if (debugCard) debugCard.style.display = e.target.checked ? 'block' : 'none';
+  });
+
+  // API key toggles
+  g('toggleFinnhubKey')?.addEventListener('click', () => {
+    const input = g('finnhubKey');
+    input.type = input.type === 'password' ? 'text' : 'password';
+  });
+
+  g('toggleFmpKey')?.addEventListener('click', () => {
+    const input = g('fmpKey');
+    input.type = input.type === 'password' ? 'text' : 'password';
+  });
+
+</script>
+
+<!-- Debug drawer (Alt+D) -->
+<details id="dbg" style="display:none;margin:12px 0;">
+  <summary>Debug</summary>
+  <div id="dbg-body" style="padding:8px;border:1px dashed rgba(245,158,11,.6);border-radius:8px;">
+    <div style="display:flex;gap:8px;margin-bottom:8px;">
+      <button id="dbg-copy" type="button">Copy log</button>
+      <button id="dbg-clear" type="button">Clear</button>
+    </div>
+    <div id="dbg-live" style="font-family:ui-monospace,monospace;font-size:12px;white-space:pre-wrap;"></div>
+    <table id="dbg-net" style="width:100%;margin-top:8px;font-size:12px;border-collapse:collapse;">
+      <thead>
+        <tr><th align="left">When</th><th align="left">Label</th><th align="left">Status</th><th align="left">ms</th><th align="left">Bytes</th><th align="left">URL</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</details>
+
+
+
+
+<script>
+// ===== Factor Composite (Pilot) JS =====
+
+// Helper numeric getter
+function num(id){
+  const el = document.getElementById(id);
+  if(!el) return NaN;
+  const v = parseFloat((el.value || '').toString().replace(/,/g,''));
+  return isFinite(v) ? v : NaN;
+}
+// From Unified Inputs
+function unifiedInputs(){
+  return {
+    rev0: num('rev0'),
+    rev1: num('rev1'),
+    gp0: num('gp0'),
+    gp1: num('gp1'),
+    assets0: num('assets0'),
+    assets1: num('assets1'),
+    ni0: num('ni0'),
+    ni1: num('ni1'),
+    cfo0: num('cfo0'),
+    cfo1: num('cfo1'),
+    ltd0: num('ltd0'),
+    ltd1: num('ltd1'),
+    ca0: num('ca0'),
+    ca1: num('ca1'),
+    cl0: num('cl0'),
+    cl1: num('cl1'),
+    sh0: num('sh0'),
+    sh1: num('sh1'),
+    ebit: num('ebit'),
+    ebitda: num('ebitda'),
+    tax: num('tax'),
+    cash: num('cash'),
+    std: num('std'),
+    cpltd: num('cpltd'),
+    termdebt: num('termdebt'),
+    cap: num('cap'),
+    re: num('re')
+  };
+}
+
+function computeFactorComposite(){
+  const U = unifiedInputs();
+  // Derived basics
+  const marketCap = (Number.isFinite(window._mcap) ? window._mcap : NaN); // optional, not in this UI; leave NaN so FCF yield will be '—' unless user adds later
+  const equity = (isFinite(U.cap) ? U.cap : 0) + (isFinite(U.re) ? U.re : 0);
+  const bookEquity = isFinite(equity) ? equity : NaN;
+  const debt = (isFinite(U.ltd0)?U.ltd0:0) + (isFinite(U.std)?U.std:0) + (isFinite(U.cpltd)?U.cpltd:0) + (isFinite(U.termdebt)?U.termdebt:0);
+  const netDebt = (isFinite(debt)?debt:NaN) - (isFinite(U.cash)?U.cash:0);
+  const fcf = (isFinite(U.cfo0)?U.cfo0:NaN); // capex not collected in UI; treat as CFO proxy
+  const ev = (isFinite(marketCap)?marketCap:0) + (isFinite(netDebt)?netDebt:0);
+
+  const ev_ebit = (isFinite(ev) && isFinite(U.ebit) && U.ebit>0) ? ev / U.ebit : NaN;
+  const pb = (isFinite(marketCap) && isFinite(bookEquity) && bookEquity>0) ? marketCap / bookEquity : NaN;
+  const fcf_yield = (isFinite(marketCap) && isFinite(fcf)) ? (fcf / marketCap) : NaN;
+  const int_cov = (isFinite(U.tax) && isFinite(U.ebit) && U.tax>0) ? (U.ebit / U.tax) : NaN; // using tax as proxy if no interest exp
+  const accruals = (isFinite(U.ni0) && isFinite(U.cfo0) && isFinite(U.assets0) && U.assets0>0) ? ((U.ni0 - U.cfo0)/U.assets0) : NaN;
+  const nd_ebitda = (isFinite(netDebt) && isFinite(U.ebitda) && U.ebitda!==0) ? (netDebt / U.ebitda) : NaN;
+
+  // Simple scaled scores (0..1) with sensible ranges
+  function scaleLowerBetter(x, lo, hi){ if(!isFinite(x)) return null; const v = (x<=lo)?1:(x>=hi)?0:1-(x-lo)/(hi-lo); return Math.max(0,Math.min(1,v)); }
+  function scaleHigherBetter(x, lo, hi){ if(!isFinite(x)) return null; const v = (x<=lo)?0:(x>=hi)?1:(x-lo)/(hi-lo); return Math.max(0,Math.min(1,v)); }
+
+  const metrics = [
+    {factor:'Value', key:'EV/EBIT', val: ev_ebit, scaled: scaleLowerBetter(ev_ebit, 6, 24), w:.35},
+    {factor:'Value', key:'P/B', val: pb, scaled: scaleLowerBetter(pb, 1, 8), w:.15},
+    {factor:'Value', key:'FCF Yield', val: fcf_yield, scaled: scaleHigherBetter(fcf_yield, 0.00, 0.06), w:.35},
+    {factor:'Quality', key:'Interest Coverage', val: int_cov, scaled: scaleHigherBetter(int_cov, 1, 12), w:.05},
+    {factor:'Risk', key:'Accruals', val: accruals, scaled: scaleLowerBetter(accruals, 0.02, 0.12), w:.05},
+    {factor:'Risk', key:'Net Debt/EBITDA', val: nd_ebitda, scaled: scaleLowerBetter(nd_ebitda, 0, 4), w:.05},
+  ];
+
+  // Update UI raw values
+  function show(id, v, pct=false){
+    const el = document.getElementById(id);
+    if(!el) return;
+    if(!isFinite(v)) { el.textContent = '—'; return; }
+    el.textContent = pct ? (v*100).toFixed(2)+'%' : (Math.abs(v) >= 1e4 ? v.toExponential(2) : v.toFixed(2));
+  }
+  show('fc_ev_ebit', ev_ebit);
+  show('fc_pb', pb);
+  show('fc_fcf_yield', fcf_yield, true);
+  show('fc_int_cov', int_cov);
+  show('fc_accruals', accruals, true);
+  show('fc_nd_ebitda', nd_ebitda);
+
+  // Table
+  const tbody = document.querySelector('#fc_table tbody');
+  if(tbody){
+    tbody.innerHTML = '';
+    metrics.forEach(m=>{
+      const valDisp = (!isFinite(m.val) && m.val!==0) ? '—' : (Math.abs(m.val)>=1e4 ? m.val.toExponential(2) : m.key==='FCF Yield' || m.key==='Accruals' ? (m.val*100).toFixed(2)+'%' : Number(m.val).toFixed(2));
+      const scaledDisp = (m.scaled==null) ? '—' : m.scaled.toFixed(2);
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${m.factor}</td><td>${m.key}</td><td>${valDisp}</td><td>${scaledDisp}</td><td>${(m.w*100).toFixed(0)}%</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // Composite score (0..100)
+  let score01 = 0, wsum = 0;
+  metrics.forEach(m=>{
+    if(m.scaled!=null){ score01 += m.scaled * m.w; wsum += m.w; }
+  });
+  const score = wsum>0 ? (score01/wsum)*100 : 0;
+  const grade = score>=80?'Strong Buy': score>=65?'Buy': score>=45?'Hold': score>=30?'Sell':'Strong Sell';
+
+  const sc = document.getElementById('fc_score'); if(sc) sc.textContent = score.toFixed(1);
+  const gr = document.getElementById('fc_grade'); if(gr) gr.textContent = grade;
+}
+
+// Hook into existing Compute button
+(function(){
+  const btn = document.getElementById('btnCompute');
+  if(btn){
+    const original = btn.onclick;
+    btn.onclick = function(ev){
+      try{ if(typeof original === 'function') original.call(this, ev); }catch(e){ /* ignore */ }
+      try{ computeFactorComposite(); }catch(e){ console.warn('FactorComposite error', e); }
+    };
+  } else {
+    // If not present, compute on load once
+    document.addEventListener('DOMContentLoaded', computeFactorComposite);
+  }
+})();
+</script>
+
+
+<!-- =======================
+     SEC → UFA ADAPTER (NON-BREAKING)
+     ======================= -->
+<script>
+(function(){
+  const num = v => (typeof v === 'number' && isFinite(v)) ? v : null;
+  function take(obj, path, dflt=null){
+    try{
+      const v = path.split('.').reduce((o,k)=> (o && o[k]!==undefined)? o[k] : undefined, obj);
+      return (v===undefined)? dflt : v;
+    }catch(e){ return dflt; }
+  }
+  window.buildUFAFromSEC = function(sec, prices){
+    sec = sec || {}; prices = prices || {};
+    const t = sec.tTM || sec.ttm || {};
+    const q = sec.qtr || sec.quarter || {};
+
+    const CFO  = num(t.cfo ?? t.netCashFromOperations ?? t.netCashProvidedByUsedInOperatingActivities);
+    const CapEx= num(t.capex ?? t.capitalExpenditures ?? t.paymentsToAcquirePPE);
+    const OI   = num(t.operIncome ?? t.operatingIncomeLoss ?? t.operatingIncome);
+    const DA   = num(t.dna ?? t.deprAmort ?? t.depreciationDepletionAndAmortization);
+    const EBITDA = (OI!=null ? OI : null) + (DA||0);
+
+    const LTD   = num(q.longTermDebt);
+    const LTDC  = num(q.longTermDebtCurrent);
+    const STB   = num(q.shortTermBorrowings ?? q.shortTermDebt);
+    const totalDebt = [LTD,LTDC,STB].some(v=>v!=null) ? (LTD||0)+(LTDC||0)+(STB||0) : null;
+
+    const cash  = num(q.cashAndEquivalents ?? q.cashAndCashEquivalentsAtCarryingValue);
+    const equity= num(q.stockholdersEquity ?? q.totalEquity);
+    const currA = num(q.currentAssets ?? q.assetsCurrent);
+    const currL = num(q.currentLiabilities ?? q.liabilitiesCurrent);
+    const totL  = num(q.totalLiabilities ?? q.liabilities);
+    const totA  = num(q.totalAssets ?? q.assets);
+
+    const lastClose = take(prices, 'last.close', null)
+                   ?? (Array.isArray(prices.dailyOHLC) && prices.dailyOHLC.length ? num(prices.dailyOHLC[prices.dailyOHLC.length-1].close) : null)
+                   ?? (Array.isArray(prices.dailyClose) && prices.dailyClose.length ? num(prices.dailyClose[prices.dailyClose.length-1].close) : null);
+
+    const sharesOut = num(q.commonSharesOutstanding ?? q.sharesBasic ?? q.sharesDiluted);
+    let marketCap = num(prices.marketCap);
+    if(marketCap==null && lastClose!=null && sharesOut!=null){ marketCap = lastClose * sharesOut; }
+
+    const EV = (marketCap!=null && totalDebt!=null && cash!=null) ? (marketCap + totalDebt - cash) : null;
+    const EBIT = OI!=null ? OI : null;
+    const FCF  = (CFO!=null && CapEx!=null) ? (CFO - CapEx) : null;
+
+    const fundamentals = {
+      enterprise_value: EV,
+      ebit: EBIT,
+      ebitda: EBITDA,
+      fcf: FCF,
+      market_cap: marketCap,
+      buybacks: num(t.buybacks ?? t.paymentsForRepurchaseOfCommonStock),
+      dividends: num(t.dividends ?? t.paymentsOfDividends),
+      share_issuance: num(t.shareIssuance ?? t.proceedsFromIssuanceOfCommonStock),
+      net_debt: (totalDebt!=null && cash!=null) ? (totalDebt - cash) : null,
+      total_debt: totalDebt,
+      shareholders_equity: equity,
+      current_assets: currA,
+      current_liabilities: currL,
+      total_liabilities: totL,
+      total_assets: totA,
+      interest_expense: num(t.interestExpense),
+      cfo: CFO,
+      capitalized_expenses: num(t.capitalizedCosts ?? t.capitalizedSoftware ?? t.capitalExpenditures),
+      roic: num(sec.ttm_roic),
+      wacc: num(prices.wacc),
+      fscore: num(sec.fscore),
+      fscore_cash: num(sec.fscore_cash),
+      revenue_cagr3: num(sec.cagr3),
+      revenue_cagr5: num(sec.cagr5),
+      rule_of_40: num(sec.rule40),
+      shares_out: sharesOut,
+      shares_out_yoy: num(sec.yoy_shares_out)
+    };
+
+    const ufa = {
+      fundamentals,
+      prices: {
+        daily: prices.dailyOHLC ?? prices.dailyClose ?? [],
+        adv: num(prices.advUSD),
+        spread_bp: num(prices.spreadBp)
+      },
+      peers: Array.isArray(prices.peers) ? prices.peers : [],
+      estimates: prices.estimates || {},
+      short_interest: prices.shortInterest || {},
+      options: prices.options || {},
+      ownership: prices.ownership || {},
+      audit: sec.auditFlags || {},
+      adr: sec.adrFlags || {},
+      diff: prices.weeklyDiff || [],
+      z: prices.precomputedZ || null
+    };
+
+    window.UFA = ufa;
+    if (window.Pillars && window.Pillars.renderAll) {
+      try { window.Pillars.renderAll(ufa); } catch(e){ console.warn('renderAll error', e); }
+    }
+    return ufa;
+  };
+
+  // Optional event glue: dispatch this from your loader when SEC+prices are ready
+  // window.dispatchEvent(new CustomEvent('SEC_DATA_READY', {detail:{sec, prices}}));
+  window.addEventListener('SEC_DATA_READY', (ev)=>{
+    try{
+      const d = ev.detail || {};
+      window.buildUFAFromSEC(d.sec, d.prices);
+    }catch(e){ console.warn('SEC_DATA_READY handler failed', e); }
+  });
+
+  // Try once if UFA already exists (page restore/hot reload)
+  if (window.UFA && window.Pillars && window.Pillars.renderAll){
+    try{ window.Pillars.renderAll(window.UFA); }catch(e){}
+  } else {
+    // gentle retry for a few seconds
+    let tries=0; const iv=setInterval(()=>{
+      tries++;
+      if (window.UFA && window.Pillars && window.Pillars.renderAll){
+        try{ window.Pillars.renderAll(window.UFA); }catch(e){}
+        clearInterval(iv);
+      }
+      if (tries>50) clearInterval(iv);
+    }, 200);
+  }
+})();
 </script>
 
 <!-- Centered bottom credit -->
-<div class="site-credit">© 2025 Kevin Shokrollahi</div>
-
-</body>
-</html>
+<div class="site-credit">© 2025 Kevin Shokrollahi ALL RIGHT RESERVED </div>
+</body></html>
