@@ -2191,6 +2191,7 @@ function computeVerdict(){
       g('wacc').value = String(data.wacc);
       waccStatus('Estimate · ');
       const source = document.createElement('a');
+      source.className = 'muted';
       source.textContent = 'ValueInvesting.io';
       source.href = `https://valueinvesting.io/${encodeURIComponent(ticker)}/valuation/wacc`;
       source.target = '_blank';
