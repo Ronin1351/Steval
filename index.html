@@ -21,6 +21,8 @@ body:not(.light){--bg:#111c22;--fg:#e7eff2;--muted:#9eb0b9;--card:#19272f;--inpu
 @media(min-width:1251px){.uni-row>label,.number-cell .input{font-size:16px}.uni-row{min-height:52px}.quality-line{font-size:17px}.table-header{font-size:14px}}
 @media(max-width:700px){.form-rows>div{grid-template-columns:minmax(130px,1fr) minmax(100px,1fr);gap:15px}.alerts{right:16px;bottom:12px;max-width:calc(100vw - 32px)}.risk-chart{padding:16px}.risk-chart svg{height:85px!important}}
 
+#confluence-workspace iframe{display:block;width:100%;height:calc(100dvh - 132px);min-height:560px;border:1px solid var(--border);border-radius:10px;background:#f4f6fa}#confluence-workspace iframe[hidden]{display:none}#confluenceOffline{padding:24px;background:var(--card);border:1px solid var(--border);border-radius:8px}@media(max-width:700px){#confluence-workspace iframe{height:calc(100dvh - 185px);min-height:470px}.workspace:has(#confluence-workspace.active){padding-inline:10px}}
+.workspace:has(#confluence-workspace.active)>.workspace-credit{display:none}@media(max-width:700px){.tab-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));overflow:visible}.tab-nav .tab-btn{padding:9px 4px;font-size:11px;white-space:normal;text-align:center;line-height:1.3;min-height:44px}#confluence-workspace iframe{height:calc(100dvh - 205px)}}
 </style>
 
 </head>
@@ -1281,7 +1283,7 @@ body:not(.light){--bg:#111c22;--fg:#e7eff2;--muted:#9eb0b9;--card:#19272f;--inpu
 
     const shell = create('div', 'app-shell'); shell.id = 'appShell';
     const sidebar = create('aside', 'app-sidebar', '<div class="wordmark">steval</div>');
-    const nav = create('nav', 'tab-nav', '<button class="tab-btn active" data-tab="stock-evaluation" aria-current="page">Stock evaluation</button><button class="tab-btn" data-tab="swing-trading">Swing quality</button><button class="tab-btn" data-tab="risk-management">Risk management</button>');
+    const nav = create('nav', 'tab-nav', '<button class="tab-btn active" data-tab="stock-evaluation" aria-current="page">Stock evaluation</button><button class="tab-btn" data-tab="swing-trading">Swing quality</button><button class="tab-btn" data-tab="risk-management">Risk management</button><button class="tab-btn" data-tab="confluence-workspace">Confluence</button>');
     nav.setAttribute('aria-label', 'Main navigation');
     const utilities = create('div', 'rail-bottom', '<button class="tab-btn rail-utility" data-tab="help-page">Help &amp; methodology</button>');
     const themeLabel = create('label', '', '<span>Light theme</span>');
@@ -1372,16 +1374,23 @@ body:not(.light){--bg:#111c22;--fg:#e7eff2;--muted:#9eb0b9;--card:#19272f;--inpu
     const quickStart = help.querySelector('ul');
     if (quickStart) quickStart.innerHTML = '<li>Enter a ticker and choose <b>Fetch SEC data</b>. WACC fills automatically from a public source when available.</li><li>Review the WACC source and lookup time. You can edit WACC manually.</li><li>Fill missing financial values, including those under <b>Additional inputs</b>, then choose <b>Compute all</b>.</li><li>Open the criteria, factor breakdown and analysis details to inspect the results.</li><li>Use <b>Swing quality</b> for Basic or Analyst + Technical scoring, and <b>Risk management</b> for position sizing.</li><li>Finnhub and FMP imports are not connected in this build.</li>';
     const footer = create('footer', 'workspace-credit', '© 2025 Kevin Shokrollahi. All rights reserved.');
-    main.append(header, alerts, stock, swing, riskPage, helpPage, footer);
+    const confluencePage = create('section', 'tab-content'); confluencePage.id = 'confluence-workspace';
+    confluencePage.setAttribute('aria-label', 'Confluence workspace');
+    confluencePage.innerHTML = '<iframe id="confluenceFrame" title="Confluence trade setup" src="/confluence/" loading="lazy"></iframe><p id="confluenceOffline" hidden>Confluence is available in the hosted workspace. <a id="confluenceHostedLink" target="_blank" rel="noopener">Open Confluence</a></p>';
+    main.append(header, alerts, stock, swing, riskPage, confluencePage, helpPage, footer);
     shell.append(sidebar, main);
     document.body.insertBefore(shell, originalHeader);
     originalHeader.remove(); container.remove();
     document.body.classList.add('light'); document.body.dataset.theme = 'light';
   }
 
-  const titles = { 'stock-evaluation': 'Stock evaluation', 'swing-trading': 'Swing quality', 'risk-management': 'Risk management', 'help-page': 'Help & methodology' };
+  if (window.location.protocol === 'file:') {
+    byId('confluenceFrame').hidden = true; byId('confluenceOffline').hidden = false;
+  } else { byId('confluenceHostedLink').href = new URL('/confluence/', window.location.href).href; }
+  const titles = { 'stock-evaluation': 'Stock evaluation', 'swing-trading': 'Swing quality', 'risk-management': 'Risk management', 'confluence-workspace': 'Confluence', 'help-page': 'Help & methodology' };
   document.querySelectorAll('.tab-btn[data-tab]').forEach(btn => btn.addEventListener('click', () => {
     byId('workspaceTitle').textContent = titles[btn.dataset.tab];
+    byId('downloadHtml').hidden = btn.dataset.tab === 'confluence-workspace';
     document.title = 'Steval — ' + titles[btn.dataset.tab];
     document.querySelectorAll('.tab-btn[data-tab]').forEach(item => item.removeAttribute('aria-current'));
     btn.setAttribute('aria-current', 'page');

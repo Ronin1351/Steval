@@ -1,0 +1,28 @@
+{
+  "name": "@steval/confluence",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "test": "node --import tsx --test tests/*.test.ts tests/*.test.tsx",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "lucide-react": "0.546.0",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.20",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "5.2.0",
+    "esbuild": "0.25.12",
+    "tsx": "4.22.4",
+    "typescript": "5.8.3",
+    "vite": "6.4.3"
+  }
+}

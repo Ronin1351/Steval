@@ -1,0 +1,3 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import React from 'react';import {renderToStaticMarkup} from 'react-dom/server';import App from '../src/App';
+test('workspace supports reset without a destructive history action',()=>{const s=renderToStaticMarkup(React.createElement(App));assert.match(s,/>Clear inputs<\/button>/);assert.match(s,/>Save setup<\/button>/);assert.doesNotMatch(s,/Clear history/)});
+test('input worksheet and result have explicit page regions',()=>{const s=renderToStaticMarkup(React.createElement(App));assert.match(s,/Evaluate a setup/);assert.match(s,/aria-label="Setup inputs"/);assert.match(s,/aria-label="Setup analysis"/)});

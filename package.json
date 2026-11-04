@@ -1,0 +1,13 @@
+{
+  "name": "steval-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "confluence"
+  ],
+  "scripts": {
+    "build": "node scripts/build.cjs && npm run build --workspace=@steval/confluence",
+    "test": "node --test tests/*.test.cjs && npm run test --workspace=@steval/confluence",
+    "lint": "npm run lint --workspace=@steval/confluence"
+  }
+}
