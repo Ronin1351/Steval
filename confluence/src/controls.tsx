@@ -1,4 +1,4 @@
-import { useId, useState, type ReactNode } from 'react';
+import { useEffect, useId, useState, type ReactNode } from 'react';
 import { HelpCircle, X } from 'lucide-react';
 export function Field({label,value,onChange,error,type='number'}:{label:string;value:number|string;onChange:(v:any)=>void;error?:string;type?:'number'|'text'}) {
   const id=useId();
@@ -9,3 +9,9 @@ export function Help({label,children}:{label:string;children:ReactNode}) {
 }
 export function Toggle({label,checked,onChange,help}:{label:string;checked:boolean;onChange:(value:boolean)=>void;help?:string}) {return <div className="toggle-row"><span>{label}{help&&<Help label={label}>{help}</Help>}</span><button type="button" className="toggle" role="switch" aria-label={label} aria-checked={checked} onClick={()=>onChange(!checked)}><span/></button></div>}
 export function Money({value}:{value:number}) {return <>{value.toLocaleString('en-US',{style:'currency',currency:'USD',minimumFractionDigits:2,maximumFractionDigits:2})}</>}
+
+export function InputGroup({title,children,initiallyOpen=false,invalid=false,revealKey=0,className=''}:{title:string;children:ReactNode;initiallyOpen?:boolean;invalid?:boolean;revealKey?:number;className?:string}){
+ const [open,setOpen]=useState(initiallyOpen);const id=useId();
+ useEffect(()=>{if(invalid)setOpen(true)},[invalid,revealKey]);
+ return <section className={'input-group '+className}><h2><span className="group-title">{title}</span><button className="group-heading" aria-expanded={open} aria-controls={id} onClick={()=>setOpen(!open)}>{title}<span aria-hidden="true">{open?'−':'+'}</span></button></h2><div id={id} className={'group-content'+(open?' expanded':'')}>{children}</div></section>;
+}

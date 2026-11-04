@@ -21,8 +21,15 @@ body:not(.light){--bg:#111c22;--fg:#e7eff2;--muted:#9eb0b9;--card:#19272f;--inpu
 @media(min-width:1251px){.uni-row>label,.number-cell .input{font-size:16px}.uni-row{min-height:52px}.quality-line{font-size:17px}.table-header{font-size:14px}}
 @media(max-width:700px){.form-rows>div{grid-template-columns:minmax(130px,1fr) minmax(100px,1fr);gap:15px}.alerts{right:16px;bottom:12px;max-width:calc(100vw - 32px)}.risk-chart{padding:16px}.risk-chart svg{height:85px!important}}
 
-#confluence-workspace iframe{display:block;width:100%;height:calc(100dvh - 132px);min-height:560px;border:1px solid var(--border);border-radius:10px;background:#f4f6fa}#confluence-workspace iframe[hidden]{display:none}#confluenceOffline{padding:24px;background:var(--card);border:1px solid var(--border);border-radius:8px}@media(max-width:700px){#confluence-workspace iframe{height:calc(100dvh - 185px);min-height:470px}.workspace:has(#confluence-workspace.active){padding-inline:10px}}
-.workspace:has(#confluence-workspace.active)>.workspace-credit{display:none}@media(max-width:700px){.tab-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));overflow:visible}.tab-nav .tab-btn{padding:9px 4px;font-size:11px;white-space:normal;text-align:center;line-height:1.3;min-height:44px}#confluence-workspace iframe{height:calc(100dvh - 205px)}}
+#confluenceOffline{padding:24px;background:var(--card);border:1px solid var(--border);border-radius:8px}@media(max-width:700px){.workspace:has(#confluence-workspace.active){padding-inline:10px}}
+.workspace:has(#confluence-workspace.active)>.workspace-credit{display:none}@media(max-width:700px){.tab-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));overflow:visible}.tab-nav .tab-btn{padding:9px 4px;font-size:11px;white-space:normal;text-align:center;line-height:1.3;min-height:44px}}
+
+@media(min-width:1201px){#confluenceRecent{display:none}}.help-label-short{display:none}@media(max-width:420px){.help-label-long{display:none}.help-label-short{display:inline}}
+/* Phone controls use readable text, generous hit areas and full-width metric labels. */
+@media(max-width:980px){
+ .btn,.text-button,summary,.risk-switch-btn{min-height:44px}.input,.fieldset .input,.additional-grid .input,select,textarea{font-size:16px;min-height:44px}.risk-switch{display:flex;flex-wrap:wrap;width:100%}.risk-switch-btn{flex:1;min-width:0;white-space:normal;font-size:12px;padding:8px}.workspace-header{gap:12px}.workspace-header .btn{min-width:0}.rail-bottom .rail-utility{min-height:44px}.uni-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;position:relative;padding:10px 0}.uni-row>label{grid-column:1/-1;min-height:36px;display:flex;align-items:center;padding-right:58px;font-weight:600}.table-header{grid-template-columns:1fr 1fr;gap:8px;padding:11px 0}.table-header>span:first-child{display:none}.number-cell .input{height:46px;font-size:16px;padding:8px}.uni-row .note-toggle{opacity:1;top:-44px;right:calc(-100% - 8px);width:52px;height:44px;font-size:12px}.additional-grid .note-toggle{position:static;min-height:44px;display:block}.factor-disclosure>summary{flex-wrap:wrap;gap:12px}.workspace-header h1{font-size:30px}.rail-bottom label{min-height:44px}.rail-bottom input{width:22px;height:22px}
+}
+@media(max-width:420px){.workspace-header h1{font-size:27px}.workspace-header .btn{font-size:12px;padding:8px 10px}.app-sidebar .rail-bottom{gap:4px}.metrics-strip .overview-metric{padding-inline:10px}}
 </style>
 
 </head>
@@ -1285,7 +1292,7 @@ body:not(.light){--bg:#111c22;--fg:#e7eff2;--muted:#9eb0b9;--card:#19272f;--inpu
     const sidebar = create('aside', 'app-sidebar', '<div class="wordmark">steval</div>');
     const nav = create('nav', 'tab-nav', '<button class="tab-btn active" data-tab="stock-evaluation" aria-current="page">Stock evaluation</button><button class="tab-btn" data-tab="swing-trading">Swing quality</button><button class="tab-btn" data-tab="risk-management">Risk management</button><button class="tab-btn" data-tab="confluence-workspace">Confluence</button>');
     nav.setAttribute('aria-label', 'Main navigation');
-    const utilities = create('div', 'rail-bottom', '<button class="tab-btn rail-utility" data-tab="help-page">Help &amp; methodology</button>');
+    const utilities = create('div', 'rail-bottom', '<button class="tab-btn rail-utility" data-tab="help-page" aria-label="Help &amp; methodology"><span class="help-label-long">Help &amp; methodology</span><span class="help-label-short">Help</span></button>');
     const themeLabel = create('label', '', '<span>Light theme</span>');
     themeLabel.htmlFor = theme.id; theme.checked = true; themeLabel.append(theme); utilities.append(themeLabel);
     const debugLabel = create('label', 'debug-utility', '<span>Debug</span>'); debugLabel.htmlFor = debug.id; debugLabel.append(debug); utilities.append(debugLabel);
@@ -1293,7 +1300,7 @@ body:not(.light){--bg:#111c22;--fg:#e7eff2;--muted:#9eb0b9;--card:#19272f;--inpu
     const main = create('main', 'workspace'); main.id = 'mainWorkspace';
     const header = create('header', 'workspace-header', '<h1 id="workspaceTitle">Stock evaluation</h1>');
     exportButton.textContent = 'Export'; exportButton.title = 'Download this workspace as an HTML file';
-    header.append(exportButton);
+    const recent = create('button', 'btn', 'Recent setups'); recent.id = 'confluenceRecent'; recent.hidden = true; header.append(recent, exportButton);
 
     const toolbar = create('div', 'stock-toolbar');
     const tickerField = create('div', 'ticker-field');
@@ -1376,7 +1383,7 @@ body:not(.light){--bg:#111c22;--fg:#e7eff2;--muted:#9eb0b9;--card:#19272f;--inpu
     const footer = create('footer', 'workspace-credit', '© 2025 Kevin Shokrollahi. All rights reserved.');
     const confluencePage = create('section', 'tab-content'); confluencePage.id = 'confluence-workspace';
     confluencePage.setAttribute('aria-label', 'Confluence workspace');
-    confluencePage.innerHTML = '<iframe id="confluenceFrame" title="Confluence trade setup" src="/confluence/" loading="lazy"></iframe><p id="confluenceOffline" hidden>Confluence is available in the hosted workspace. <a id="confluenceHostedLink" target="_blank" rel="noopener">Open Confluence</a></p>';
+    confluencePage.innerHTML = '<div id="confluenceHost" aria-label="Confluence trade setup"><p role="status">Loading setup workspace…</p></div><p id="confluenceOffline" hidden>Confluence is available in the hosted workspace. <a id="confluenceHostedLink" target="_blank" rel="noopener">Open Confluence</a></p>';
     main.append(header, alerts, stock, swing, riskPage, confluencePage, helpPage, footer);
     shell.append(sidebar, main);
     document.body.insertBefore(shell, originalHeader);
@@ -1385,12 +1392,13 @@ body:not(.light){--bg:#111c22;--fg:#e7eff2;--muted:#9eb0b9;--card:#19272f;--inpu
   }
 
   if (window.location.protocol === 'file:') {
-    byId('confluenceFrame').hidden = true; byId('confluenceOffline').hidden = false;
+    byId('confluenceHost').hidden = true; byId('confluenceOffline').hidden = false;
   } else { byId('confluenceHostedLink').href = new URL('/confluence/', window.location.href).href; }
   const titles = { 'stock-evaluation': 'Stock evaluation', 'swing-trading': 'Swing quality', 'risk-management': 'Risk management', 'confluence-workspace': 'Confluence', 'help-page': 'Help & methodology' };
   document.querySelectorAll('.tab-btn[data-tab]').forEach(btn => btn.addEventListener('click', () => {
     byId('workspaceTitle').textContent = titles[btn.dataset.tab];
     byId('downloadHtml').hidden = btn.dataset.tab === 'confluence-workspace';
+    byId('confluenceRecent').hidden = btn.dataset.tab !== 'confluence-workspace';
     document.title = 'Steval — ' + titles[btn.dataset.tab];
     document.querySelectorAll('.tab-btn[data-tab]').forEach(item => item.removeAttribute('aria-current'));
     btn.setAttribute('aria-current', 'page');
@@ -2997,4 +3005,27 @@ window.computeFactorComposite = computeFactorComposite;
 
 <!-- Centered bottom credit -->
 <div class="site-credit">© 2025 Kevin Shokrollahi ALL RIGHT RESERVED </div>
+<script type="module">
+const host = document.getElementById('confluenceHost');
+let mounting;
+async function loadConfluence() {
+  if (location.protocol === 'file:') return;
+  if (!mounting) mounting = import('/confluence/assets/embed.js').then(({mountConfluence}) => {
+    host.replaceChildren(); mountConfluence(host);
+  }).catch(() => {
+    mounting = undefined;
+    const retry = document.createElement('button'); retry.className = 'btn'; retry.textContent = 'Retry loading Confluence';
+    retry.onclick = loadConfluence; host.replaceChildren(retry);
+  });
+  await mounting;
+}
+document.querySelector('[data-tab="confluence-workspace"]').addEventListener('click', loadConfluence);
+document.getElementById('confluenceRecent').addEventListener('click', async () => {
+  await loadConfluence(); host.dispatchEvent(new CustomEvent('confluence:open-history'));
+});
+const rail = document.querySelector('.app-sidebar');
+const updateOffset = () => host.style.setProperty('--confluence-sticky-offset', matchMedia('(max-width:700px)').matches ? rail.getBoundingClientRect().height + 'px' : '0px');
+new ResizeObserver(updateOffset).observe(rail); updateOffset();
+if (document.getElementById('confluence-workspace').classList.contains('active')) loadConfluence();
+</script>
 </body></html>

@@ -8,3 +8,5 @@ assert.equal(require('node:crypto').createHash('sha256').update(fs.readFileSync(
 assert.equal(require('node:crypto').createHash('sha256').update(fs.readFileSync(path.join(root,'confluence/src/types.ts'),'utf8').replace(/\r\n/g,'\n')).digest('hex'),'8a2bdb59f9e0a6c3693e68a64b2395928996da50e3ee83b08bc0cee44f21bb8f');
 assert.equal(require('node:crypto').createHash('sha256').update(fs.readFileSync(path.join(root,'confluence/src/storage.ts'),'utf8').replace(/\r\n/g,'\n')).digest('hex'),'94145a7d074a57b39472010a0cf49b02db649a39b1f3f663aec6ca99bffef305');
 });
+
+test('embedded Confluence shares the document scroll instead of nesting a frame',()=>{const s=fs.readFileSync(path.join(root,'index.html'),'utf8');assert.doesNotMatch(s,/<iframe\b/);assert.match(s,/confluenceHost/)});
