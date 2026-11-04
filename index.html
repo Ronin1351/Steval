@@ -1050,6 +1050,7 @@
           <label for="wacc">WACC (%)</label>
           <input id="wacc" class="input mono" style="max-width:200px" placeholder="e.g., 10">
         </div>
+        <div id="waccStatus" class="small muted" role="status" aria-live="polite" style="margin-top:8px;">WACC fills automatically with Fetch via SEC, when available. You can also enter it manually.</div>
 
         <div style="margin-top:14px" class="kpi na">
           <div>Notes</div>
@@ -2160,6 +2161,60 @@ function computeVerdict(){
     setVal2(aId,a); setVal2(bId,b);
   }
 
+  // WACC lookup lifecycle
+  let stockFetchSequence = 0;
+  let waccEditVersion = 0;
+
+  function isCurrentStockFetch(ticker, requestId) {
+    return requestId === stockFetchSequence && ticker === getTicker();
+  }
+  function waccStatus(message) {
+    g('waccStatus').textContent = message;
+  }
+  function clearWacc(message) {
+    g('wacc').value = '';
+    waccStatus(message);
+    computeSnapshot();
+    computeVerdict();
+  }
+  async function loadWacc(ticker, requestId) {
+    const editVersion = waccEditVersion;
+    clearWacc('Looking up WACC… You can enter a manual value while waiting.');
+    try {
+      const response = await fetch(`${SEC_BASE}/wacc?ticker=${encodeURIComponent(ticker)}`);
+      if (!response.ok) throw new Error('Unavailable');
+      const data = await response.json();
+      if (!isCurrentStockFetch(ticker, requestId) || editVersion !== waccEditVersion) return;
+      if (data.ticker !== ticker || !Number.isFinite(data.wacc) || data.wacc < 0 || data.wacc > 100 || !Number.isFinite(Date.parse(data.retrievedAt))) {
+        throw new Error('Unavailable');
+      }
+      g('wacc').value = String(data.wacc);
+      waccStatus('Estimate · ');
+      const source = document.createElement('a');
+      source.textContent = 'ValueInvesting.io';
+      source.href = `https://valueinvesting.io/${encodeURIComponent(ticker)}/valuation/wacc`;
+      source.target = '_blank';
+      source.rel = 'noopener noreferrer';
+      g('waccStatus').appendChild(source);
+      g('waccStatus').appendChild(document.createTextNode(` · Looked up ${new Date(data.retrievedAt).toLocaleString()}`));
+      computeSnapshot();
+      computeVerdict();
+    } catch (error) {
+      if (isCurrentStockFetch(ticker, requestId) && editVersion === waccEditVersion) {
+        clearWacc('WACC unavailable from the public source. Enter it manually.');
+      }
+    }
+  }
+  g('wacc').addEventListener('input', () => {
+    waccEditVersion++;
+    waccStatus(g('wacc').value.trim() ? 'Manual WACC.' : 'Enter a WACC or fetch stock data to look it up.');
+  });
+  g('ticker').addEventListener('input', () => {
+    stockFetchSequence++;
+    clearWacc('Fetch this stock to look up WACC, or enter it manually.');
+  });
+  // End WACC lookup lifecycle
+
   async function populateSEC(){
   //=== Patch: augment Factor Composite inputs from SEC + quote ===
   async function __ufa_fetchLastPrice(sym){
@@ -2214,9 +2269,12 @@ function computeVerdict(){
 
     const t = getTicker();
     if (!t){ show('Enter a ticker.'); return; }
+    const requestId = ++stockFetchSequence;
+    loadWacc(t, requestId);
 
     try{
       let cik = await tickerToCIK(t);
+      if (!isCurrentStockFetch(t, requestId)) return;
       
       // Fallback for common tickers that might not be found
       if (!cik) {
@@ -2245,12 +2303,14 @@ function computeVerdict(){
 
       console.log(`Fetching SEC data for ${t} with CIK: ${cik}`);
       const rf = await fetch(`${SEC_BASE}/sec-companyfacts?cik=${cik}`);
+      if (!isCurrentStockFetch(t, requestId)) return;
       if (!rf.ok){ 
         show(`SEC companyfacts ${rf.status} for CIK ${cik}`); 
         console.error('SEC companyfacts error:', rf.status, rf.statusText);
         return; 
       }
       const facts = await rf.json();
+      if (!isCurrentStockFetch(t, requestId)) return;
       console.log('SEC facts received:', facts);
 
       const rev = findPair(facts, TAGS.rev);
@@ -2331,6 +2391,7 @@ function computeVerdict(){
       
       show(`SEC data loaded successfully for ${t}`);
     } catch(e){
+      if (!isCurrentStockFetch(t, requestId)) return;
       show(`SEC error: ${e.message || e}`);
       console.error('SEC populate error:', e);
     }
