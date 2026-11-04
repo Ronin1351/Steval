@@ -2717,8 +2717,8 @@ function computeVerdict(){
     computeAll();
     renderStatus();
     
-    // Test SEC endpoints on startup
-    testSECEndpoints().then(results => {
+    // Run the optional diagnostic only when it is available.
+    if (typeof testSECEndpoints === 'function') testSECEndpoints().then(results => {
       if (!results.tickers || !results.companyfacts) {
         show('Warning: SEC API endpoints may not be properly configured. Some features may not work.');
         console.log('SEC endpoint test results:', results);
@@ -2787,6 +2787,7 @@ function computeVerdict(){
 
 <script>
 // ===== Factor Composite (Pilot) JS =====
+(function(){
 
 // Helper numeric getter
 function num(id){
@@ -2898,6 +2899,9 @@ function computeFactorComposite(){
   const gr = document.getElementById('fc_grade'); if(gr) gr.textContent = grade;
 }
 
+// Expose the entry point used by the SEC loader without leaking helpers.
+window.computeFactorComposite = computeFactorComposite;
+
 // Hook into existing Compute button
 (function(){
   const btn = document.getElementById('btnCompute');
@@ -2911,6 +2915,7 @@ function computeFactorComposite(){
     // If not present, compute on load once
     document.addEventListener('DOMContentLoaded', computeFactorComposite);
   }
+})();
 })();
 </script>
 

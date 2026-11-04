@@ -3,7 +3,8 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate');
 
-  const UA = process.env.SEC_UA || 'BubbleHub-StockEval/1.0 (you@example.com)';
+  const UA = (process.env.SEC_UA || '').trim();
+  if (!UA || /example\.com/i.test(UA)) return res.status(503).json({ error: 'SEC request identity is not configured' });
   let { cik, ticker } = req.query || {};
 
   try {

@@ -1,4 +1,6 @@
 export default async function handler(req, res) {
+  const UA = (process.env.SEC_UA || '').trim();
+  if (!UA || /example\.com/i.test(UA)) return res.status(503).json({ error: 'SEC request identity is not configured' });
   const { cik, tag } = req.query;
   const padded = String(cik || '').replace(/\D/g, '').padStart(10, '0');
   if (!/^\d{10}$/.test(padded) || !tag) return res.status(400).json({ error: 'bad query' });
@@ -7,7 +9,7 @@ export default async function handler(req, res) {
   try {
     const r = await fetch(url, {
       headers: {
-        'User-Agent': 'Alpha-Ledger/1.0 (you@example.com)',
+        'User-Agent': UA,
         'Accept': 'application/json'
       }
     });

@@ -1,7 +1,8 @@
 // GET /api/sec-submissions?cik=0001321655
-const UA = process.env.SEC_UA || "StockEvaluator/1.0 (contact: your-email@example.com)";
 
 module.exports = async (req, res) => {
+  const UA = (process.env.SEC_UA || '').trim();
+  if (!UA || /example\.com/i.test(UA)) return res.status(503).json({ error: 'SEC request identity is not configured' });
   res.setHeader("Access-Control-Allow-Origin", "*");
   let { cik } = req.query || {};
   if (!cik) return res.status(400).json({ error: "cik required" });

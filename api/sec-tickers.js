@@ -1,9 +1,11 @@
 export default async function handler(req, res) {
+  const UA = (process.env.SEC_UA || '').trim();
+  if (!UA || /example\.com/i.test(UA)) return res.status(503).json({ error: 'SEC request identity is not configured' });
   const url = 'https://www.sec.gov/files/company_tickers.json';
   try {
     const r = await fetch(url, {
       headers: {
-        'User-Agent': 'UnifiedStockEvaluator/1.0 (you@example.com)',
+        'User-Agent': UA,
         'Accept': 'application/json'
       }
     });
